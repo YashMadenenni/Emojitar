@@ -1,0 +1,38 @@
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: whitesmoke;
+    margin: 0 1.65%;
+}
+/*
+ * Box Display Effect ->> make two boxes display parallelly 
+ */
+#maker{
+    display: flex;
+}
+#box1 {
+    flex-basis: 33.33%;
+    border: 1px solid black;
+}
+#box2 {
+    flex-basis: 66.67%;
+    border: 1px solid black;
+}
+#emoji-display{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    margin-right: 10%;
+    width: 200px;
+    height: 200px;
+    border: 1px solid rgb(126, 28, 28);
+}
+#emoji-info{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+}
+input[type="text"] {
+    width: 200px;
+    height: 30px;
+    padding: 5px;
+}
