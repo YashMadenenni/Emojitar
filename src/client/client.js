@@ -1,4 +1,4 @@
-function openPage(pageName) {
+function openPage(pageName,event) {
   var tabcontent = document.getElementsByClassName("tabcontent");
   for (let i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";

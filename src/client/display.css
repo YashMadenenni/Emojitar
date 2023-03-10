@@ -46,11 +46,24 @@ body, html{
 }
 .emoji-display-box{
     position: relative;
-    flex-basis: 28%;
+    flex-basis: 25%;
 }
 .emoji-setting-box{
-    background-color: #777;
+    position: relative;
     flex-grow: 1;
+}
+#setting-box{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 2%;
+
+    box-sizing: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
 }
 /*
  * Emoji-display-box
@@ -68,9 +81,6 @@ body, html{
     margin-top: 2%;
     margin-left: 2%;
     margin-right: 2%;
-}
-#emoji-info input {
-    float: right;
 }
 #postButton {
     width: 100%;
