@@ -18,9 +18,29 @@
         <button class="tablink" onclick="openPage('Login-SignUp',event)">Login / SignUp</button>
         <!--Tab Content-->
         <div id='Maker' class="tabcontent">
-            
-        </div>
+            <div class="MakerBox">
+                <div class="emoji-display-box">
+                    <div id="emoji-image"></div>
+                    <div id="emoji-info">
+                        <label for="inputID">Emojitar ID:</label>
+                        <input type="text" id="inputID" name="inputID">
+                        <p></p>
 
+                        <label for="inputDescription">Description:</label>
+                        <input type="text" id="inputDescription" name="inputDescription">
+                        <p></p>
+
+                        <label for="inputUsername">Username:</label>
+                        <input type="text" id="inputUsername" name="inputUsername">
+                        <p></p>
+                        <button id="postButton">POST</button>
+                    </div>
+                </div>
+                <div class="emoji-setting-box">
+
+                </div>
+            </div>
+        </div>
         <div id='Browser' class="tabcontent">
             <p>Browser</p>
         </div>
@@ -32,11 +52,5 @@
         <div id='Login-SignUp' class="tabcontent">
             <p>Login</p>
         </div>
-        <!--Footer Information-->
-        <footer>
-            <p class="footerP">University of St Andrews</p>
-            <p class="footerP">CS5003 Masters Programming Projects Practical 1</p>
-            <p class="footerP">Author: 220005874</p>
-        </footer>
     </body>
 </html>

@@ -30,45 +30,44 @@ body, html{
 }
 .tabcontent {
     display: none;
-    padding: 100px 20px;
-    height: 100%;
+    height: 95%;
 }
 /*
  * Box Display Effect ->> make two boxes display parallelly 
  */
-#maker{
+.MakerBox {
+    width: 100%;
+    height: 100%;
     display: flex;
+    flex-wrap: wrap;
 }
-#box1 {
+.emoji-display-box{
+    position: relative;
     flex-basis: 33.33%;
-    border: 1px solid black;
 }
-#box2 {
-    flex-basis: 66.67%;
-    border: 1px solid black;
+.emoji-setting-box{
+    flex-grow: 1;
 }
-#emoji-display{
-    margin-top: 5%;
-    margin-bottom: 5%;
-    margin-left: 5%;
-    margin-right: 10%;
-    width: 200px;
-    height: 200px;
-    border: 1px solid rgb(126, 28, 28);
+/*
+ * Emoji-display-box
+ */
+#emoji-image{
+    border: 2px solid black;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-top: 100%;
 }
-#emoji-info{
-    margin-top: 5%;
-    margin-bottom: 5%;
-    margin-left: 5%;
+#emoji-info {
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
-input[type="text"] {
-    width: 200px;
-    height: 30px;
-    padding: 5px;
+#emoji-info input {
+    float: right;
 }
-
-.footerP{
-    font-size: 80%;
-    line-height: 70%;
-    color: grey;
+#postButton {
+    width: 100%;
+    font-size: 17px;
+    box-sizing: border-box;
 }
