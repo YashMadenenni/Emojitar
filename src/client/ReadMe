@@ -1,0 +1,26 @@
+# BASIC
+1. to view all facial components, including the image and description
+2. to select face/mouth/eyes/hairdo & preview the emojitar image
+3. to save a newly created emojitar to the server (must: unique id, descrip, creator, created-date/time)
+4. to view all existing emojitars (must: image, creator, description)
+5. to view a sepcific emojitar (must: image, creator, description, all:commenter's name/rate/comments)
+6. to comment & rate a specific emojitar (must: commenter, commented-date/time)
+
+# INTERMEDIATE
+1. function for all users
+    1.1 to view all emojitars with specific criteria (e.g. creator or create on/after date)
+    1.2 to view existing emojitars / associated comments / build / preview new emojitars
+    1.3 to register and login
+2. function only for logged users
+   2.1 to save emojitars (including those created by others)
+   2.2 to comment/rate emojitars other user created
+   2.2 to delete their own emijotars (must: relevent files and comments...)
+
+# ADVANCE
+1. function for all users
+    1.1 to customise a facial component(e.g. tint the colour of face/eye/hair)
+2. function for logged users
+    2.1 to upload a new facial component
+         @ must: type, image, id, description, creator, save-date/time
+         @ preview before upload
+         @ verify: file type, maximum file size, image dimensions, etc.
