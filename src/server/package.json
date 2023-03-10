@@ -2,10 +2,10 @@
   "name": "p2-emojitar",
   "version": "1.0.0",
   "description": "A client-server emojitar builder",
-  "main": "server.js",
+  "main": "emojitar-server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node emojitar-server.js"
   },
   "author": "220005874",
   "license": "ISC",
