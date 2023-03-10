@@ -11,7 +11,6 @@ function openPage(pageName,event) {
   event.currentTarget.classList.add("active");
 }
 
-
 window.onload = function() {
   document.getElementById("defaultActive").click();
 }

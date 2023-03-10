@@ -1,4 +1,6 @@
 const express = require("express");
+const path = require('path');
+const csv = require('csv-parser');
 const API_PORT = 8000;
 const app = express();
 var fileModule = require("fs");
@@ -31,5 +33,35 @@ app.get('/users/:userName/:password',function (request,response) {
     });    
 });
 
+app.use(express.static(path.join(__dirname, '../client')));
+app.get('/components', (req, res) => {
+    const images = [];
+    const imageInfo = [];
+    fs.createReadStream(path.join(__dirname, '../server/componentInfo.csv'))
+      .pipe(csv())
+      .on('data', row => {
+        imageInfo.push(row);
+      })
+      .on('end', () => {
+        fs.readdir(path.join(__dirname, '../server/components'), (err, files) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          files.forEach(file => {
+            const image = {};
+            image.filename = file;
+            const info = imageInfo.find(info => info.filename === file);
+            image.type = info.type;
+            image.id = info.id;
+            image.description = info.description;
+            image.username = info.username;
+            image.url = `/components/${file}`;
+            images.push(image);
+          });
+          res.json(images);
+        });
+      });
+});
 
-app.listen(8000);
+app.listen(API_PORT);
