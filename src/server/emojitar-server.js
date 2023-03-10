@@ -55,7 +55,8 @@ app.get('/components', (req, res) => {
             image.type = info.type;
             image.id = info.id;
             image.description = info.description;
-            image.username = info.username;
+            image.user = info.user;
+            image.date = info.date;
             image.url = `/components/${file}`;
             images.push(image);
           });

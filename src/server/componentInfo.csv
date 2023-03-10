@@ -1,4 +1,4 @@
-type, id, descriptiom, filename, user, date
+type, id, description, filename, user, date
 face, face-yellow, "Basic emoji face", face-yellow.png, system
 face, face-grey, "Grey emoji face", face-grey.png, system
 face, face-pink-rosy, "Pink emoji face with rosy cheeks", face-pink-rosy.png, system
