@@ -6,6 +6,9 @@ body, html{
     background-color: whitesmoke;
     margin: 0%;
 }
+#header{
+    margin: 1%
+}
 /*
  * Tab
  */
@@ -33,7 +36,7 @@ body, html{
     height: 95%;
 }
 /*
- * Box Display Effect ->> make two boxes display parallelly 
+ * Maker Box
  */
 .MakerBox {
     width: 100%;
@@ -43,9 +46,10 @@ body, html{
 }
 .emoji-display-box{
     position: relative;
-    flex-basis: 33.33%;
+    flex-basis: 28%;
 }
 .emoji-setting-box{
+    background-color: #777;
     flex-grow: 1;
 }
 /*
@@ -59,6 +63,8 @@ body, html{
     padding-top: 100%;
 }
 #emoji-info {
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 2%;
     margin-left: 2%;
     margin-right: 2%;
