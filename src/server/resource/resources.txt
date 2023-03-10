@@ -1,0 +1,21 @@
+These are some links and resources you might find useful depending on how you approach your solution to the coursework.
+You are not required to use these source and you may find others that are more helpful to you but they can be used as a starting point if required.
+If you use any of the code/advice from these sources please remember to cite in the report and put comments in your code.
+
+Listing of properties and functions on HTML canvases (may be useful throughout)
+https://www.w3schools.com/tags/ref_canvas.asp
+
+Example of how to take two separate images and display them on a single canvas (may be useful in the second 'basic' requirement). 
+The example adds transparency, which you would not need to do.  
+https://www.tutorialspoint.com/combining-multiple-images-into-a-single-one-using-javascript
+
+Example of how to save image data to a file on the server (may be useful in the third 'basic' requirement and the first 'advanced' requirement)
+https://stackoverflow.com/questions/6926016/how-can-i-save-a-base64-encoded-image-to-disk
+https://www.geeksforgeeks.org/node-js-fs-writefile-method/
+
+
+Some guidance on how to preview an image before it is uploaded (may be helpful in the first 'advanced' requirement)
+https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
+
+Some guidance on how to get and manipulate image data from an HTML canvas (may be helpful in the second 'advanced' requirement)
+https://www.w3schools.com/tags/canvas_getimagedata.asp

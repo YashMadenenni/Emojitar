@@ -23,4 +23,14 @@
     2.1 to upload a new facial component
          @ must: type, image, id, description, creator, save-date/time
          @ preview before upload
-         @ verify: file type, maximum file size, image dimensions, etc.
+         @ verify: file type, maximum file size, image dimensions(240x240 pixel, PNG, transparency)
+
+# API
+Node.js Tutorial: https://www.youtube.com/watch?v=TcvOgwQPsSo
+
+The API should provide services including, but not limited to:
+• Getting all facial components.
+• Creating a new emojitar.
+• Getting all existing emojitars.
+• Getting a specific emojitar along with its comments & ratrings.
+• Commenting on & rating an existing emojitar.
