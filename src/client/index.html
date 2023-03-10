@@ -2,70 +2,78 @@
 <html lang="en">
      <head>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Emojitar</title>
-        <!--Bootstrap 5 CDN-->
-        <!-- Latest compiled and minified CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="display.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!--Bootstrap 5 CDN END-->
-
+        <script src="client.js"></script>
     </head>
     <body>
-        <div class="container">
-            <!--Nav Bar-->
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#maker">Marker</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " data-bs-toggle="tab" href="#browser">Browser</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " data-bs-toggle="tab" href="#component">Component</a>
-                </li>
-            </ul>
-        <!--Nav Bar End-->
-
-        <!--Nav Bar Tab Content-->
-        <div class="tab-content">
-            <div id="maker" class="container tab-pane active">
-                <div id="box1">
-                    <div id="emoji-display"></div>
+        <h1 id="header">Emojitar</h1>
+        <!--
+            https://www.w3schools.com/howto/howto_js_full_page_tabs.asp
+        -->
+        <!--Tab Button-->
+        <button class="tablink" onclick="openPage('Maker',event)" id='defaultActive'>Maker</button>
+        <button class="tablink" onclick="openPage('Browser',event)" >Browser</button>
+        <button class="tablink" onclick="openPage('Component',event)">Component</button>
+        <button class="tablink" onclick="openPage('Login-SignUp',event)">Login / SignUp</button>
+        <!--Tab Content-->
+        <div id='Maker' class="tabcontent">
+            <div class="MakerBox">
+                <div class="emoji-display-box">
+                    <div id="emoji-image"></div>
                     <div id="emoji-info">
-                        <label for="emoji-id">Emojitar ID:</label>
-                        <input type="text" id="emoji-id" name="emoji-id">
-                        <p></p>
-                        <label for="description">Description:</label>
-                        <input type="text" id="description" name="description">
-                        <p></p>
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="uername">
-                        <p></p>
-                        <button id="resetButton">Submit</button>
+                        <div id="userinput">
+                            <label for="inputID">Emojitar ID:</label>
+                            <input type="text" id="inputID" name="inputID">
+                        </div>
+                        <div id="userinput">
+                            <label for="inputDescription">Description:</label>
+                            <input type="text" id="inputDescription" name="inputDescription">
+                        </div>
+                        <div id="userinput">
+                            <label for="inputUsername">Username:</label>
+                            <input type="text" id="inputUsername" name="inputUsername">
+                        </div>
+                        <button id="postButton">POST</button>
                     </div>
                 </div>
-                <div id="box2"></div>
+                <div class="emoji-setting-box">
+                    <div id="setting-box">
+                        <div class="box">
+                            <h2>Face</h2>
+                            <label for="faceTint">Use custom tint:</label>
+                            <input type="checkbox" id="faceTint" name="faceTint" value="face-customed">
+                        </div>
+                        <div class="box">
+                            <h2>Mouth</h2>
+                            <label for="mouthTint">Use custom tint:</label>
+                            <input type="checkbox" id="mouthTint" name="mouthTint" value="mouth-customed">
+                        </div>
+                        <div class="box">
+                            <h2>Eye</h2>
+                            <label for="eyeTint">Use custom tint:</label>
+                            <input type="checkbox" id="eyeTint" name="eyeTint" value="eye-customed">
+                        </div>
+                        <div class="box">
+                            <h2>Hair</h2>
+                            <label for="hairTint">Use custom tint:</label>
+                            <input type="checkbox" id="hairTint" name="hairTint" value="hair-customed">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="browser" class="container tab-pane fade ">
-                Browser
-            </div>
-            <div id="component" class="container tab-pane fade">
-                Component
-            </div>
-            
         </div>
-        <!--Nav Bar Tab Content End-->
+        <div id='Browser' class="tabcontent">
+            <p>Browser</p>
+        </div>
 
+        <div id='Component' class="tabcontent">
+            <p>Component</p>
         </div>
-        <!--Footer Information Begin-->
-        <footer>
-            <p class="footerP">University of St Andrews</p>
-            <p class="footerP">CS5003 Masters Programming Projects Practical 2</p>
-            <p class="footerP">Author: 220005874</p>
-        </footer>
-        <!--Footer Information End-->
+
+        <div id='Login-SignUp' class="tabcontent">
+            <p>Login</p>
+        </div>
     </body>
 </html>

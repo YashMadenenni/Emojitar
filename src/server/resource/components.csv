@@ -1,0 +1,18 @@
+type, id, descriptiom, filename, user, date
+face, face-yellow, "Basic emoji face", face-yellow.png, system
+face, face-grey, "Grey emoji face", face-grey.png, system
+face, face-pink-rosy, "Pink emoji face with rosy cheeks", face-pink-rosy.png, system
+hair, hair-bob-brown, "Brown bob", hair-bob-brown.png, system
+hair, hair-bowl-brown, "Brown short cut", hair-bowl-brown.png, system
+hair, hair-curly-brown, "Mid-length brown curly hair", hair-curly-brown.png, system
+hair, hair-curly-ginger, "Mid-length ginger curly hair", hair-curly-ginger.png, system
+hair, hair-pigtails-brown, "Short brown pigtails", hair-pigtails-brown.png, system
+hair, hair-short-brown, "Short brown curly hair", hair-short-brown.png, system
+hair, hair-short-teal, "Short teal curly hair", hair-short-teal.png, system)
+eyes, eyes-smiley, "Smiley eyes", eyes-smiley.png, system
+eyes, eyes, "Oval eyes", eyes.png, system
+eyes, eyes-smiley-pale, "Pale smiley eyes", eyes-smiley-pale-blue.png, system
+eyes, eyes-pale, "Pale oval eyes", eyes-pale-blue.png, system
+mouth, mouth-grin, "Teethy grin", mouth-grin.png, system
+mouth, mouth-grin-pink, "Pink-lipped teethy grin", mouth-grin-pink.png, system
+mouth, mouth-smile, "Basic emoji smile", mouth-smile.png, system

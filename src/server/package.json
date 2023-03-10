@@ -1,5 +1,17 @@
 {
+  "name": "p2-emojitar",
+  "version": "1.0.0",
+  "description": "A client-server emojitar builder",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "220005874",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "basic-auth": "^2.0.1",
+    "express": "^4.18.2",
+    "express-basic-auth": "^1.2.1"
   }
 }
