@@ -67,6 +67,7 @@ function createFacialComponentButton(elementID, images) {
   images.forEach(image => {
     let htmlSegment = `<div class="button-wrapper">
                           <div id="button">
+                            <span class="tooltiptext">${image.description}</span>
                             <img id ="${image.filename}" src="${image.url}" alt="not found">
                           </div>
                         </div>`;

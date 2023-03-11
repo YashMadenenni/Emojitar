@@ -96,6 +96,22 @@ body, html{
     font-size: 10px;
     border: 1px solid black;
 }
+/*
+ * https://www.w3schools.com/css/css_tooltip.asp
+ */
+#button .tooltiptext {
+    visibility: hidden;
+    width: auto;
+    background-color: rgb(220, 219, 219);
+    color: rgb(53, 53, 53);
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 5;
+}
+#button:hover .tooltiptext {
+    visibility: visible;
+}
 #button img {
     max-width: 100%;
     max-height: 100%;
