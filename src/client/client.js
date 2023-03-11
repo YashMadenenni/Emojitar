@@ -55,19 +55,27 @@ function seperateFacialComponent() {
     }
   });
 }
+/**
+ * Function: tempelate to create specific component grid
+ * @param {*} elementID 
+ * @param {*} images 
+ */
 function createFacialComponentButton(elementID, images) {
-  var html = document.getElementById(elementID);
+  const html = document.getElementById(elementID);
   html.innerHTML= '';
 
   images.forEach(image => {
     let htmlSegment = `<div class="button-wrapper">
                           <div id="button">
-                            <p id="imageType">${image.type}</p>
+                            <img id ="${image.filename}" src="${image.url}" alt="not found">
                           </div>
                         </div>`;
     html.innerHTML += htmlSegment;
   });
 }
+/**
+ * Function: to create facial componenets girds: face/mouth/eyes/hair
+ */
 function createAllFacialComponentButton() {
   createFacialComponentButton("faceScroll",faceImages);
   createFacialComponentButton("mouthScroll",mouthImages);
