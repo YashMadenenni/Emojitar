@@ -43,12 +43,11 @@ app.get('/users/:userName/:password',function (request,response) {
         
     });    
 });
-
-app.use('/server/components', express.static(path.join(__dirname, 'components')));
-app.use(express.static(path.join(__dirname, '../client')));
 /**
  * Endpoint: get images (include: images and relative info from csv file)
  */
+app.use('/server/components', express.static(path.join(__dirname, 'components')));
+app.use(express.static(path.join(__dirname, '../client')));
 app.get('/components', (req, res) => {
   const images = [];
   const imageInfo = [];
