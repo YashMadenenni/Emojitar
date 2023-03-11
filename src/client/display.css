@@ -69,7 +69,7 @@ body, html{
     margin: 1%;
     padding: 4px;
     width: 300px;
-    height: 200px;
+    height: 60px;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
@@ -78,10 +78,10 @@ body, html{
     flex-wrap: nowrap;
 }
 .scroll::-webkit-scrollbar {
-    height: 100px;
+    height: 6px;
 }
 .scroll::-webkit-scrollbar-thumb {
-    background-color: rgba(241, 167, 167, 0.975);
+    background-color: rgba(215, 213, 213, 0.793);
 }
 .button-wrapper {
     display: inline-block;
