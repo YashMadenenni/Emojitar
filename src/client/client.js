@@ -1,8 +1,8 @@
 const images = [];
-let faceImages = [];
-let eyesImages = [];
-let mouthImages = [];
-let hairImages = [];
+const faceImages = [];
+const eyesImages = [];
+const mouthImages = [];
+const hairImages = [];
 /**
  * Function Purpose: load the page while window onload
  * 1. getAllFacialComponent(): fetch facial components from the server
@@ -36,7 +36,8 @@ function getAllFacialComponent() {
   fetch('/components')
   .then(response => response.json())
   .then(data => {images.push(...data);
-                  seperateFacialComponent()});
+                  seperateFacialComponent()
+                  createAllFacialComponentButton()});
 }
 /**
  * Function: to seperate facial component based on its type
@@ -53,6 +54,25 @@ function seperateFacialComponent() {
       hairImages.push(image);
     }
   });
+}
+function createFacialComponentButton(elementID, images) {
+  var html = document.getElementById(elementID);
+  html.innerHTML= '';
+
+  images.forEach(image => {
+    let htmlSegment = `<div class="button-wrapper">
+                          <div id="button">
+                            <p id="imageType">${image.type}</p>
+                          </div>
+                        </div>`;
+    html.innerHTML += htmlSegment;
+  });
+}
+function createAllFacialComponentButton() {
+  createFacialComponentButton("faceScroll",faceImages);
+  createFacialComponentButton("mouthScroll",mouthImages);
+  createFacialComponentButton("eyesScroll",eyesImages);
+  createFacialComponentButton("hairScroll",hairImages);
 }
 /**
  * Call the functions while loading/refreshing
