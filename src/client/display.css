@@ -65,6 +65,19 @@ body, html{
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
 }
+.scroll {
+    margin: 1%;
+    padding: 4px;
+    width: 300px;
+    overflow: auto;
+    white-space: nowrap;
+}
+.scroll::-webkit-scrollbar {
+    height: 6px;
+}
+.scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(235, 232, 232, 0.975);
+}
 /*
  * Emoji-display-box
  */

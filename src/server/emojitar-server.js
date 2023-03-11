@@ -33,6 +33,9 @@ app.get('/users/:userName/:password',function (request,response) {
 });
 
 app.use(express.static(path.join(__dirname, '../client')));
+/**
+ * Endpoint: get images (include: images and relative info from csv file)
+ */
 app.get('/components', (req, res) => {
   const images = [];
   const imageInfo = [];
