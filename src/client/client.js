@@ -14,7 +14,7 @@ function openPage(pageName,event) {
 }
 
 function getAllFacialComponent() {
-  fetch('/images')
+  fetch('/components')
   .then(response => response.json())
   .then(data => {images.push(...data);});
 }
@@ -22,4 +22,5 @@ function getAllFacialComponent() {
 
 window.onload = function() {
   document.getElementById("defaultActive").click();
+  getAllFacialComponent();
 }

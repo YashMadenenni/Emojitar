@@ -1,9 +1,8 @@
 const express = require("express");
 const path = require('path');
-const csv = require('csv-parser');
 const API_PORT = 8000;
 const app = express();
-var fileModule = require("fs");
+const fs = require('fs');
 
 console.log("server started");
 
@@ -35,34 +34,63 @@ app.get('/users/:userName/:password',function (request,response) {
 
 app.use(express.static(path.join(__dirname, '../client')));
 app.get('/components', (req, res) => {
-    const images = [];
-    const imageInfo = [];
-    fs.createReadStream(path.join(__dirname, '../server/componentInfo.csv'))
-      .pipe(csv())
-      .on('data', row => {
-        imageInfo.push(row);
-      })
-      .on('end', () => {
-        fs.readdir(path.join(__dirname, '../server/components'), (err, files) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          files.forEach(file => {
-            const image = {};
-            image.filename = file;
-            const info = imageInfo.find(info => info.filename === file);
-            image.type = info.type;
-            image.id = info.id;
-            image.description = info.description;
-            image.user = info.user;
-            image.date = info.date;
-            image.url = `/components/${file}`;
-            images.push(image);
-          });
-          res.json(images);
-        });
+  const images = [];
+  const imageInfo = [];
+  const csvFilePath = path.join(__dirname, '../server/componentInfo.csv');
+
+  fs.readFile(csvFilePath, 'utf-8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    // Parse the CSV data
+    const rows = data.trim().split('\n').map(row => row.split(','));
+
+    // Add each row to the imageInfo array
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      const image = {
+        type: row[0],
+        id: row[1],
+        description: row[2],
+        filename: row[3],
+        user: row[4],
+        date: row[5]
+      };
+      imageInfo.push(image);
+    }
+
+    // Read the image files and add them to the images array
+    const imagePath = path.join(__dirname, '../server/components');
+    fs.readdir(imagePath, (err, files) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      files = files.filter(file => {
+        const extension = path.extname(file);
+        return extension === '.png';
       });
+      files.forEach(file => {
+        const image = {
+          filename: file
+        };
+        const info = imageInfo.find(info => info.filename === file);
+        if (info) {
+          image.type = info.type;
+          image.id = info.id;
+          image.description = info.description;
+          image.user = info.user;
+          image.date = info.date;
+        }
+        image.url = `/components/${file}`;
+        images.push(image);
+      });
+      res.json(images);
+    });
+  });
 });
+
 
 app.listen(API_PORT);
