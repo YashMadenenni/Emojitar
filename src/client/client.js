@@ -29,12 +29,18 @@ function openPage(pageName,event) {
   document.getElementById(pageName).style.display = "block";
   event.currentTarget.classList.add("active");
 }
+/**
+ * Function: to get all facial component from API
+ */
 function getAllFacialComponent() {
   fetch('/components')
   .then(response => response.json())
   .then(data => {images.push(...data);
                   seperateFacialComponent()});
 }
+/**
+ * Function: to seperate facial component based on its type
+ */
 function seperateFacialComponent() {
   images.forEach(image => {
     if (image.type === 'face') {
