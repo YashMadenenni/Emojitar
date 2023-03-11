@@ -1,9 +1,8 @@
 const express = require("express");
 const path = require('path');
-const csv = require('csv-parser');
 const API_PORT = 8000;
 const app = express();
-var fileModule = require("fs");
+const fs = require("fs");
 
 console.log("server started");
 
@@ -35,34 +34,54 @@ app.get('/users/:userName/:password',function (request,response) {
 
 app.use(express.static(path.join(__dirname, '../client')));
 app.get('/components', (req, res) => {
-    const images = [];
-    const imageInfo = [];
-    fs.createReadStream(path.join(__dirname, '../server/componentInfo.csv'))
-      .pipe(csv())
-      .on('data', row => {
-        imageInfo.push(row);
-      })
-      .on('end', () => {
-        fs.readdir(path.join(__dirname, '../server/components'), (err, files) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          files.forEach(file => {
-            const image = {};
-            image.filename = file;
-            const info = imageInfo.find(info => info.filename === file);
-            image.type = info.type;
-            image.id = info.id;
-            image.description = info.description;
-            image.user = info.user;
-            image.date = info.date;
-            image.url = `/components/${file}`;
-            images.push(image);
-          });
-          res.json(images);
-        });
+  const images = [];
+  const imageInfo = [];
+  
+  // Read the component information from the CSV file
+  fs.readFile(path.join(__dirname, '../server/componentInfo.csv'), 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal server error');
+      return;
+    }
+    
+    // Parse the CSV data
+    const rows = data.trim().split('\n');
+    const headers = rows.shift().split(',');
+    rows.forEach(row => {
+      const values = row.split(',');
+      const image = {};
+      headers.forEach((header, i) => {
+        image[header] = values[i];
       });
+      imageInfo.push(image);
+    });
+    console.log(imageInfo);
+    
+    // Read the image files and send the data to the client
+    fs.readdir(path.join(__dirname, 'components'), (err, files) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Internal server error');
+        return;
+      }
+      files.forEach(file => {
+        const image = {};
+        image.filename = file;
+        const info = imageInfo.find(info => info[' filename'] && info[' filename'].includes(file));
+        if (info) {
+          image.type = info ? info.type : undefined;
+          image.id = info[' id'];
+          image.description = info[' description'];
+          image.user = info[' user'];
+          image.date = info[' date'];
+          image.url = `../server/components/${file}`;
+          images.push(image);
+        }
+      });
+      res.json(images);
+    });
+  });
 });
 
 app.listen(API_PORT);

@@ -1,4 +1,8 @@
 const images = [];
+let faceImages = [];
+let eyesImages = [];
+let mouthImages = [];
+let hairImages = [];
 /**
  * Function Purpose: load the page while window onload
  * 1. getAllFacialComponent(): fetch facial components from the server
@@ -25,15 +29,28 @@ function openPage(pageName,event) {
   document.getElementById(pageName).style.display = "block";
   event.currentTarget.classList.add("active");
 }
-
 function getAllFacialComponent() {
-  fetch('/images')
+  fetch('/components')
   .then(response => response.json())
-  .then(data => {images.push(...data);});
+  .then(data => {images.push(...data);
+                  seperateFacialComponent()});
+}
+function seperateFacialComponent() {
+  images.forEach(image => {
+    if (image.type === 'face') {
+      faceImages.push(image);
+    } else if (image.type === 'eyes') {
+      eyesImages.push(image);
+    } else if (image.type === 'mouth') {
+      mouthImages.push(image);
+    } else if (image.type === 'hair') {
+      hairImages.push(image);
+    }
+  });
 }
 /**
  * Call the functions while loading/refreshing
  */
 window.onload = function() {
-  document.getElementById("defaultActive").click();
+  loadPage();
 }
