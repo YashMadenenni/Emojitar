@@ -33,6 +33,7 @@ app.get('/users/:userName/:password',function (request,response) {
 });
 
 app.use(express.static(path.join(__dirname, '../client')));
+
 app.get('/components', (req, res) => {
   const images = [];
   const imageInfo = [];
