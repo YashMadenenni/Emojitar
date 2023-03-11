@@ -1,5 +1,5 @@
 # BASIC
-1. to view all facial components (must: image and description) --> done, 220005874
+1. to view all facial components, including the image and description
 2. to select face/mouth/eyes/hairdo & preview the emojitar image
 3. to save a newly created emojitar to the server (must: unique id, descrip, creator, created-date/time)
 4. to view all existing emojitars (must: image, creator, description)
@@ -29,7 +29,7 @@
 Node.js Tutorial: https://www.youtube.com/watch?v=TcvOgwQPsSo
 
 The API should provide services including, but not limited to:
-• Getting all facial components                                    (done, 11 March 2023, 220005874)
+• Getting all facial components.
 • Creating a new emojitar.
 • Getting all existing emojitars.
 • Getting a specific emojitar along with its comments & ratrings.

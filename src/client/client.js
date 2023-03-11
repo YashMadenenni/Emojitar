@@ -1,4 +1,5 @@
 const images = [];
+<<<<<<< HEAD
 const faceImages = [];
 const eyesImages = [];
 const mouthImages = [];
@@ -17,6 +18,9 @@ function loadPage() {
  * @param {*} pageName :the ready-open page
  * @param {*} event    :active the ready-open page
  */
+=======
+
+>>>>>>> parent of ef80a57 (add comments for client.js)
 function openPage(pageName,event) {
   var tabcontent = document.getElementsByClassName("tabcontent");
   for (let i = 0; i < tabcontent.length; i++) {
@@ -29,14 +33,13 @@ function openPage(pageName,event) {
   document.getElementById(pageName).style.display = "block";
   event.currentTarget.classList.add("active");
 }
-/**
- * Function: to scratch all images info from the api
- */
+
 function getAllFacialComponent() {
   fetch('/components')
   .then(response => response.json())
   .then(data => {images.push(...data);});
 }
+<<<<<<< HEAD
 function getAllFacialComponent() {
   fetch('/components')
     .then(response => response.json())
@@ -54,6 +57,11 @@ function filterFacialComponent(images) {
 /**
  * Call the functions while loading/refreshing
  */
+=======
+
+
+>>>>>>> parent of ef80a57 (add comments for client.js)
 window.onload = function() {
-  loadPage();
+  document.getElementById("defaultActive").click();
+  getAllFacialComponent();
 }
