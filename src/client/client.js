@@ -1,9 +1,4 @@
 const images = [];
-<<<<<<< HEAD
-const faceImages = [];
-const eyesImages = [];
-const mouthImages = [];
-const hairImages = [];
 /**
  * Function Purpose: load the page while window onload
  * 1. getAllFacialComponent(): fetch facial components from the server
@@ -18,9 +13,6 @@ function loadPage() {
  * @param {*} pageName :the ready-open page
  * @param {*} event    :active the ready-open page
  */
-=======
-
->>>>>>> parent of ef80a57 (add comments for client.js)
 function openPage(pageName,event) {
   var tabcontent = document.getElementsByClassName("tabcontent");
   for (let i = 0; i < tabcontent.length; i++) {
@@ -39,28 +31,9 @@ function getAllFacialComponent() {
   .then(response => response.json())
   .then(data => {images.push(...data);});
 }
-<<<<<<< HEAD
-function getAllFacialComponent() {
-  fetch('/components')
-    .then(response => response.json())
-    .then(data => {
-      images.push(...data);
-      filterFacialComponent(images);
-    });
-}
-function filterFacialComponent(images) {
-  faceImages = images.filter(image => image.type === 'face');
-  eyesImages = images.filter(image => image.type === 'face');
-  mouthImages = images.filter(image => image.type === 'face');
-  hairImages = images.filter(image => image.type === 'face');
-}
 /**
  * Call the functions while loading/refreshing
  */
-=======
-
-
->>>>>>> parent of ef80a57 (add comments for client.js)
 window.onload = function() {
   document.getElementById("defaultActive").click();
   getAllFacialComponent();
