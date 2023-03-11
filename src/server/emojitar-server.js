@@ -1,9 +1,21 @@
+const { error } = require("console");
+const { response } = require("express");
 const express = require("express");
 const API_PORT = 8000;
 const app = express();
 var fileModule = require("fs");
 
+app.listen(API_PORT);
 console.log("server started");
+
+
+// Allow cross-origin requests
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    //res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+  });
 
 app.get('/users',function (request,response) {
     fileModule.readFile(__dirname+"/"+"users.json","utf8",function (err,data) {
@@ -18,7 +30,7 @@ app.get('/users/:userName/:password',function (request,response) {
         var userName = request.params.userName;
         var password = request.params.password;
         for (const key in users) {
-                    
+
             if(((users[key].name== userName))&&((users[key].password==password))){
                  console.log("Got it");
             //     console.log(users[key].name);
@@ -27,9 +39,13 @@ app.get('/users/:userName/:password',function (request,response) {
             // console.log("pass "+password);
             }
         }
-        //console.log(request.params)
+        
     });    
 });
 
 
-app.listen(8000);
+app.get('/emojis/:imageName',function (request,response) {
+    response.sendFile(__dirname+"/resource/"+request.params.imageName);
+});
+
+
