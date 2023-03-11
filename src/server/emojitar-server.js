@@ -1,8 +1,9 @@
 const express = require("express");
 const path = require('path');
+const csv = require('csv-parser');
 const API_PORT = 8000;
 const app = express();
-const fs = require('fs');
+var fileModule = require("fs");
 
 console.log("server started");
 
@@ -34,45 +35,34 @@ app.get('/users/:userName/:password',function (request,response) {
 
 app.use(express.static(path.join(__dirname, '../client')));
 app.get('/components', (req, res) => {
-  const components = [];
-  const csvFilePath = path.join(__dirname, 'componentInfo.csv');
-
-  fs.readFile(csvFilePath, 'utf-8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    // Parse the CSV data
-    const rows = data.trim().split('\n').map(row => row.split(','));
-
-    // Read the image files and create a component object for each file
-    const imagePath = path.join(__dirname, '/components');
-    fs.readdir(imagePath, (err, files) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      files = files.filter(file => {
-        const extension = path.extname(file);
-        return extension === '.png';
+    const images = [];
+    const imageInfo = [];
+    fs.createReadStream(path.join(__dirname, '../server/componentInfo.csv'))
+      .pipe(csv())
+      .on('data', row => {
+        imageInfo.push(row);
+      })
+      .on('end', () => {
+        fs.readdir(path.join(__dirname, '../server/components'), (err, files) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          files.forEach(file => {
+            const image = {};
+            image.filename = file;
+            const info = imageInfo.find(info => info.filename === file);
+            image.type = info.type;
+            image.id = info.id;
+            image.description = info.description;
+            image.user = info.user;
+            image.date = info.date;
+            image.url = `/components/${file}`;
+            images.push(image);
+          });
+          res.json(images);
+        });
       });
-      files.forEach(file => {
-        const info = rows.find(row => row.filename === file);
-        const component = {
-          type: info[0],
-          id: info[1],
-          description: info[2],
-          filename: info[3],
-          user: info[4],
-          date: info[5],
-          url: `/components/${file}`
-        };
-        components.push(component);
-      });
-      res.json(components);
-    });
-  });
 });
 
 app.listen(API_PORT);
