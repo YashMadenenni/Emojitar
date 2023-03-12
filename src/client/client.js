@@ -173,9 +173,16 @@ function postButton() {
     - username
     - all facial components: face, eyes, mouth, hair`);
   } else {
-    let myEmojiDetails = new emojiData
+    let emoji = new emojiDetails
     (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], dateString);
-    alert("successfully built")
+    
+    fetch('/addEmoji', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(emoji)
+    })
   }
 }
 /**
@@ -186,13 +193,13 @@ function postButton() {
  * @param {*} facialComponents 
  * @param {*} date 
  */
-function emojiData(id, description, username, components, date) {
+function emojiDetails(id, description, username, components, date) {
   this["emoji-id"] = id;
-  this.description = description;
-  this.userName = username;
-  this.images = components;
-  this.date = date;
-  this.comments = [];
+  this["description"] = description;
+  this["userName"] = username;
+  this["images"] = components;
+  this["date"] = date;
+  this["comments"] = [];
 }
 /**
  * Call the functions while loading/refreshing
