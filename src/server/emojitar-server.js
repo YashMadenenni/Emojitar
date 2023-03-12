@@ -1,11 +1,11 @@
-const { error } = require("console");
-const { response } = require("express");
+// const { error } = require("console");
+// const { response } = require("express");
 const express = require("express");
 const path = require('path');
 const API_PORT = 8000;
 const app = express();
 const fs = require("fs");
-
+app.use(express.json());
 app.listen(API_PORT);
 console.log("server started");
 
@@ -43,6 +43,7 @@ app.get('/users/:userName/:password',function (request,response) {
         
     });    
 });
+
 /**
  * Endpoint: get images (include: images and relative info from csv file)
  */
@@ -99,8 +100,66 @@ app.get('/components', (req, res) => {
   });
 });
 
+//API to send emoji images by name
 app.get('/emojis/:imageName',function (request,response) {
-    response.sendFile(__dirname+"/resource/"+request.params.imageName);
+  response.sendFile(__dirname+"/components/"+request.params.imageName);
 });
 
+//API for send exsisting emojitars 
+app.get('/exsistingEmojies',function (request,response) {
+  
+  fs.readFile("emojitarComponents.json",(error,data)=>{
+    if(error){
+      console.error(error);
+    }else{
+      const jSON_Data = JSON.parse(data);
+      response.json(jSON_Data);
+    }
+  });
+  
+});
+
+//Add new emojitars
+app.post('/addEmoji',function (request,response) {
+
+
+  const userName = request.body.userName;
+  const postData = request.body.emojiDetails;
+
+//console.log(request.body);
+
+  //Example to send data
+//   const userName = "New User";
+//   const postData = {
+//     "emoji-id":6,
+//     "description":"Nice",
+//     "userName":"Ya-ling",
+//     "images":["eyes-pale-blue.png","hair-bob-brown"]
+// }
+
+//Read File
+const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
+//console.log(jSON_Data);
+const  exsistingData = JSON.parse(json_Data);
+  for (const key in exsistingData) {
+    if(key==userName){
+      const length = exsistingData[userName].length;
+      exsistingData[userName][length] = postData;
+    }else{
+      
+      exsistingData[userName] = postData; 
+    }
+  }
+  console.log(exsistingData);
+
+//Write to file
+fs.writeFile("emojitarComponents.json",JSON.stringify(exsistingData),function (err) {
+  console.log("Writing"); 
+  //console.log(exsistingData); 
+  if(err){ 
+      console.log("error");
+    }
+  });
+   //response.end()
+});
 

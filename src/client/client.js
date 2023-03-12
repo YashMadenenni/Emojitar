@@ -88,4 +88,27 @@ function createAllFacialComponentButton() {
  */
 window.onload = function() {
   loadPage();
+
 }
+
+// example for sending Post emoji request
+//  window.onload()=function name(params) {
+   // const data = {
+  //   "userName": "NewUser",
+  //   "emojiDetails":{
+  //         "emoji-id":6,
+  //         "description":"Nice",
+  //         "userName":"Ya-ling",
+  //         "images":["eyes-pale-blue.png","hair-bob-brown"]
+  //     }
+  // };
+  
+  // fetch('http://localhost:8000/addEmoji', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify(data)
+  // });
+// }
+
