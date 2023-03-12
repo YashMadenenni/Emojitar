@@ -70,7 +70,6 @@ app.get('/components', (req, res) => {
       });
       imageInfo.push(image);
     });
-    console.log(imageInfo);
     
     // Read the image files and send the data to the client
     fs.readdir(path.join(__dirname, 'components'), (err, files) => {

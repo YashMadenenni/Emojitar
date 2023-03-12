@@ -1,3 +1,4 @@
+/**Maker Tab Begin*/
 const images = [];
 const faceImages = [];
 const eyesImages = [];
@@ -13,6 +14,12 @@ let faceImage = new Image();
 let eyesImage = new Image();
 let mouthImage = new Image();
 let hairImage = new Image();
+/**Maker Tab End*/
+
+/**Browser Tab Begin*/
+const emojis = [];
+/**Browser Tab End*/
+
 /**
  * Function Purpose: load the page while window onload
  * 1. getAllFacialComponent(): fetch facial components from the server
@@ -20,6 +27,7 @@ let hairImage = new Image();
  */
 function loadPage() {
   getAllFacialComponent();
+  getAllEmojitars();
   document.getElementById("defaultActive").click();  
 }
 /**
@@ -39,6 +47,9 @@ function openPage(pageName,event) {
   document.getElementById(pageName).style.display = "block";
   event.currentTarget.classList.add("active");
 }
+/**
+ * Section 1 Begin: Maker Tab Functions----------------------------------------------------------------------------------
+ */
 /**
  * Function: to get all facial component from API
  */
@@ -216,6 +227,79 @@ function emojiDetails(id, description, username, components, date) {
   this["date"] = date;
   this["comments"] = [];
 }
+/**
+ * Section 1 End: Maker Tab Functions----------------------------------------------------------------------------------
+ */
+
+
+
+
+
+/**
+ * Section 2 Begin: Browser Tab Functions----------------------------------------------------------------------------------
+ */
+/**
+ * Emoji Constructor: images, username, description
+ * @param {*} images       all facial component(face, eyes, mouth, hair)
+ * @param {*} username     creator's name
+ * @param {*} description  emoji description
+ */
+function Emoji(id, images, username, description, comments) {
+  this.id = id;
+  this.images = images;
+  this.username = username;
+  this.description = description;
+  this.comments = comments;
+}
+/**
+ * Function: to get all existing emojitar info from json while loading.
+ * Information stored in array including: (1)images, (2)username, (3)description, (4)comments
+ * Note: the reason to get comments -> can be viewed commented specifically
+ */
+function getAllEmojitars() {
+  fetch('/exsistingEmojies')
+  .then(response => response.json())
+  .then(data => {
+    Object.keys(data).forEach(key => {
+      const userData = data[key];
+      userData.forEach(emoji => {
+        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments);
+        emojis.push(emojiObj);
+      });
+      loadAllEmojitars();
+    });
+  })
+  .catch(error => console.error(error));
+}
+/**
+ * Function: to load all emojitars all at onces
+ * Item Display: (1)images, (2)username, (3)description
+ */
+function loadAllEmojitars() {
+  const html = document.getElementById("Browser-Grid");
+  html.innerHTML= '';
+
+  emojis.forEach(emoji => {
+    let htmlSegment = `<div class="emojis-wrapper">
+                          <div id="emoji">
+                            <img src="../server/components/${emoji.images[0]}" alt="face not found" class="emoji-face">
+                            <img src="../server/components/${emoji.images[1]}" alt="eyes not found" class="emoji-eyes">
+                            <img src="../server/components/${emoji.images[2]}" alt="mouth not found" class="emoji-mouth">
+                            <img src="../server/components/${emoji.images[3]}" alt="hair not found" class="emoji-hair">
+                          </div>
+                          <p>Created by ${emoji.username}</p>
+                          <p>${emoji.description}</p>
+                          <button id="view-comments-${emoji.id}">View Comments</button>
+                      </div>`;
+    html.innerHTML += htmlSegment;
+  });
+}
+/**
+ * Section 2 End: Browser Tab Functions----------------------------------------------------------------------------------
+ */
+
+
+
 /**
  * Call the functions while loading/refreshing
  */

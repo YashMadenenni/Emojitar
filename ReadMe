@@ -2,7 +2,7 @@
 1. to view all facial components, including the image and description --> done
 2. to select face/mouth/eyes/hairdo & preview the emojitar image --> done
 3. to save a newly created emojitar to the server (must: unique id, descrip, creator, created-date/time) --> done 
-4. to view all existing emojitars (must: image, creator, description)-->220030280/server, 220005874 - frontend
+4. to view all existing emojitars (must: image, creator, description) --> done
 5. to comment & rate a specific emojitar (must: commenter, commented-date/time)-->220030280-server
 6. to view a sepcific emojitar (must: image, creator, description, all:commenter's name/rate/comments)--> forntend - 220005874 
 
@@ -13,7 +13,7 @@
     1.2 to view existing emojitars / associated comments / build / preview new emojitars
     1.3 to register and login
 2. function only for logged users
-   2.1 to save emojitars (including those created by others)
+   2.1 to save emojitar
    2.2 to comment/rate emojitars other user created
    2.2 to delete their own emijotars (must: relevent files and comments...)
 
