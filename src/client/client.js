@@ -144,11 +144,55 @@ function canvas(componentType, imageURL, imageName) {
       break;
     }
 }
+/**
+ * Function: save the emojitar information to server
+ */
 function postButton() {
   let id = document.getElementById("inputID").value;
   let description = document.getElementById("inputDescription").value;
   let username = document.getElementById("inputUsername").value;
+  
+  let currentDate = new Date();
+  let year = currentDate.getFullYear() + '-';
+  let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
+  let date = ('0' + currentDate.getDate()).slice(-2) + ' ';
+  let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
+  let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
+  let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
+  let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
+                          ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
+                          ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
+  const dateString = year + month + date + hour + min + second + timeZone;
 
+  if (!id || !description || !username || 
+      !faceComponent || !eyesComponent || !mouthComponent || !hairComponent) {
+    alert(`
+    Valid post should include:
+    - id
+    - description
+    - username
+    - all facial components: face, eyes, mouth, hair`);
+  } else {
+    let myEmojiDetails = new emojiData
+    (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], dateString);
+    alert("successfully built")
+  }
+}
+/**
+ * Function: constructor for emojiData
+ * @param {*} id 
+ * @param {*} description 
+ * @param {*} username 
+ * @param {*} facialComponents 
+ * @param {*} date 
+ */
+function emojiData(id, description, username, components, date) {
+  this["emoji-id"] = id;
+  this.description = description;
+  this.userName = username;
+  this.images = components;
+  this.date = date;
+  this.comments = [];
 }
 /**
  * Call the functions while loading/refreshing

@@ -141,12 +141,12 @@ app.post('/addEmoji',function (request,response) {
   const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
   //console.log(jSON_Data);
   const  exsistingData = JSON.parse(json_Data);
+
     for (const key in exsistingData) {
       if(key==userName){
         const length = exsistingData[userName].length;
         exsistingData[userName][length] = postData;
       }else{
-        
         exsistingData[userName] = postData; 
       }
     }
