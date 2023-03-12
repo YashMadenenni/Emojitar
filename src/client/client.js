@@ -98,14 +98,15 @@ function createAllFacialComponentButton() {
 function drawEmojitar() {
   let canvas = document.querySelector(".emoji-canvas");
   let context = canvas.getContext("2d");
+  context.imageSmoothingEnabled = true;
 
-  canvas.width = 300;
+  canvas.width = 80;
   
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(faceImage, 0, 50, canvas.width, canvas.width);
-  context.drawImage(eyesImage, 0, 50, canvas.width, canvas.width);
-  context.drawImage(mouthImage, 0, 50, canvas.width, canvas.width);
-  context.drawImage(hairImage, 0, 50, canvas.width, canvas.width);
+  context.clearRect(0, 0, canvas.width, canvas.width);
+  context.drawImage(faceImage, 0, 40, canvas.width, canvas.width);
+  context.drawImage(eyesImage, 0, 40, canvas.width, canvas.width);
+  context.drawImage(mouthImage, 0, 40, canvas.width, canvas.width);
+  context.drawImage(hairImage, 0, 40, canvas.width, canvas.width);
 }
 /**
  * Function: to set the emojitar canvas
