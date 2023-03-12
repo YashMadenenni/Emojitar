@@ -91,7 +91,7 @@ app.get('/components', (req, res) => {
           image.description = info[' description'];
           image.user = info[' user'];
           image.date = info[' date'];
-          image.url = `../server/components/${file}`;
+          image.url = `/server/components/${file}`; //modify trail
           images.push(image);
         }
       });

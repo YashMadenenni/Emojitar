@@ -1,6 +1,6 @@
 # BASIC
 1. to view all facial components, including the image and description --> done, 220005874
-2. to select face/mouth/eyes/hairdo & preview the emojitar image - 220005874
+2. to select face/mouth/eyes/hairdo & preview the emojitar image --> done, 220005874
 3. to save a newly created emojitar to the server (must: unique id, descrip, creator, created-date/time)-->220030280/server 
 4. to view all existing emojitars (must: image, creator, description)-->220030280/server, 220005874 - frontend
 5. to comment & rate a specific emojitar (must: commenter, commented-date/time)-->220030280-server

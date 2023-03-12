@@ -70,7 +70,7 @@ function createFacialComponentButton(elementID, images) {
   html.innerHTML= '';
 
   images.forEach(image => {
-    let htmlSegment = `<div class="button-wrapper" onclick=canvas("${image.type}","${image.filename}")>
+    let htmlSegment = `<div class="button-wrapper" onclick=canvas("${image.type}","${image.url}")>
                           <div id="button">
                             <span class="tooltiptext">${image.description}</span>
                             <img id ="${image.filename}" src="${image.url}" alt="not found">
@@ -98,24 +98,23 @@ function createAllFacialComponentButton() {
 function drawEmojitar() {
   let canvas = document.querySelector(".emoji-canvas");
   let context = canvas.getContext("2d");
-  context.imageSmoothingEnabled = true;
 
-  canvas.width = 80;
+  canvas.width = 10000;
+  canvas.height = 10000;
   
-  context.clearRect(0, 0, canvas.width, canvas.width);
-  context.drawImage(faceImage, 0, 40, canvas.width, canvas.width);
-  context.drawImage(eyesImage, 0, 40, canvas.width, canvas.width);
-  context.drawImage(mouthImage, 0, 40, canvas.width, canvas.width);
-  context.drawImage(hairImage, 0, 40, canvas.width, canvas.width);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(faceImage, 0, 0, canvas.width, canvas.height);
+  context.drawImage(eyesImage, 0, 0, canvas.width, canvas.height);
+  context.drawImage(mouthImage, 0, 0, canvas.width, canvas.height);
+  context.drawImage(hairImage, 0, 0, canvas.width, canvas.height);
 }
 /**
  * Function: to set the emojitar canvas
  * @param {*} componentType face/eyes/mouth/hair
  * @param {*} imageFilename 
  */
-function canvas(componentType, imageFilename) {
-  let path = '/emojis/'
-  path += imageFilename;
+function canvas(componentType, imageURL) {
+  let path = imageURL;
 
   switch (componentType) {
     case "face":
