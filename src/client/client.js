@@ -104,8 +104,8 @@ function drawEmojitar() {
   let canvas = document.querySelector(".emoji-canvas");
   let context = canvas.getContext("2d");
 
-  canvas.width = 10000;
-  canvas.height = 10000;
+  canvas.width = 15000;
+  canvas.height = 15000;
   
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.drawImage(faceImage, 0, 0, canvas.width, canvas.height);
@@ -146,6 +146,10 @@ function canvas(componentType, imageURL, imageName) {
 }
 /**
  * Function: save the emojitar information to server
+ * 1. get the value to write in the emojitarComponent.json (id, description, username, date)
+ * 2. check if the needed value is null/empty (id, description, username, date, all facial components)
+ * 3. if one the needed values is invalid --> alert to notify the user
+ *    if all needed values are valid --> write into the json file
  */
 function postButton() {
   let id = document.getElementById("inputID").value;
@@ -183,6 +187,17 @@ function postButton() {
       },
       body: JSON.stringify(emoji)
     })
+    .then(response => {
+      if (response.ok) {
+        alert('Successfully upload your emojitar');
+      } else {
+        alert('fail to upload your emojitar');
+      }
+    })
+    .catch(error => {
+      alert('fail to upload your emojitar');
+      console.error('Error:', error);
+    });
   }
 }
 /**
@@ -207,25 +222,3 @@ function emojiDetails(id, description, username, components, date) {
 window.onload = function() {
   loadPage();
 }
-
-// example for sending Post emoji request
-//  window.onload()=function name(params) {
-   // const data = {
-  //   "userName": "NewUser",
-  //   "emojiDetails":{
-  //         "emoji-id":6,
-  //         "description":"Nice",
-  //         "userName":"Ya-ling",
-  //         "images":["eyes-pale-blue.png","hair-bob-brown"]
-  //     }
-  // };
-  
-  // fetch('http://localhost:8000/addEmoji', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify(data)
-  // });
-// }
-

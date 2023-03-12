@@ -1,5 +1,3 @@
-// const { error } = require("console");
-// const { response } = require("express");
 const express = require("express");
 const path = require('path');
 const API_PORT = 8000;
@@ -16,7 +14,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     //res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
-  });
+});
 
 app.get('/users',function (request,response) {
   fs.readFile(__dirname+"/"+"users.json","utf8",function (err,data) {
@@ -122,44 +120,30 @@ app.get('/exsistingEmojies',function (request,response) {
 //Add new emojitars
 app.post('/addEmoji',function (request,response) {
 
-
     const userName = request.body.userName;
-    const postData = request.body.emojiDetails;
-
-  //console.log(request.body);
-
-    //Example to send data
-  //   const userName = "New User";
-  //   const postData = {
-  //     "emoji-id":6,
-  //     "description":"Nice",
-  //     "userName":"Ya-ling",
-  //     "images":["eyes-pale-blue.png","hair-bob-brown"]
-  // }
+    const postData = request.body;
 
   //Read File
   const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
-  //console.log(jSON_Data);
-  const  exsistingData = JSON.parse(json_Data);
+  const existingData = JSON.parse(json_Data);
 
-    for (const key in exsistingData) {
-      if(key==userName){
-        const length = exsistingData[userName].length;
-        exsistingData[userName][length] = postData;
-      }else{
-        exsistingData[userName] = postData; 
-      }
-    }
-    console.log(exsistingData);
+  // Check if user exists in existing data
+  if (!existingData[userName]) {
+    existingData[userName] = [];
+  }
+
+  // Add post data to user's data
+  existingData[userName].push(postData);
 
   //Write to file
-  fs.writeFile("emojitarComponents.json",JSON.stringify(exsistingData),function (err) {
+  fs.writeFile("emojitarComponents.json",JSON.stringify(existingData, null, 2),function (err) {
     console.log("Writing"); 
-    //console.log(exsistingData); 
-    if(err){ 
-        console.log("error");
-      }
-    });
-    //response.end()
+    if (err) {
+      console.log(err);
+      response.sendStatus(500);
+    } else {
+      response.sendStatus(200);
+    }
+  });
 });
 

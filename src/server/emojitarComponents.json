@@ -1,30 +1,58 @@
 {
-  "yalinng": [
+  "user1": [
     {
-      "emoji-id": 1,
-      "description": "The Morning face",
-      "userName": "Ya-ling",
-      "date": "12-03-2023T12:00:00:00",
-      "images": ["eyes-pale-blue.png", "hair-bob-brown"],
-      "comments": [{ "Yash": { "rating": "5", "comments": "Nice" } }]
+      "emoji-id": "1",
+      "description": "standard face",
+      "userName": "user1",
+      "images": [
+        "face-pink-rosy.png",
+        "eyes.png",
+        "mouth-grin-pink.png",
+        "hair-short-brown.png"
+      ],
+      "date": "2023-03-12 12:11:36 GMT+00:00",
+      "comments": []
     },
     {
-      "emoji-id": 3,
-      "description": "Dreamy Face",
-      "userName": "Ya-ling",
-      "date": "03-03-2023T13:00:00:00",
-      "images": ["eyes-pale-blue.png", "hair-bob-brown"],
-      "comments": [{ "Yash": { "rating": "4", "comments": "New Creation" } }]
+      "emoji-id": "2",
+      "description": "fuzzy hair with pale face",
+      "userName": "user1",
+      "images": [
+        "face-grey.png",
+        "eyes-smiley.png",
+        "mouth-smile.png",
+        "hair-curly-brown.png"
+      ],
+      "date": "2023-03-12 12:12:07 GMT+00:00",
+      "comments": [
+        {
+          "user2": {
+            "rating": "5",
+            "comments": "I like it"
+          }
+        },
+        {
+          "user3": {
+            "rating": "1",
+            "comments": "I don't like it"
+          }
+        }
+      ]
     }
   ],
-  "Yash": [
+  "user2": [
     {
-      "emoji-id": 2,
-      "description": "The Stud",
-      "userName": "Yash",
-      "date": "05-03-2023T15:00:00:00",
-      "images": ["eyes-pale-blue.png", "hair-bob-brown"],
-      "comments": [{ "yaling": { "rating": "5", "comments": "Nice" } }]
+      "emoji-id": "3",
+      "description": "short brown hair with yellow face",
+      "userName": "user2",
+      "images": [
+        "face-yellow.png",
+        "eyes-smiley.png",
+        "mouth-smile.png",
+        "hair-bowl-brown.png"
+      ],
+      "date": "2023-03-12 12:12:56 GMT+00:00",
+      "comments": []
     }
   ]
 }
