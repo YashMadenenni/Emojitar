@@ -24,7 +24,7 @@
       "userName": "Yash",
       "date": "05-03-2023T15:00:00:00",
       "images": ["eyes-pale-blue.png", "hair-bob-brown"],
-      "comments": { "yaling": { "rating": "5", "comments": "Nice" } }
+      "comments": [{ "yaling": { "rating": "5", "comments": "Nice" } }]
     }
   ]
 }

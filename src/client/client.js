@@ -4,6 +4,11 @@ const eyesImages = [];
 const mouthImages = [];
 const hairImages = [];
 
+let faceComponent = null;
+let eyesComponent = null;
+let mouthComponent = null;
+let hairComponent = null;
+
 let faceImage = new Image();
 let eyesImage = new Image();
 let mouthImage = new Image();
@@ -70,7 +75,7 @@ function createFacialComponentButton(elementID, images) {
   html.innerHTML= '';
 
   images.forEach(image => {
-    let htmlSegment = `<div class="button-wrapper" onclick=canvas("${image.type}","${image.url}")>
+    let htmlSegment = `<div class="button-wrapper" onclick=canvas("${image.type}","${image.url}","${image.filename}")>
                           <div id="button">
                             <span class="tooltiptext">${image.description}</span>
                             <img id ="${image.filename}" src="${image.url}" alt="not found">
@@ -113,27 +118,37 @@ function drawEmojitar() {
  * @param {*} componentType face/eyes/mouth/hair
  * @param {*} imageFilename 
  */
-function canvas(componentType, imageURL) {
+function canvas(componentType, imageURL, imageName) {
   let path = imageURL;
 
   switch (componentType) {
     case "face":
       faceImage.src = path;
       faceImage.onload = drawEmojitar();
+      faceComponent = imageName;
       break;
     case "eyes":
       eyesImage.src = path;
       eyesImage.onload = drawEmojitar();
+      eyesComponent = imageName;
       break;
     case "mouth":
       mouthImage.src = path;
       mouthImage.onload = drawEmojitar();
+      mouthComponent = imageName;
       break;
     case "hair":
       hairImage.src = path;
       hairImage.onload = drawEmojitar();
+      hairComponent = imageName;
       break;
     }
+}
+function postButton() {
+  let id = document.getElementById("inputID").value;
+  let description = document.getElementById("inputDescription").value;
+  let username = document.getElementById("inputUsername").value;
+
 }
 /**
  * Call the functions while loading/refreshing

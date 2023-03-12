@@ -123,43 +123,43 @@ app.get('/exsistingEmojies',function (request,response) {
 app.post('/addEmoji',function (request,response) {
 
 
-  const userName = request.body.userName;
-  const postData = request.body.emojiDetails;
+    const userName = request.body.userName;
+    const postData = request.body.emojiDetails;
 
-//console.log(request.body);
+  //console.log(request.body);
 
-  //Example to send data
-//   const userName = "New User";
-//   const postData = {
-//     "emoji-id":6,
-//     "description":"Nice",
-//     "userName":"Ya-ling",
-//     "images":["eyes-pale-blue.png","hair-bob-brown"]
-// }
+    //Example to send data
+  //   const userName = "New User";
+  //   const postData = {
+  //     "emoji-id":6,
+  //     "description":"Nice",
+  //     "userName":"Ya-ling",
+  //     "images":["eyes-pale-blue.png","hair-bob-brown"]
+  // }
 
-//Read File
-const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
-//console.log(jSON_Data);
-const  exsistingData = JSON.parse(json_Data);
-  for (const key in exsistingData) {
-    if(key==userName){
-      const length = exsistingData[userName].length;
-      exsistingData[userName][length] = postData;
-    }else{
-      
-      exsistingData[userName] = postData; 
+  //Read File
+  const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
+  //console.log(jSON_Data);
+  const  exsistingData = JSON.parse(json_Data);
+    for (const key in exsistingData) {
+      if(key==userName){
+        const length = exsistingData[userName].length;
+        exsistingData[userName][length] = postData;
+      }else{
+        
+        exsistingData[userName] = postData; 
+      }
     }
-  }
-  console.log(exsistingData);
+    console.log(exsistingData);
 
-//Write to file
-fs.writeFile("emojitarComponents.json",JSON.stringify(exsistingData),function (err) {
-  console.log("Writing"); 
-  //console.log(exsistingData); 
-  if(err){ 
-      console.log("error");
-    }
-  });
-   //response.end()
+  //Write to file
+  fs.writeFile("emojitarComponents.json",JSON.stringify(exsistingData),function (err) {
+    console.log("Writing"); 
+    //console.log(exsistingData); 
+    if(err){ 
+        console.log("error");
+      }
+    });
+    //response.end()
 });
 
