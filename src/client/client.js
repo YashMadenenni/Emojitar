@@ -291,10 +291,28 @@ function loadAllEmojitars() {
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
-                          <button id="view-comments-${emoji.id}">View Comments</button>
+                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id})">View Comments</button>
                       </div>`;
     html.innerHTML += htmlSegment;
   });
+}
+function viewSpecificEmojitar(emojiID) {
+  const emoji = getSpecificEmojitar(emojiID.toString());
+  const html = document.getElementById("Browser-Grid");
+  html.innerHTML= '';
+  let htmlSegment = `<div class="test">
+                        <p>${emoji.id}</p>
+                      </div>`;
+  html.innerHTML += htmlSegment;
+  
+}
+/**
+ * Function: to get specific emojitar object
+ * @param {*} emojiID the ID of the need emoji
+ * @returns Emoji object
+ */
+function getSpecificEmojitar(emojiID) {
+  return emojis.find(emoji => emoji.id === emojiID) || null;
 }
 /**
  * Section 2 End: Browser Tab Functions----------------------------------------------------------------------------------
