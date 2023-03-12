@@ -194,9 +194,6 @@ body, html{
     width: 100%;
     height: 100%;
 }
-#specific-emoji-info, #sepcific-emoji-comment, #return-to-all-emojis-button {
-    border: 1px solid black;
-}
 #return-to-all-emojis-button {
     position: relative;
 }
@@ -211,12 +208,9 @@ body, html{
     grid-template-columns: 1fr;
     height: 100%;
 }
-#a-emoji-display {
-    border: 1px solid black;       /*border should be deleted after finish the feature: for viewing effect only*/
-}
 #a-emoji-display, #a-emoji-info {
+    border: 1px solid black;
     grid-column: 1 / -1;
-    border: 1px solid black;       /*border should be deleted after finish the feature: for viewing effect only*/
     margin: 5%;
 }
 #sepcific-emoji-comment{
@@ -225,15 +219,11 @@ body, html{
     grid-template-columns: 1fr;
     height: 100%;
 }
-#comment-rate-setting-area{
-    border: 1px solid black;
+#comment-rate-setting-are, #all-comment-area{
     margin: 5%;
     
 }
-#all-comment-area{
-    border: 1px solid black;
-    margin: 5%;
-}
 .rating-container{
+    padding-top: 10%;
     text-align: right;
 }
