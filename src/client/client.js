@@ -305,13 +305,14 @@ function loadAllEmojitars() {
  */
 function viewSpecificEmojitar(emojiID) {
   const emoji = getSpecificEmojitar(emojiID.toString());
+  const emojiComment = emoji.comments;
   const html = document.getElementById("Browser-Grid");
   html.innerHTML= '';
   let htmlSegment = `<div id="specific-emoji-info">
                         <div id="a-emoji-display">
                         </div>
                         <div id="a-emoji-info">
-                          <p>Created by${emoji.username}</p>
+                          <p>Created by ${emoji.username}</p>
                           <p></p>
                           <p>${emoji.description}</p>
                         </div>
@@ -328,9 +329,11 @@ function viewSpecificEmojitar(emojiID) {
                       </div>`;
   html.innerHTML += htmlSegment;
   setLayoutForCommentSetting();
+  setLayoutForAllComments(emojiComment);
 }
 /**
  * Function: to set the layout for rating/comment/username user input
+ * Cited: https://www.w3schools.com/tags/tag_select.asp
  */
 function setLayoutForCommentSetting() {
   const html = document.getElementById("comment-rate-setting-area");
@@ -354,6 +357,39 @@ function setLayoutForCommentSetting() {
 }
 function submitComment() {
 
+}
+function getAllComments(commentObj) {
+  let allComments = [];
+  const emojiComment = commentObj;
+  emojiComment.forEach((comment) => {
+    Object.keys(comment).forEach((username) => {
+      const rating = comment[username].rating;
+      const commentText = comment[username].comments;
+      allComments.push({ username, rating, commentText });
+    });
+  });
+  return allComments;
+}
+function setLayoutForAllComments(specificEmojiComments) {
+  let allComments = getAllComments(specificEmojiComments);
+  const html = document.getElementById("all-comment-area");
+  html.innerHTML= '';
+
+  if (allComments.length < 1) {
+    let htmlSegment = `<div class="all-comment-wrapper">
+                        <p>No Comment</p>
+                      </div>`;
+    html.innerHTML += htmlSegment;
+  } else {
+    allComments.forEach((comment) => {
+      let htmlSegment = `<div class="all-comment-wrapper">
+                          <p><strong>${comment.rating} star(s)</strong> ${comment.username}</p>
+                          <p></p>
+                          <p>${comment.commentText}</p><br>
+                        </div>`;
+      html.innerHTML += htmlSegment;
+    });
+  }
 }
 /**
  * Function: to return from a single emoji to all emoji pages
