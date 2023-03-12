@@ -187,6 +187,8 @@ function postButton() {
     - description
     - username
     - all facial components: face, eyes, mouth, hair`);
+  } else if (emojis.some(emoji => emoji.id === id)) {
+    alert('Duplicate Emojitar ID');
   } else {
     let emoji = new emojiDetails
     (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], dateString);
