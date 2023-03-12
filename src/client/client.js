@@ -17,7 +17,7 @@ let hairImage = new Image();
 /**Maker Tab End*/
 
 /**Browser Tab Begin*/
-const emojis = [];
+let emojis = [];
 /**Browser Tab End*/
 
 /**
@@ -301,10 +301,15 @@ function viewSpecificEmojitar(emojiID) {
   const html = document.getElementById("Browser-Grid");
   html.innerHTML= '';
   let htmlSegment = `<div class="test">
+                        <button id="returnToAllEmoji" onclick="returnToAllEmojitars()">Return</button>
                         <p>${emoji.id}</p>
                       </div>`;
   html.innerHTML += htmlSegment;
   
+}
+function returnToAllEmojitars() {
+  emojis = [];
+  getAllEmojitars();
 }
 /**
  * Function: to get specific emojitar object
