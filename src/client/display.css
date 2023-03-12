@@ -188,3 +188,52 @@ body, html{
     justify-content: center;
     align-items: center;
 }
+.specific-emoji{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+}
+#specific-emoji-info, #sepcific-emoji-comment, #return-to-all-emojis-button {
+    border: 1px solid black;
+}
+#return-to-all-emojis-button {
+    position: relative;
+}
+#returnToAllEmoji {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+}
+#specific-emoji-info {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+    height: 100%;
+}
+#a-emoji-display {
+    border: 1px solid black;       /*border should be deleted after finish the feature: for viewing effect only*/
+}
+#a-emoji-display, #a-emoji-info {
+    grid-column: 1 / -1;
+    border: 1px solid black;       /*border should be deleted after finish the feature: for viewing effect only*/
+    margin: 5%;
+}
+#sepcific-emoji-comment{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+    height: 100%;
+}
+#comment-rate-setting-area{
+    border: 1px solid black;
+    margin: 5%;
+    
+}
+#all-comment-area{
+    border: 1px solid black;
+    margin: 5%;
+}
+.rating-container{
+    text-align: right;
+}

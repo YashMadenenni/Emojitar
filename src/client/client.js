@@ -296,17 +296,68 @@ function loadAllEmojitars() {
     html.innerHTML += htmlSegment;
   });
 }
+/**
+ * Function: to display info about a specific Emojitar, include:
+ * (1) images: face/eyes/mouth/hair
+ * (2) creator
+ * (3) description
+ * @param {*} emojiID the specific emoji object
+ */
 function viewSpecificEmojitar(emojiID) {
   const emoji = getSpecificEmojitar(emojiID.toString());
   const html = document.getElementById("Browser-Grid");
   html.innerHTML= '';
-  let htmlSegment = `<div class="test">
+  let htmlSegment = `<div id="specific-emoji-info">
+                        <div id="a-emoji-display">
+                        </div>
+                        <div id="a-emoji-info">
+                          <p>Created by${emoji.username}</p>
+                          <p></p>
+                          <p>${emoji.description}</p>
+                        </div>
+                      </div>
+
+                      <div id="sepcific-emoji-comment">
+                        <div id="comment-rate-setting-area">
+                        </div>
+                        <div id="all-comment-area">
+                        </div>
+                      </div>
+                      <div id="return-to-all-emojis-button">
                         <button id="returnToAllEmoji" onclick="returnToAllEmojitars()">Return</button>
-                        <p>${emoji.id}</p>
                       </div>`;
   html.innerHTML += htmlSegment;
-  
+  setLayoutForCommentSetting();
 }
+/**
+ * Function: to set the layout for rating/comment/username user input
+ */
+function setLayoutForCommentSetting() {
+  const html = document.getElementById("comment-rate-setting-area");
+  html.innerHTML= '';
+  let htmlSegment = `<div class="rating-container">
+                        <label for="rating">Rating:</label>
+                        <select name="rating" id="rating">
+                          <option value=1>1</option>
+                          <option value=2>2</option>
+                          <option value=3>3</option>
+                          <option value=4>4</option>
+                          <option value=5>5</option>
+                        </select><p></p>
+                        <label for="comment">Comment</label>
+                        <input type="text" id="comment" name="comment"><p></p>
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username"><p></p>
+                        <button id="submit-comment" onclick="submitComment()">Submit Comment</button>
+                      </div>`;
+  html.innerHTML += htmlSegment;
+}
+function submitComment() {
+
+}
+/**
+ * Function: to return from a single emoji to all emoji pages
+ */
 function returnToAllEmojitars() {
   emojis = [];
   getAllEmojitars();
