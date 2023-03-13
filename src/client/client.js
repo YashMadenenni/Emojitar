@@ -33,6 +33,7 @@ let emojis = [];
 function loadPage() {
   getAllFacialComponent();
   getAllEmojitars();
+  creatorSelectionLoading();
   document.getElementById("defaultActive").click();  
 }
 /**
@@ -293,6 +294,7 @@ function getAllEmojitars() {
       });
       loadAllEmojitars();
       allCanvas();
+      creatorSelectionLoading();
     });
   })
   .catch(error => console.error(error));
@@ -440,6 +442,8 @@ function submitComment(emojiObjID) {
   let emoji = getSpecificEmojitar(emojiObjID.toString());
 
   //To-Do: written the rating + commentor + comment based on emoji ID;
+  let emojiComments = emoji.comments;
+  setLayoutForAllComments(emojiComments);
 }
 /**
  * Function: to get all comment's info of a specific emoji
@@ -497,6 +501,27 @@ function returnToAllEmojitars() {
  */
 function getSpecificEmojitar(emojiID) {
   return emojis.find(emoji => emoji.id === emojiID) || null;
+}
+function creatorSelectionLoading() {
+  let creators = getCreators();
+  let html = document.getElementById("creators");
+  html.innerHTML= '';
+
+  creators.forEach(creator => {
+    let htmlSegment = `<option value=${creator}>${creator}</option>`;
+    html.innerHTML += htmlSegment;});
+}
+function getCreators() {
+  let creators = [];
+  emojis.forEach((emoji) => {
+    if (!creators.includes(emoji.username)) {
+      creators.push(emoji.username);
+    }
+  });
+  return creators;
+}
+function selectCreatorButton() {
+  
 }
 /**
  * Section 2 End: Browser Tab Functions----------------------------------------------------------------------------------
