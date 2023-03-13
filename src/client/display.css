@@ -29,7 +29,7 @@ body, html{
     width: 25%;
 }
 .tablink:hover {
-    background-color: #777;
+    background-color: #4b4b4b;
 }
 .tabcontent {
     display: none;
@@ -153,8 +153,10 @@ body, html{
     font-size: 17px;
     box-sizing: border-box;
 }
-
-/**/
+/*
+ * Section: Browser Tab
+ */
+/*all emojis*/
 .emoji-face, .emoji-hair, .emoji-eyes, .emoji-mouth {
     position: absolute;
     left: auto;
@@ -188,6 +190,7 @@ body, html{
     justify-content: center;
     align-items: center;
 }
+/*single emoji-all layout of info*/
 .specific-emoji{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -199,8 +202,8 @@ body, html{
 }
 #returnToAllEmoji {
     position: absolute;
-    top: 50%;
-    right: 50%;
+    top: 30%;
+    right: 0%;
 }
 #specific-emoji-info {
     display: grid;
@@ -209,7 +212,6 @@ body, html{
     height: 100%;
 }
 #a-emoji-display, #a-emoji-info {
-    border: 1px solid black;
     grid-column: 1 / -1;
     margin: 5%;
 }
@@ -224,6 +226,31 @@ body, html{
     
 }
 .rating-container{
-    padding-top: 10%;
-    text-align: right;
+    padding-top: 50%;
+    padding-left: 8%;
+    text-align: left;
+}
+#submit-comment {
+    width: 77%;
+}
+/*single emoji-layout only for images*/
+.image-container {
+    position: relative;
+}  
+.image-container img {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+}
+.a-face {
+    z-index: 1;
+}
+.a-eyes {
+    z-index: 2;
+}
+.a-mouth {
+    z-index: 3;
+}
+.a-hair {
+    z-index: 4;
 }

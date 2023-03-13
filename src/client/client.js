@@ -306,6 +306,7 @@ function loadAllEmojitars() {
 function viewSpecificEmojitar(emojiID) {
   const emoji = getSpecificEmojitar(emojiID.toString());
   const emojiComment = emoji.comments;
+  const emojiImages = emoji.images;
   const html = document.getElementById("Browser-Grid");
   html.innerHTML= '';
   let htmlSegment = `<div id="specific-emoji-info">
@@ -328,14 +329,32 @@ function viewSpecificEmojitar(emojiID) {
                         <button id="returnToAllEmoji" onclick="returnToAllEmojitars()">Return</button>
                       </div>`;
   html.innerHTML += htmlSegment;
-  setLayoutForCommentSetting();
+  setLayoutForEmojiImage(emojiImages);
+  setLayoutForCommentSetting(emoji);
   setLayoutForAllComments(emojiComment);
+}
+/**
+ * Function: to set the layout for a specific emojitar
+ * @param {*} emojiImageArray 
+ */
+function setLayoutForEmojiImage(emojiImageArray) {
+  const html = document.getElementById("a-emoji-display");
+  html.innerHTML = '';
+  let htmlSegment = `<div class="image-container">
+                        <img src="../server/components/${emojiImageArray[0]}" alt="face not found" class="a-face">
+                        <img src="../server/components/${emojiImageArray[1]}" alt="eyes not found" class="a-eyes">
+                        <img src="../server/components/${emojiImageArray[2]}" alt="mouth not found" class="a-mouth">
+                        <img src="../server/components/${emojiImageArray[3]}" alt="hair not found" class="a-hair">
+                      </div>`;
+  html.innerHTML += htmlSegment;
+  
 }
 /**
  * Function: to set the layout for rating/comment/username user input
  * Cited: https://www.w3schools.com/tags/tag_select.asp
  */
-function setLayoutForCommentSetting() {
+function setLayoutForCommentSetting(emojiObj) {
+  const emoji = emojiObj;
   const html = document.getElementById("comment-rate-setting-area");
   html.innerHTML= '';
   let htmlSegment = `<div class="rating-container">
@@ -351,25 +370,46 @@ function setLayoutForCommentSetting() {
                         <input type="text" id="comment" name="comment"><p></p>
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username"><p></p>
-                        <button id="submit-comment" onclick="submitComment()">Submit Comment</button>
+                        <button id="submit-comment" onclick="submitComment(${emoji.id})">Submit Comment</button>
                       </div>`;
   html.innerHTML += htmlSegment;
 }
-function submitComment() {
+/**
+ * Function: to submit a comment of a specific emojitar
+ * Debug: should be kept finished after the server part built the endpoint.
+ * @param {*} emojiObjID ID of emojitar
+ */
+function submitComment(emojiObjID) {
+  let rating = document.getElementById("rating").value;
+  let commentor = document.getElementById("username").value;
+  let comment = document.getElementById("comment").value;
+  let emojiID = emojiObjID;
 
+  let emoji = getSpecificEmojitar(emojiObjID.toString());
+
+  //To-Do: written the rating + commentor + comment based on emoji ID;
 }
+/**
+ * Function: to get all comment's info of a specific emoji
+ * @param {*} commentObj comments array(in comment obj: commentor name, rating, commentText)
+ * @returns all comment's info of a specific emoji
+ */
 function getAllComments(commentObj) {
   let allComments = [];
   const emojiComment = commentObj;
   emojiComment.forEach((comment) => {
-    Object.keys(comment).forEach((username) => {
-      const rating = comment[username].rating;
-      const commentText = comment[username].comments;
-      allComments.push({ username, rating, commentText });
+    Object.keys(comment).forEach((commentor) => {
+      const rating = comment[commentor].rating;
+      const commentText = comment[commentor].comments;
+      allComments.push({ commentor, rating, commentText });
     });
   });
   return allComments;
 }
+/**
+ * Function: to set the layout for all comments of a specific emojitar
+ * @param {*} specificEmojiComments comments(rating/commentor/comment) of specific emojitar 
+ */
 function setLayoutForAllComments(specificEmojiComments) {
   let allComments = getAllComments(specificEmojiComments);
   const html = document.getElementById("all-comment-area");
@@ -383,7 +423,7 @@ function setLayoutForAllComments(specificEmojiComments) {
   } else {
     allComments.forEach((comment) => {
       let htmlSegment = `<div class="all-comment-wrapper">
-                          <p><strong>${comment.rating} star(s)</strong> ${comment.username}</p>
+                          <p><strong>${comment.rating} star(s)</strong> ${comment.commentor}</p>
                           <p></p>
                           <p>${comment.commentText}</p><br>
                         </div>`;
