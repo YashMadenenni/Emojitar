@@ -25,6 +25,9 @@ let hairImage = new Image();
 let emojis = [];
 /**Browser Tab End*/
 
+/**Login-Register Tab*/
+let realUsername = "testuser";
+
 /**
  * Function Purpose: load the page while window onload
  * 1. getAllFacialComponent(): fetch facial components from the server
@@ -198,7 +201,11 @@ function postButton() {
                           ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
   const dateString = year + month + date + hour + min + second + timeZone;
 
-  if (!id || !description || !username || 
+  if (realUsername === "anonumous") {
+    alert(`
+    Anonumous user are not allowed to post an emojitar.
+    Please log in first`);
+  } else if (!id || !description || !username || 
       !faceComponent || !eyesComponent || !mouthComponent || !hairComponent) {
     alert(`
     Valid post should include:
@@ -210,8 +217,9 @@ function postButton() {
     alert('Duplicate Emojitar ID');
   } else {
     let color = new Color(faceColor,eyesColor,mouthColor,hairColor);
+    let comment = new Comment();
     let emoji = new emojiDetails
-    (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], color, dateString);
+    (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], color, dateString, comment);
     
     fetch('/addEmoji', {
       method: 'POST',
@@ -232,7 +240,6 @@ function postButton() {
       console.error('Error:', error);
     });
   }
-
   getAllEmojitars();
 }
 /**
@@ -243,14 +250,20 @@ function postButton() {
  * @param {*} facialComponents 
  * @param {*} date 
  */
-function emojiDetails(id, description, username, components, filter, date) {
+function emojiDetails(id, description, username, components, filter, date, comment) {
   this["emoji-id"] = id;
   this["description"] = description;
   this["userName"] = username;
   this["images"] = components;
   this["filter"] = filter;
   this["date"] = date;
-  this["comments"] = [];
+  this["comments"] = comment;
+}
+/**
+ * Constructor
+ */
+function Comment() {
+
 }
 /**
  * Section 1 End: Maker Tab Functions----------------------------------------------------------------------------------
@@ -381,9 +394,6 @@ function viewSpecificEmojitar(emojiID) {
                         </div>
                         <div id="all-comment-area">
                         </div>
-                      </div>
-                      <div id="return-to-all-emojis-button">
-                        <button id="returnToAllEmoji" onclick="returnToAllEmojitars()">Return</button>
                       </div>`;
   html.innerHTML += htmlSegment;
   setLayoutForEmojiImage(emojiImages, emoji.id);
@@ -450,15 +460,12 @@ function submitComment(emojiObjID) {
  * @param {*} commentObj comments array(in comment obj: commentor name, rating, commentText)
  * @returns all comment's info of a specific emoji
  */
-function getAllComments(commentObj) {
+function getAllComments(comments) {
   let allComments = [];
-  const emojiComment = commentObj;
-  emojiComment.forEach((comment) => {
-    Object.keys(comment).forEach((commentor) => {
-      const rating = comment[commentor].rating;
-      const commentText = comment[commentor].comments;
-      allComments.push({ commentor, rating, commentText });
-    });
+  Object.keys(comments).forEach((commentor) => {
+    const rating = comments[commentor].rating;
+    const commentText = comments[commentor].comments;
+    allComments.push({ commentor, rating, commentText });
   });
   return allComments;
 }
@@ -521,7 +528,36 @@ function getCreators() {
   return creators;
 }
 function selectCreatorButton() {
-  
+  let creator = document.getElementById("creators").value;
+  emojis = getSpecificEmoji(creator);
+  loadSpecificEmojis(emojis);
+  allCanvas();
+  creatorSelectionLoading();
+}
+function getSpecificEmoji(creator) {
+  let specificEmojis = [];
+  emojis.forEach(emoji => {
+    if (emoji.username === creator && !specificEmojis.includes(creator)) {
+      specificEmojis.push(emoji);
+    }
+  });
+  return specificEmojis;
+}
+function loadSpecificEmojis(specificEmojis) {
+  let specificEmojitars = specificEmojis;
+  const html = document.getElementById("Browser-Grid");
+  html.innerHTML= '';
+  specificEmojitars.forEach(emoji => {
+    let htmlSegment = `<div class="emojis-wrapper">
+                          <div id="emoji">
+                            <canvas id="emoji-canvas-${emoji.id}"></canvas>
+                          </div>
+                          <p>Created by ${emoji.username}</p>
+                          <p>${emoji.description}</p>
+                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id})">View Comments</button>
+                      </div>`;
+    html.innerHTML += htmlSegment;
+  });
 }
 /**
  * Section 2 End: Browser Tab Functions----------------------------------------------------------------------------------
