@@ -130,7 +130,7 @@ function drawEmojitar() {
   context.drawImage(hairImage, 0, 0, canvas.width, canvas.height);
 }
 /**
- * Function: to set the emojitar canvas
+ * Function: to set the emojitar canvas (in Maker)
  * @param {*} componentType face/eyes/mouth/hair
  * @param {*} imageFilename 
  */
@@ -292,9 +292,11 @@ function getAllEmojitars() {
         emojis.push(emojiObj);
       });
       loadAllEmojitars();
+      allCanvas();
     });
   })
   .catch(error => console.error(error));
+  
 }
 /**
  * Function: to load all emojitars all at onces
@@ -303,14 +305,10 @@ function getAllEmojitars() {
 function loadAllEmojitars() {
   const html = document.getElementById("Browser-Grid");
   html.innerHTML= '';
-
   emojis.forEach(emoji => {
     let htmlSegment = `<div class="emojis-wrapper">
                           <div id="emoji">
-                            <img src="../server/components/${emoji.images[0]}" alt="face not found" class="emoji-face">
-                            <img src="../server/components/${emoji.images[1]}" alt="eyes not found" class="emoji-eyes">
-                            <img src="../server/components/${emoji.images[2]}" alt="mouth not found" class="emoji-mouth">
-                            <img src="../server/components/${emoji.images[3]}" alt="hair not found" class="emoji-hair">
+                            <canvas id="emoji-canvas-${emoji.id}"></canvas>
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
@@ -318,6 +316,40 @@ function loadAllEmojitars() {
                       </div>`;
     html.innerHTML += htmlSegment;
   });
+}
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => {
+      resolve(image);
+    };
+    image.onerror = reject;
+    image.src = url;
+  });
+}
+async function specificCanvas(emojiImages, emojiID) {
+  const canvasName = "emoji-canvas-" + emojiID;
+  const canvas = document.getElementById(canvasName);
+  const context = canvas.getContext("2d");
+
+  canvas.width = 200;
+  canvas.height = 200;
+
+  const facePic = await loadImage("../server/components/" + emojiImages[0]);
+  const eyesPic = await loadImage("../server/components/" + emojiImages[1]);
+  const mouthPic = await loadImage("../server/components/" + emojiImages[2]);
+  const hairPic = await loadImage("../server/components/" + emojiImages[3]);
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(facePic, 0, 0, canvas.width, canvas.width);
+  context.drawImage(eyesPic, 0, 0, canvas.width, canvas.width);
+  context.drawImage(mouthPic, 0, 0, canvas.width, canvas.width);
+  context.drawImage(hairPic, 0, 0, canvas.width, canvas.width);
+}
+function allCanvas() {
+  emojis.forEach(emoji => {
+    specificCanvas(emoji.images, emoji.id);
+  })
 }
 /**
  * Function: to display info about a specific Emojitar, include:
@@ -352,7 +384,7 @@ function viewSpecificEmojitar(emojiID) {
                         <button id="returnToAllEmoji" onclick="returnToAllEmojitars()">Return</button>
                       </div>`;
   html.innerHTML += htmlSegment;
-  setLayoutForEmojiImage(emojiImages);
+  setLayoutForEmojiImage(emojiImages, emoji.id);
   setLayoutForCommentSetting(emoji);
   setLayoutForAllComments(emojiComment);
 }
@@ -360,17 +392,14 @@ function viewSpecificEmojitar(emojiID) {
  * Function: to set the layout for a specific emojitar
  * @param {*} emojiImageArray 
  */
-function setLayoutForEmojiImage(emojiImageArray) {
+function setLayoutForEmojiImage(emojiImageArray, emojiID) {
   const html = document.getElementById("a-emoji-display");
   html.innerHTML = '';
   let htmlSegment = `<div class="image-container">
-                        <img src="../server/components/${emojiImageArray[0]}" alt="face not found" class="a-face">
-                        <img src="../server/components/${emojiImageArray[1]}" alt="eyes not found" class="a-eyes">
-                        <img src="../server/components/${emojiImageArray[2]}" alt="mouth not found" class="a-mouth">
-                        <img src="../server/components/${emojiImageArray[3]}" alt="hair not found" class="a-hair">
+                        <canvas id="emoji-canvas-${emojiID}"></canvas>
                       </div>`;
   html.innerHTML += htmlSegment;
-  
+  specificCanvas(emojiImageArray, emojiID);
 }
 /**
  * Function: to set the layout for rating/comment/username user input
