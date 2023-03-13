@@ -42,9 +42,7 @@
             "rating": "5",
             "comments": "I like it",
             "date": "2023-03-12 12:11:36 GMT+00:00"
-          }
-        },
-        {
+          },
           "user3": {
             "rating": "1",
             "comments": "I don't like it",

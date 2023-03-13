@@ -203,6 +203,8 @@ for (const key in existingData) {
             if(elementComment[userName]){
               console.log("in if");
               console.log(elementComment[userName]);
+            }else{
+              
             }
           });
         } else{
