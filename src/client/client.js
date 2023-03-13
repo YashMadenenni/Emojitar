@@ -161,6 +161,19 @@ function canvas(componentType, imageURL, imageName) {
     }
 }
 /**
+ * Constructor for Component Color
+ * @param {*} faceColor   color of face
+ * @param {*} eyesColor   color of eyes
+ * @param {*} mouthColor  color of mouth
+ * @param {*} hairColor   color of hair
+ */
+function Color(faceColor, eyesColor, mouthColor, hairColor) {
+  this.faceColor = faceColor;
+  this.eyesColor = eyesColor;
+  this.mouthColor = mouthColor;
+  this.hairColor = hairColor;
+}
+/**
  * Function: save the emojitar information to server
  * 1. get the value to write in the emojitarComponent.json (id, description, username, date)
  * 2. check if the needed value is null/empty (id, description, username, date, all facial components)
@@ -195,8 +208,9 @@ function postButton() {
   } else if (emojis.some(emoji => emoji.id === id)) {
     alert('Duplicate Emojitar ID');
   } else {
+    let color = new Color(faceColor,eyesColor,mouthColor,hairColor);
     let emoji = new emojiDetails
-    (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], dateString);
+    (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], color, dateString);
     
     fetch('/addEmoji', {
       method: 'POST',
@@ -226,11 +240,12 @@ function postButton() {
  * @param {*} facialComponents 
  * @param {*} date 
  */
-function emojiDetails(id, description, username, components, date) {
+function emojiDetails(id, description, username, components, filter, date) {
   this["emoji-id"] = id;
   this["description"] = description;
   this["userName"] = username;
   this["images"] = components;
+  this["filter"] = filter;
   this["date"] = date;
   this["comments"] = [];
 }
