@@ -10,6 +10,11 @@ let eyesComponent = null;
 let mouthComponent = null;
 let hairComponent = null;
 
+let faceColor = "undefined";
+let eyesColor = "undefined";
+let mouthColor = "undefined";
+let hairColor = "undefined";
+
 let faceImage = new Image();
 let eyesImage = new Image();
 let mouthImage = new Image();

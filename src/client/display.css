@@ -221,14 +221,12 @@ body, html{
     grid-template-columns: 1fr;
     height: 100%;
 }
-#comment-rate-setting-are, #all-comment-area{
-    margin: 5%;
+#comment-rate-setting-area, #all-comment-area{
+    margin: 1%;
     
 }
 .rating-container{
-    padding-top: 50%;
-    padding-left: 8%;
-    text-align: left;
+    padding-top: 30%;
 }
 #submit-comment {
     width: 77%;

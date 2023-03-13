@@ -13,9 +13,9 @@
     1.2 to view existing emojitars / associated comments / build / preview new emojitars
     1.3 to register and login
 2. function only for logged users
-   2.1 to save emojitar
-   2.2 to comment/rate emojitars other user created
-   2.2 to delete their own emijotars (must: relevent files and comments...)
+    2.1 to save emojitar
+    2.2 to comment/rate emojitars other user created
+    2.2 to delete their own emijotars (must: relevent files and comments...)
 
 # ADVANCE
 1. function for all users

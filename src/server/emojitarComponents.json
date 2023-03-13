@@ -10,6 +10,12 @@
         "mouth-grin-pink.png",
         "hair-short-brown.png"
       ],
+      "filter": [                                     
+        "undefined",
+        "undefined",
+        "undefined",
+        "undefined"
+      ],
       "date": "2023-03-12 12:11:36 GMT+00:00",
       "comments": []
     },
@@ -23,18 +29,26 @@
         "mouth-smile.png",
         "hair-curly-brown.png"
       ],
-      "date": "2023-03-12 12:12:07 GMT+00:00",
+      "filter": [                                     
+        "#ff0000",
+        "#2596be",
+        "undefined",
+        "#ee954f"
+      ],
+      "date": "2023-03-10 12:12:07 GMT+00:00",
       "comments": [
         {
           "user2": {
             "rating": "5",
-            "comments": "I like it"
+            "comments": "I like it",
+            "date": "2023-03-12 12:11:36 GMT+00:00"
           }
         },
         {
           "user3": {
             "rating": "1",
-            "comments": "I don't like it"
+            "comments": "I don't like it",
+            "date": "2023-03-12 12:11:36 GMT+00:00"
           }
         }
       ]
@@ -50,6 +64,12 @@
         "eyes-smiley.png",
         "mouth-smile.png",
         "hair-bowl-brown.png"
+      ],
+      "filter": [                                     
+        "undefined",
+        "undefined",
+        "undefined",
+        "undefined"
       ],
       "date": "2023-03-12 12:12:56 GMT+00:00",
       "comments": []
