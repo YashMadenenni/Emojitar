@@ -16,6 +16,8 @@ app.use((req, res, next) => {
     next();
 });
 
+
+//API for all users 
 app.get('/users',function (request,response) {
   fs.readFile(__dirname+"/"+"users.json","utf8",function (err,data) {
       console.log(data);
@@ -23,6 +25,7 @@ app.get('/users',function (request,response) {
   });    
 });
 
+//API for user authentication
 app.get('/users/:userName/:password',function (request,response) {
   fs.readFile(__dirname+"/"+"users.json","utf8",function (err,data) {
         var users = JSON.parse(data);
@@ -131,6 +134,17 @@ app.post('/addEmoji',function (request,response) {
     existingData[userName] = [];
   }
 
+  // for (const key in existingData) {
+  //   if(key==userName){
+  //     const length = existingData[userName].length;
+  //     existingData[userName][length] = postData;
+  //   }else{
+      
+  //     existingData[userName] = postData; 
+  //   }
+  // }
+  // console.log(existingData);
+
   // Add post data to user's data
   existingData[userName].push(postData);
 
@@ -144,5 +158,32 @@ app.post('/addEmoji',function (request,response) {
       response.sendStatus(200);
     }
   });
+});
+
+//API for comments 
+app.post('/addComment',function (request,response) {
+  const emojitarId = request.body.eomjiId;
+  const userName = request.body.userName;
+  const comment = request.body.comment;
+  const rating = request.body.rating;
+
+
+//Read File
+const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
+const existingData = JSON.parse(json_Data);
+
+//Check if user has already commented on this emoji
+for (const key in existingData) {
+  while (key!=userName) {
+    if(existingData[key].length>0){
+      var exsistingEmojis = existingData[key];
+      exsistingEmojis.forEach(element=>{
+        console.log(element);
+      })
+      
+    }
+  }
+}
+  
 });
 
