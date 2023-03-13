@@ -452,6 +452,30 @@ function getSpecificEmojitar(emojiID) {
 
 
 
+
+/**
+ * Section 3 Begin: Component Tab Functions----------------------------------------------------------------------------------
+ */
+
+
+/**
+ * Section 3 End: Component Tab Functions----------------------------------------------------------------------------------
+ */
+
+
+
+
+/**
+ * Section 4 Begin: Login/Register Tab Functions----------------------------------------------------------------------------------
+ */
+
+
+/**
+ * Section 4 End: Login/Register Tab Functions----------------------------------------------------------------------------------
+ */
+
+
+
 /**
  * Call the functions while loading/refreshing
  */
