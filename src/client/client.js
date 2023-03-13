@@ -231,6 +231,8 @@ function postButton() {
       console.error('Error:', error);
     });
   }
+
+  getAllEmojitars();
 }
 /**
  * Function: constructor for emojiData
@@ -279,6 +281,7 @@ function Emoji(id, images, username, description, comments) {
  * Note: the reason to get comments -> can be viewed commented specifically
  */
 function getAllEmojitars() {
+  emojis = [];
   fetch('/exsistingEmojies')
   .then(response => response.json())
   .then(data => {
