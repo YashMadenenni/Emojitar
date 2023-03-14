@@ -732,6 +732,11 @@ function loginButton() {
   })
   .catch(error => console.error(error));
 }
+/**
+ * Function: to log out
+ * Then 1-> change the realUsername back to "anonymous"
+ * Then 2-> change the display back to login Page.
+ */
 function logoutButton() {
   realUsername = "anonymous";
   loginPage();
