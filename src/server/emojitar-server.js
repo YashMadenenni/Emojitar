@@ -7,7 +7,7 @@ const app = express();
 //const csvWriter = require("csv-writer").createObjectCsvWriter;
 //const sizeOf =  require('image-size')
 const fs = require("fs");
-//const { writer } = require("repl");
+const { writer } = require("repl");
 //const { createObjectCsvWriter } = require("csv-writer");
 app.use(express.json());
 app.listen(API_PORT);
@@ -32,38 +32,33 @@ app.get('/users', function (request, response) {
 });
 
 //API for user Registeration
-app.get('/user/register', function (request, response) {  //should be "post" but not "get" (220005874)
+app.post('/user/register', function (request, response) {
   const userKey = request.body.userName; // "user4" 
   const userName = request.body.userName;  //"Test"
-  const id = request.body.userID; //4         //(220005874) should remove this since not needed as disscussion
-  const password = request.body.username; //"test"  //(220005874)should be "request.body.password" but not "request.body.username"
+  const password = request.body.password;
   const contentBody = {
     "name": userName,
-    "password": password,
-    "id": id  //this should be removed, too (220005874)
+    "password": password
   }
 
   const userJsonData = fs.readFileSync(__dirname + "/" + "users.json", "utf8");
   const existingUserData = JSON.parse(userJsonData);
 
   if (existingUserData[userKey]) {
-    response.sendStatus(409);            //should be "return response.sendStatus(409);" or it will keep writeFile -> method (1)
-    console.log("error data exist");     //Else, to put fs.writeFile method into else if bracket                  -> method (2)
+    response.sendStatus(409);
+    console.log("error data exist");
   } else if (!existingUserData[userKey]) {
-    existingUserData[userKey] = contentBody
+    existingUserData[userKey] = contentBody;
+    fs.writeFile(__dirname + "/" + "users.json", JSON.stringify(existingUserData, null, 2), function (err) {
+      console.log("Adding user");
+      if (err) {
+        console.log(err);
+        response.sendStatus(500);
+      } else {
+        response.sendStatus(200);
+      }
+    });
   }
-  //console.log(existingUserData);
-  // Write to file    //should be stringify(existingUserData, null, 2) to prevent the structure of json file become just one line
-  fs.writeFile(__dirname + "/" + "users.json", JSON.stringify(existingUserData), function (err) {
-    console.log("Adding user");
-    if (err) {
-      console.log(err);
-      response.sendStatus(500);
-    } else {
-      response.sendStatus(200);
-    }
-  });
-
 });
 
 
@@ -337,7 +332,7 @@ app.delete("/deleteEmoji/:userName/:emojiID", function (request, response) {
   });
 });
 /*
-//Set up
+//Set up 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, 'components'));
