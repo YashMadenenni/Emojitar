@@ -699,6 +699,11 @@ function loggedPage() {
                       <button id="log-out-button" onclick="logoutButton()">Log Out</button>`;
   html.innerHTML += htmlSegment;
 }
+/**
+ * Function: to log in (check if the name & password match to the data in user.json)
+ * Then 1-> change the realUsername from "anonymous" to input username
+ * Then 2-> change to the login page
+ */
 function loginButton() {
   let username = document.getElementById("log-username").value;
   let password = document.getElementById("log-password").value;
@@ -720,11 +725,16 @@ function loginButton() {
     if (response.status === 200) {
       alert("User authorized");
       realUsername = username;
+      loggedPage();
     } else {
       alert("User unauthorized");
     }
   })
   .catch(error => console.error(error));
+}
+function logoutButton() {
+  realUsername = "anonymous";
+  loginPage();
 }
 /**
  * Section 4 End: Login/Register Tab Functions----------------------------------------------------------------------------------
