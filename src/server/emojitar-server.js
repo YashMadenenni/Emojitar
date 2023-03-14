@@ -206,13 +206,17 @@ app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
     if (key == userName) {
       const userEmojis = existingData[userName];
       let indexToRemove;
-      userEmojis.forEach(element=>{
-        if(element["emoji-id"]==emojiIdDelete){
-          indexToRemove = userEmojis.indexOf(element);
-          console.log(indexToRemove);
-        }
-      });
-      userEmojis.splice(indexToRemove,1);
+      if(userEmojis.length >0){
+        userEmojis.forEach(element=>{
+          if(element["emoji-id"]==emojiIdDelete){
+            indexToRemove = userEmojis.indexOf(element);
+            console.log(indexToRemove);
+          }
+        });
+        userEmojis.splice(indexToRemove,1);
+      }else{
+        response.send(404);//emoji not found or already deleted
+      }
       
     }
   }
