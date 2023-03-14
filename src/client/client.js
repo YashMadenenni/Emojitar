@@ -328,10 +328,16 @@ function loadAllEmojitars() {
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
                           <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id})">View Comments</button>
+                          <button id="delete-emoji" onclick="deleteEmojitar(${emoji.id})">Delete Emojitar</button>
                       </div>`;
     html.innerHTML += htmlSegment;
   });
 }
+/**
+ * Function: to load the image on page
+ * @param {*} url the resource url of the specific facial component
+ * @returns       the image src
+ */
 function loadImage(url) {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -342,6 +348,11 @@ function loadImage(url) {
     image.src = url;
   });
 }
+/**
+ * Function: to set the canvas for emoji (reusable code for multiple emojis)
+ * @param {*} emojiImages all facial component's file name of a specific emoji (include: face/eyes/mouth/hair)
+ * @param {*} emojiID     a specific emoji ID
+ */
 async function specificCanvas(emojiImages, emojiID) {
   const canvasName = "emoji-canvas-" + emojiID;
   const canvas = document.getElementById(canvasName);
@@ -361,6 +372,9 @@ async function specificCanvas(emojiImages, emojiID) {
   context.drawImage(mouthPic, 0, 0, canvas.width, canvas.width);
   context.drawImage(hairPic, 0, 0, canvas.width, canvas.width);
 }
+/**
+ * Function: to set the canvas of all emojis (Browser Tab)
+ */
 function allCanvas() {
   emojis.forEach(emoji => {
     specificCanvas(emoji.images, emoji.id);
@@ -586,6 +600,11 @@ function getCreators() {
   });
   return creators;
 }
+/**
+ * Function: to load all emojis created by a specific creator
+ * (1) get all specific emojis
+ * (2) all those emojis  --> turn all emojis(global variable) into just emojis with specific criteria
+ */
 function selectCreatorButton() {
   let creator = document.getElementById("creators").value;
   emojis = getSpecificEmoji(creator);
@@ -607,6 +626,10 @@ function getSpecificEmoji(creator) {
   });
   return specificEmojis;
 }
+/**
+ * Function: to load all emojis with specific criteria
+ * @param {*} specificEmojis all emojis with specific criteria
+ */
 function loadSpecificEmojis(specificEmojis) {
   let specificEmojitars = specificEmojis;
   const html = document.getElementById("Browser-Grid");
