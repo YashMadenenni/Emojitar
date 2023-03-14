@@ -230,6 +230,69 @@ app.get('/addComment',function (request,response) {
   });
 });
 
+//API comment 2
+//API for comments 
+app.post('/addComment',function (request,response) {
+  const emojitarId = request.body.eomjiId;
+  const userName = request.body.userName;
+  
+  const comment =   request.body.comment; 
+  /**{
+    "rating": "1",
+    "comments": "I just added",
+    "date": "2023-03-12 12:11:36 GMT+00:00"
+  } */
+  //const rating = request.body.rating;
+  //const date = request.body.date;
+  //Read File
+  const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
+  const existingData = JSON.parse(json_Data);
+
+//Check if user has already commented on this emoji
+  for (const key in existingData) {
+    if (key!=userName) {
+      if(existingData[key].length>0){
+        var exsistingEmojis = existingData[key];
+        //console.log(exsistingEmojis)
+        exsistingEmojis.forEach(element=>{
+          if(element["emoji-id"]==emojitarId){
+          // console.log(element["emoji-id"]);
+          // console.log(element["comments"]);
+          var exsistingComments = element["comments"];
+            //console.log(exsistingComments);
+          if (exsistingComments.length>0) {
+            if(exsistingComments[userName]){
+              //console.log("in loop")
+              exsistingComments[userName] = comment;
+            }else{
+              //console.log("in else")
+              exsistingComments[userName] = comment;
+            }
+          } else {
+            //console.log("in else 2")
+            exsistingComments[userName] = comment;
+          }
+          
+          }
+        });
+        
+      }
+    }
+  }
+  // Write to file
+  fs.writeFile("emojitarComponents.json", JSON.stringify(existingData, null, 2), function (err) {
+    console.log("Adding comment");
+    if (err) {
+      console.log(err);
+      response.sendStatus(500);
+    } else {
+      response.sendStatus(200);
+    }
+  });
+});
+
+//API comment 2 end
+
 //Delete an emoji
 app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
   const userName = request.params.userName;
