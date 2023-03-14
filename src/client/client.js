@@ -327,7 +327,7 @@ function loadAllEmojitars() {
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
-                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id})">View Comments</button>
+                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id})">View Comments</button><p></p>
                           <button id="delete-emoji" onclick="deleteEmojitar(${emoji.id})">Delete Emojitar</button>
                       </div>`;
     html.innerHTML += htmlSegment;
@@ -505,6 +505,10 @@ function submitComment(emojiObjID) {
   }
   reloadComment(emojiObjID);
 }
+/**
+ * Function: to reload the comments part of a specific emoji when a new comment is added
+ * @param {*} emojiObjID specific emoji ID
+ */
 function reloadComment(emojiObjID) {
   emojis = [];
   fetch('/existingEmojies')
@@ -578,6 +582,9 @@ function returnToAllEmojitars() {
 function getSpecificEmojitar(emojiID) {
   return emojis.find(emoji => emoji.id === emojiID) || null;
 }
+/**
+ * Function: to create selection options
+ */
 function creatorSelectionLoading() {
   let creators = getCreators();
   let html = document.getElementById("creators");
@@ -607,8 +614,8 @@ function getCreators() {
  */
 function selectCreatorButton() {
   let creator = document.getElementById("creators").value;
-  emojis = getSpecificEmoji(creator);
-  loadSpecificEmojis(emojis);
+  let thseemojis = getSpecificEmoji(creator);
+  loadSpecificEmojis(thseemojis);
   allCanvas();
   creatorSelectionLoading();
 }
