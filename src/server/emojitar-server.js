@@ -25,8 +25,39 @@ app.get('/users',function (request,response) {
   });    
 });
 
+//API for user Registeration
+app.get('/user/register',function (request,response) {
+  const userKey = "user4"
+  //request.body.userKey;
+  const userName = "Test"
+  // request.body.userName;
+  const id = 4
+  //request.body.userID;
+  const password = "test"
+  //request.body.username;
+  const contentBody = {
+    "name" : userName,
+      "password" : password,
+      "id": id
+  }
+
+  const userJsonData = fs.readFileSync(__dirname+"/"+"users.json","utf8");
+  const exsistingUserData = JSON.parse(userJsonData);
+
+  if(exsistingUserData[userKey]){
+    response.status(409);
+  }else if(!exsistingUserData[userKey]){
+    exsistingUserData[userKey] = contentBody
+  }
+console.log(exsistingUserData);
+  
+
+});
+
+
 //API for user authentication
 app.post('/userAuthentication',function (request,response) {
+  
   fs.readFile(__dirname+"/"+"users.json","utf8",function (err,data) {
         var users = JSON.parse(data);
         var userName = request.body.userName;
