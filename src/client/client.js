@@ -654,9 +654,9 @@ function loadSpecificEmojis(specificEmojis) {
   });
 }
 /**
- * 
- * @param {*} emojiID 
- * @param {*} emojiCreator 
+ * Function: to delete the Specific Emojitar
+ * @param {*} emojiID       specific emojitar ID
+ * @param {*} emojiCreator  specific emojitar creator
  */
 function deleteEmojitar(emojiObjID, emojiCreator) {
   let userName = realUsername;
@@ -671,9 +671,9 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
       method: 'DELETE',
     }).then(response => {
       if (response.ok) {
-        console.log('Emoji deleted successfully.');
+        alert('Emoji deleted successfully. Please reload the page again.');
       } else {
-        console.error('Failed to delete emoji.');
+        alert('Failed to delete emoji.');
       }
     }).catch(error => {
       console.error('An error occurred while deleting emoji:', error);
