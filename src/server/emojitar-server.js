@@ -81,6 +81,7 @@ app.post('/userAuthentication', function (request, response) {
       if (((users[key].name == userName)) && ((users[key].password == password))) {
         console.log("Got it");
         userFound =1; //Authorized
+        break;
       } else {
         userFound =0;//response.sendStatus(401); //Unauthorized
       }
