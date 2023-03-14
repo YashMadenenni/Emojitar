@@ -333,7 +333,7 @@ app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
 //Set up
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, __dirname+"components/");
+    cb(null,path.join(__dirname, 'components'));
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
@@ -341,12 +341,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage:storage});
 //API to upload image
-app.post('/upload',upload.single("file"),  function (request,response) { //file is the name to be used in post data for file
+app.post('/uploadImage',upload.single("file"),  function (request,response) { //file is the name to be used in post data for file
   console.log(request.file);
   const {image} = request.file;
   if(!image) return response.sendStatus(400);
 
   response.sendStatus(200);
-})
+});
 
 
