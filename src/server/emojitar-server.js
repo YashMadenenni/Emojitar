@@ -33,7 +33,7 @@ app.get('/users', function (request, response) {
 
 //API for user Registeration
 app.get('/user/register', function (request, response) {
-  const userKey = request.body.userKey; // "user4" 
+  const userKey = request.body.userName; // "user4" 
   const userName = request.body.userName;  //"Test"
   const id = request.body.userID; //4
   const password = request.body.username; //"test"

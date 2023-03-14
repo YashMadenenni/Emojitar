@@ -1,6 +1,6 @@
 {
-  "Ron": { "name": "Ron", "password": "password1" },
-  "Hermione": { "name": "Hermione", "password": "password2" },
-  "Harry": { "name": "Harry", "password": "password3" },
-  "Test": { "name": "Test", "password": "test" }
+  "user1": { "name": "user1", "password": "password1" },
+  "user2": { "name": "user2", "password": "password2" },
+  "user3": { "name": "user3", "password": "password3" },
+  "user4": { "name": "user4", "password": "test" }
 }
