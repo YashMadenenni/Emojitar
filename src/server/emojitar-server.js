@@ -355,12 +355,12 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
     return response.send(400).send("File size too large");
   }
 
-  //check file dimension
-  const dimension = sizeOf(Buffer.from((file.buffer)));
+  // //check file dimension
+  // const dimension = sizeOf(Buffer.from((file.buffer)));
 
-  if(dimension.width > 240 || dimension.height > 240){
-    return response.status(400).send("Error");
-  }
+  // if(dimension.width > 240 || dimension.height > 240){
+  //   return response.status(400).send("Error");
+  // }
 
 
   const newData = {
