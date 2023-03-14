@@ -2,7 +2,11 @@ const express = require("express");
 const path = require('path');
 const API_PORT = 8000;
 const app = express();
+//const fileUpload = require('express-fileUpload');
+const mutler = require('multer');
+const upload = multer({dest:__dirname+"components/"})
 const fs = require("fs");
+const multer = require("multer");
 app.use(express.json());
 app.listen(API_PORT);
 console.log("server started");
@@ -41,7 +45,7 @@ app.get('/user/register',function (request,response) {
   const existingUserData = JSON.parse(userJsonData);
 
   if(existingUserData[userKey]){
-    response.status(409);
+    response.sendStatus(409);
     console.log("error data exist");
   }else if(!existingUserData[userKey]){
     existingUserData[userKey] = contentBody
@@ -73,9 +77,9 @@ app.post('/userAuthentication',function (request,response) {
 
             if(((users[key].name== userName))&&((users[key].password==password))){
                  console.log("Got it");
-                 response.status(200); //Authorized
+                 response.sendStatus(200); //Authorized
             }else{
-              response.status(401); //Unauthorized
+              response.sendStatus(401); //Unauthorized
             }
         }
         
@@ -325,5 +329,14 @@ app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
   });
 
 });
+
+//API to upload image
+app.post('/upload',upload.single("file"),  function (request,response) { //file is the name to be used in post data for file
+  console.log(request.file);
+  const {image} = request.file;
+  if(!image) return response.sendStatus(400);
+
+  response.sendStatus(200);
+})
 
 
