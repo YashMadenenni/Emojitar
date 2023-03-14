@@ -328,7 +328,7 @@ function loadAllEmojitars() {
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
                           <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id})">View Comments</button><p></p>
-                          <button id="delete-emoji" onclick="deleteEmojitar(${emoji.id})">Delete Emojitar</button>
+                          <button id="delete-emoji" onclick="deleteEmojitar(${emoji.id},'${emoji.username}')">Delete Emojitar</button>
                       </div>`;
     html.innerHTML += htmlSegment;
   });
@@ -648,13 +648,37 @@ function loadSpecificEmojis(specificEmojis) {
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
-                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id})">View Comments</button>
+                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id},${emoji.username})">View Comments</button>
                       </div>`;
     html.innerHTML += htmlSegment;
   });
 }
-function deleteEmojitar() {
-  
+/**
+ * 
+ * @param {*} emojiID 
+ * @param {*} emojiCreator 
+ */
+function deleteEmojitar(emojiObjID, emojiCreator) {
+  let userName = realUsername;
+  let emojiID = emojiObjID.toString();
+
+  if (realUsername === "anonymous") {
+    alert("Anonymous are not allowed to delete any Emojitar");
+  } else if (emojiCreator != userName) {
+    alert("User can only delete their own Emojitar");
+  } else {
+    fetch(`/deleteEmoji/${userName}/${emojiID}`, {
+      method: 'DELETE',
+    }).then(response => {
+      if (response.ok) {
+        console.log('Emoji deleted successfully.');
+      } else {
+        console.error('Failed to delete emoji.');
+      }
+    }).catch(error => {
+      console.error('An error occurred while deleting emoji:', error);
+    });
+  }
 }
 /**
  * Section 2 End: Browser Tab Functions----------------------------------------------------------------------------------
