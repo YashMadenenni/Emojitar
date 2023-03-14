@@ -311,7 +311,6 @@ function getAllEmojitars() {
     });
   })
   .catch(error => console.error(error));
-  
 }
 /**
  * Function: to load all emojitars all at onces
@@ -432,8 +431,6 @@ function setLayoutForCommentSetting(emojiObj) {
                         </select><p></p>
                         <label for="comment">Comment</label>
                         <input type="text" id="comment" name="comment"><p></p>
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username"><p></p>
                         <button id="submit-comment" onclick="submitComment(${emoji.id})">Submit Comment</button>
                       </div>`;
   html.innerHTML += htmlSegment;
@@ -469,6 +466,8 @@ function submitComment(emojiObjID) {
     Please log in first`);
   } else if (commentor === emoji.username) {
     alert("You are only allowed to comment emojitars created by other users");
+  } else if (!comment) {
+    alert("Valid comments should include both rating and comment");
   } else {
     let data = {
       "emojiId": emojiID,
@@ -478,8 +477,6 @@ function submitComment(emojiObjID) {
         "comments":comment,
         "date": dateString
       }
-        
-      
     }
   
     fetch('/addComment', {
@@ -491,9 +488,26 @@ function submitComment(emojiObjID) {
       else {console.log('Failed to comment');}})
       .catch(error => {console.error(error);});
   }
-
-  let emojiComments = emoji.comments;
-  setLayoutForAllComments(emojiComments);
+  reloadComment(emojiObjID);
+}
+function reloadComment(emojiObjID) {
+  emojis = [];
+  fetch('/exsistingEmojies')
+  .then(response => response.json())
+  .then(data => {
+    Object.keys(data).forEach(key => {
+      const userData = data[key];
+      userData.forEach(emoji => {
+        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments);
+        emojis.push(emojiObj);
+      });
+      const emoji = getSpecificEmojitar(emojiObjID.toString());
+      console.log(emoji);
+      let emojiComments = emoji.comments;
+      setLayoutForAllComments(emojiComments);
+    });
+  })
+  .catch(error => console.error(error));
 }
 /**
  * Function: to get all comment's info of a specific emoji
@@ -558,6 +572,10 @@ function creatorSelectionLoading() {
     let htmlSegment = `<option value=${creator}>${creator}</option>`;
     html.innerHTML += htmlSegment;});
 }
+/**
+ * Function: to get all creators' name (no duplicate), this function is to create selection option.
+ * @returns an array of creator's name
+ */
 function getCreators() {
   let creators = [];
   emojis.forEach((emoji) => {
@@ -574,6 +592,11 @@ function selectCreatorButton() {
   allCanvas();
   creatorSelectionLoading();
 }
+/**
+ * Function: to get specific emoji based on creator's name criteria and display them
+ * @param {*} creator specific creator's name
+ * @returns emojis that meet the criteria
+ */
 function getSpecificEmoji(creator) {
   let specificEmojis = [];
   emojis.forEach(emoji => {
