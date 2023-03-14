@@ -120,94 +120,40 @@ app.get('/exsistingEmojies',function (request,response) {
 });
 
 //Add new emojitars
-app.post('/addEmoji',function (request,response) {
-
-    const userName = request.body.userName;
-    const postData = request.body;
-
-  //Read File
-  const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
-  const existingData = JSON.parse(json_Data);
-
-  // Check if user exists in existing data
-  if (!existingData[userName]) {
-    existingData[userName] = [];
-  }
-
-
-
-  // Add post data to user's data
-  existingData[userName].push(postData);
-
-  //Write to file
-  fs.writeFile("emojitarComponents.json",JSON.stringify(existingData, null, 2),function (err) {
-    console.log("Writing"); 
-    if (err) {
-      console.log(err);
-      response.sendStatus(500);
-    } else {
-      response.sendStatus(200);
-    }
-  });
-});
-
-//API for comments 
-app.get('/addComment',function (request,response) {
-  //const emojitarId = "2";
-  request.body.eomjiId;
-  //const userName = "user2";
-  request.body.userName;
-  /*
+app.post('/addComment', function (request, response) {
+  const emojiId = request.body.emojiId;
+  const userName = request.body.userName;
   const comment = {
-    "rating": "1",
-    "comments": "I just added",
-    "date": "2023-03-12 12:11:36 GMT+00:00"
-  }*/
-  request.body.comment;
-  const rating = request.body.rating;
-  const date = request.body.date;
+    "rating": request.body.rating,
+    "comments": request.body.comments,
+    "date": request.body.date
+  };
 
+  const jsonData = fs.readFileSync("emojitarComponents.json", "utf-8");
+  const existingData = JSON.parse(jsonData);
 
-  //Read File
-  const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
-  const existingData = JSON.parse(json_Data);
-
-
-  //Check if user has already commented on this emoji
-  for (const key in existingData) {
-    if (key!=userName) {
-      if(existingData[key].length>0){
-        var exsistingEmojis = existingData[key];
-        //console.log(exsistingEmojis)
-        exsistingEmojis.forEach(element=>{
-          if(element["emoji-id"]==emojitarId){
-          // console.log(element["emoji-id"]);
-          // console.log(element["comments"]);
-
-          var exsistingComments = element["comments"];
-            //console.log(exsistingComments);
-          if (exsistingComments.length>0) {
-            if(exsistingComments[userName]){
-              //console.log("in loop")
-              exsistingComments[userName] = comment;
-            }else{
-              //console.log("in else")
-              exsistingComments[userName] = comment;
-            }
-          } else {
-            //console.log("in else 2")
-            exsistingComments[userName] = comment;
-          }
-          
-          }
-        });
-        
-      }
+  let emojitar = null;
+  for (const user in existingData) {
+    const emojitars = existingData[user];
+    emojitar = emojitars.find(e => e["emoji-id"] === emojiId);
+    if (emojitar) {
+      break;
     }
   }
-  //Write to file
-  fs.writeFile("emojitarComponents.json",JSON.stringify(existingData, null, 2),function (err) {
-    console.log("Adding comment"); 
+
+  const emojitarComments = emojitar.comments;
+  if (emojitarComments && emojitarComments[userName]) {
+    emojitarComments[userName] = comment;
+  } else {
+    if (!emojitarComments) {
+      emojitar.comments = {};
+    }
+    emojitarComments[userName] = comment;
+  }
+
+  // Write to file
+  fs.writeFile("emojitarComponents.json", JSON.stringify(existingData, null, 2), function (err) {
+    console.log("Adding comment");
     if (err) {
       console.log(err);
       response.sendStatus(500);
@@ -216,4 +162,5 @@ app.get('/addComment',function (request,response) {
     }
   });
 });
+
 

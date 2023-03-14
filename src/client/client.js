@@ -187,7 +187,7 @@ function Color(faceColor, eyesColor, mouthColor, hairColor) {
 function postButton() {
   let id = document.getElementById("inputID").value;
   let description = document.getElementById("inputDescription").value;
-  let username = document.getElementById("inputUsername").value;
+  let username = realUsername;
   
   let currentDate = new Date();
   let year = currentDate.getFullYear() + '-';
@@ -201,9 +201,9 @@ function postButton() {
                           ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
   const dateString = year + month + date + hour + min + second + timeZone;
 
-  if (realUsername === "anonumous") {
+  if (realUsername === "anonymous") {
     alert(`
-    Anonumous user are not allowed to post an emojitar.
+    Anonymous user are not allowed to post an emojitar.
     Please log in first`);
   } else if (!id || !description || !username || 
       !faceComponent || !eyesComponent || !mouthComponent || !hairComponent) {
@@ -445,13 +445,49 @@ function setLayoutForCommentSetting(emojiObj) {
  */
 function submitComment(emojiObjID) {
   let rating = document.getElementById("rating").value;
-  let commentor = document.getElementById("username").value;
+  let commentor = realUsername;
   let comment = document.getElementById("comment").value;
-  let emojiID = emojiObjID;
+  let emojiID = emojiObjID.toString();
+
+  let currentDate = new Date();
+  let year = currentDate.getFullYear() + '-';
+  let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
+  let date = ('0' + currentDate.getDate()).slice(-2) + ' ';
+  let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
+  let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
+  let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
+  let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
+                          ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
+                          ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
+  const dateString = year + month + date + hour + min + second + timeZone;
 
   let emoji = getSpecificEmojitar(emojiObjID.toString());
 
-  //To-Do: written the rating + commentor + comment based on emoji ID;
+  if (realUsername === "anonymous") {
+    alert(`
+    Anonymous user are not allowed to comment.
+    Please log in first`);
+  } else if (commentor === emoji.username) {
+    alert("You are only allowed to comment emojitars created by other users");
+  } else {
+    let data = {
+      "emojiId": emojiID,
+      "userName": commentor,
+      "rating": rating,
+      "comments": comment,
+      "date": dateString
+    }
+  
+    fetch('/addComment', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)})
+      .then(response => {
+      if (response.ok) {alert('Commented!');} 
+      else {console.log('Failed to comment');}})
+      .catch(error => {console.error(error);});
+  }
+
   let emojiComments = emoji.comments;
   setLayoutForAllComments(emojiComments);
 }
