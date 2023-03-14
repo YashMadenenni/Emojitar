@@ -671,7 +671,7 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
       method: 'DELETE',
     }).then(response => {
       if (response.ok) {
-        alert('Emoji deleted successfully. Please reload the page again.');
+        alert('Emoji deleted successfully. Reload the page now....');
       } else {
         alert('Failed to delete emoji.');
       }
@@ -679,6 +679,7 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
       console.error('An error occurred while deleting emoji:', error);
     });
   }
+  returnToAllEmojitars();  //since emoji is delete, so refresh the page.
 }
 /**
  * Section 2 End: Browser Tab Functions----------------------------------------------------------------------------------
