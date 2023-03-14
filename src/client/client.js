@@ -473,9 +473,13 @@ function submitComment(emojiObjID) {
     let data = {
       "emojiId": emojiID,
       "userName": commentor,
-      "rating": rating,
-      "comments": comment,
-      "date": dateString
+      "comment": {
+        "rating": rating,
+        "comments":comment,
+        "date": dateString
+      }
+        
+      
     }
   
     fetch('/addComment', {

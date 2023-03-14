@@ -188,55 +188,14 @@ app.post('/addEmoji',function (request,response) {
   });
 });
 
-//API for comments 
-app.get('/addComment',function (request,response) {
-  const emojitarId =  request.body.eomjiId;
-  const userName =  request.body.userName;
-  const comment =  request.body.comment;
-  //const rating = request.body.rating;
-  //const date = request.body.date;
 
-  const jsonData = fs.readFileSync("emojitarComponents.json", "utf-8");
-  const existingData = JSON.parse(jsonData);
-
-  let emojitar = null;
-  for (const user in existingData) {
-    const emojitars = existingData[user];
-    emojitar = emojitars.find(e => e["emoji-id"] === emojiId);
-    if (emojitar) {
-      break;
-    }
-  }
-
-  const emojitarComments = emojitar.comments;
-  if (emojitarComments && emojitarComments[userName]) {
-    emojitarComments[userName] = comment;
-  } else {
-    if (!emojitarComments) {
-      emojitar.comments = {};
-    }
-    emojitarComments[userName] = comment;
-  }
-
-  // Write to file
-  fs.writeFile("emojitarComponents.json", JSON.stringify(existingData, null, 2), function (err) {
-    console.log("Adding comment");
-    if (err) {
-      console.log(err);
-      response.sendStatus(500);
-    } else {
-      response.sendStatus(200);
-    }
-  });
-});
-
-//API comment 2
-//API for comments 
+//API for comments emojiId:
 app.post('/addComment',function (request,response) {
-  const emojitarId = request.body.eomjiId;
-  const userName = request.body.userName;
-  
+  const emojitarId = request.body.emojiId; //"2"
+  const userName = request.body.userName; //"user2";
   const comment =   request.body.comment; 
+  //console.log(request.body)
+  //console.log(emojitarId+ " " +userName+" "+comment)
   /**{
     "rating": "1",
     "comments": "I just added",
@@ -255,6 +214,7 @@ app.post('/addComment',function (request,response) {
         var exsistingEmojis = existingData[key];
         //console.log(exsistingEmojis)
         exsistingEmojis.forEach(element=>{
+          //console.log(element["emoji-id"] + " " +emojitarId)
           if(element["emoji-id"]==emojitarId){
           // console.log(element["emoji-id"]);
           // console.log(element["comments"]);
@@ -279,6 +239,7 @@ app.post('/addComment',function (request,response) {
       }
     }
   }
+  
   // Write to file
   fs.writeFile("emojitarComponents.json", JSON.stringify(existingData, null, 2), function (err) {
     console.log("Adding comment");
@@ -286,12 +247,14 @@ app.post('/addComment',function (request,response) {
       console.log(err);
       response.sendStatus(500);
     } else {
+      //console.log(existingData);
+      //response.send(existingData);
       response.sendStatus(200);
     }
   });
 });
 
-//API comment 2 end
+
 
 //Delete an emoji
 app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
