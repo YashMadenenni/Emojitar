@@ -37,6 +37,7 @@ function loadPage() {
   getAllFacialComponent();
   getAllEmojitars();
   creatorSelectionLoading();
+  loginPage();
   document.getElementById("defaultActive").click();  
 }
 /**
@@ -644,8 +645,60 @@ function loadSpecificEmojis(specificEmojis) {
 /**
  * Section 4 Begin: Login/Register Tab Functions----------------------------------------------------------------------------------
  */
-
-
+/**
+ * Function: to display the visual effect for login page
+ * The reason to not directly write into the html: 
+ * after login, login element will be removed; however, we might want to use it again
+ */
+function loginPage() {
+  let html = document.getElementById("account-box");
+  html.innerHTML = '';
+  let htmlSegment = ` <h1>Login</h1>
+                        <table>
+                        <tr>
+                          <td><label for="username">Username:</label></td>
+                          <td><input type="text" id="username" name="username"><p></p></td>
+                        </tr>
+                        <tr>
+                          <td><label for="password">Password:</label></td>
+                          <td><input type="text" id="password" name="password"><p></p></td>
+                        </tr>
+                      </table>
+                      <button id="login-button" onclick="loginButton()">Login</button>&nbsp
+                      <button id="register-page-button" onclick="registerPage()">Register</button>`;
+  html.innerHTML += htmlSegment;
+}
+/**
+ * Function: to display the visual effect for register page
+ */
+function registerPage() {
+  let html = document.getElementById("account-box");
+  html.innerHTML = '';
+  let htmlSegment = ` <h1>Register</h1>
+                        <table>
+                        <tr>
+                          <td><label for="username">Username:</label></td>
+                          <td><input type="text" id="username" name="username"><p></p></td>
+                        </tr>
+                        <tr>
+                          <td><label for="password">Password:</label></td>
+                          <td><input type="text" id="password" name="password"><p></p></td>
+                        </tr>
+                      </table>
+                      <button id="register-button" onclick="registerSubmit()">Register</button>&nbsp
+                      <button id="log-in-page" onclick="loginPage()">Back to Login</button>`;
+  html.innerHTML += htmlSegment;
+}
+/**
+ * Function: to display the visual effect for after-login Page
+ */
+function loggedPage() {
+  let html = document.getElementById("account-box");
+  html.innerHTML = '';
+  let htmlSegment = ` <h1>Succesfully Login: ${realUsername}</h1>
+                      <button id="log-out-button" onclick="logoutButton()">Log Out</button>`;
+  html.innerHTML += htmlSegment;
+}
 /**
  * Section 4 End: Login/Register Tab Functions----------------------------------------------------------------------------------
  */

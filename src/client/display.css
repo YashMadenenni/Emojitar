@@ -236,3 +236,15 @@ body, html{
     padding-top: 20%;
     text-align: justify;
 }
+
+
+
+
+/*Login Page*/
+#account-box {
+    padding-top: 10%;
+    margin: 5%;
+}
+td {
+    vertical-align: top;
+}  
