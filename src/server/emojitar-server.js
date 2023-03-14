@@ -20,25 +20,24 @@ app.use((req, res, next) => {
 //API for all users 
 app.get('/users',function (request,response) {
   fs.readFile(__dirname+"/"+"users.json","utf8",function (err,data) {
-      console.log(data);
+      //console.log(data);
       response.end(data);
   });    
 });
 
 //API for user authentication
-app.get('/users/:userName/:password',function (request,response) {
+app.post('/userAuthentication',function (request,response) {
   fs.readFile(__dirname+"/"+"users.json","utf8",function (err,data) {
         var users = JSON.parse(data);
-        var userName = request.params.userName;
-        var password = request.params.password;
+        var userName = request.body.userName;
+        var password = request.body.password;
         for (const key in users) {
 
             if(((users[key].name== userName))&&((users[key].password==password))){
                  console.log("Got it");
-            //     console.log(users[key].name);
-            // console.log("user "+userName);
-            // console.log(users[key].password);
-            // console.log("pass "+password);
+                 response.status(200); //Authorized
+            }else{
+              response.status(401); //Unauthorized
             }
         }
         

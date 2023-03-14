@@ -14,7 +14,7 @@
 2. function only for logged users
     2.1 to save emojitars --> done
     2.2 to comment/rate emojitars other user created  --> done
-    2.3 to delete their own emijotars (must: relevent files and comments...) --> backend(endpoint needed), front: set criteria to ban not creator to 
+    2.3 to delete their own emijotars (must: relevent files and comments...) --> backend(done), front: set criteria to ban not creator to 
 # ADVANCE
 1. function for all users
     1.1 to customise a facial component(e.g. tint the colour of face/eye/hair) --> frontend
