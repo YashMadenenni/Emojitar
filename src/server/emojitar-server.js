@@ -4,7 +4,7 @@ const API_PORT = 8000;
 const app = express();
 //const fileUpload = require('express-fileUpload');
 const mutler = require('multer');
-const upload = multer({dest:__dirname+"components/"})
+
 const fs = require("fs");
 const multer = require("multer");
 app.use(express.json());
@@ -330,6 +330,16 @@ app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
 
 });
 
+//Set up
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, __dirname+"components/");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({storage:storage});
 //API to upload image
 app.post('/upload',upload.single("file"),  function (request,response) { //file is the name to be used in post data for file
   console.log(request.file);
