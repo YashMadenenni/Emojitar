@@ -7,7 +7,6 @@ const multer = require('multer');
 const csvWriter = require("csv-writer").createObjectCsvWriter;
 
 const fs = require("fs");
-const multer = require("multer");
 const { writer } = require("repl");
 const { createObjectCsvWriter } = require("csv-writer");
 app.use(express.json());
@@ -347,10 +346,7 @@ const upload = multer({ storage: storage });
 app.post('/uploadImage', upload.single("file"), function (request, response) { //file is the name to be used in post data for file
   console.log(request.file);
   const { image } = request.file;
-  if (!image) return response.sendStatus(400);
-
-  response.sendStatus(200);
-
+  // if (!image) return response.sendStatus(400);
 
   const newData = {
     type: request.body.type,
@@ -360,10 +356,29 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
     user: request.body.user,
     date: request.body.date
   }
+
+  // const newData = {
+  //   type: "type",
+  //   id: "id",
+  //   description: "description",
+  //   filename: request.file.originalname,
+  //   user: "user",
+  //   date: "date"
+  // }
+  console.log(newData)
+
+
   const writerToCsv = csvWriter({
     path: "componentInfo.csv",
-    header: false
+    header: [{id:"type",title:"type"},
+    {id:"id",title:"id"},
+    {id:"description",title:"description"},
+    {id:"filename",title:"filename"},
+    {id:"user",title:"user"},
+    {id:"date",title:"date"}],
+    append:true
   });
+  
   writerToCsv.writeRecords([newData]).then(() => {
     console.log("done")
     response.sendStatus(200)
