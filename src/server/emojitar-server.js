@@ -5,7 +5,7 @@ const app = express();
 //const fileUpload = require('express-fileUpload');
 const multer = require('multer');
 const csvWriter = require("csv-writer").createObjectCsvWriter;
-
+const sizeOf =  require('image-size')
 const fs = require("fs");
 const { writer } = require("repl");
 const { createObjectCsvWriter } = require("csv-writer");
@@ -345,8 +345,23 @@ const upload = multer({ storage: storage });
 //API to upload image
 app.post('/uploadImage', upload.single("file"), function (request, response) { //file is the name to be used in post data for file
   console.log(request.file);
-  const { image } = request.file;
-  // if (!image) return response.sendStatus(400);
+  const { file } = request;
+  //check file type
+  if (request.file.mimetype != "image/png") {
+    return response.send(400).send("File type is not .PNG");
+  }
+  //check file size
+  if (request.file.size > 2000000) {
+    return response.send(400).send("File size too large");
+  }
+
+  //check file dimension
+  const dimension = sizeOf(Buffer.from((file.buffer)));
+
+  if(dimension.width > 240 || dimension.height > 240){
+    return response.status(400).send("Error");
+  }
+
 
   const newData = {
     type: request.body.type,
@@ -370,18 +385,18 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
 
   const writerToCsv = csvWriter({
     path: "componentInfo.csv",
-    header: [{id:"type",title:"type"},
-    {id:"id",title:"id"},
-    {id:"description",title:"description"},
-    {id:"filename",title:"filename"},
-    {id:"user",title:"user"},
-    {id:"date",title:"date"}],
-    append:true
+    header: [{ id: "type", title: "type" },
+    { id: "id", title: "id" },
+    { id: "description", title: "description" },
+    { id: "filename", title: "filename" },
+    { id: "user", title: "user" },
+    { id: "date", title: "date" }],
+    append: true
   });
-  
+
   writerToCsv.writeRecords([newData]).then(() => {
     console.log("done")
-    response.sendStatus(200)
+    response.send(200).send("Sucessfully uploaded")
   });
 });
 
