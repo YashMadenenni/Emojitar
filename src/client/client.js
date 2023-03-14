@@ -721,7 +721,6 @@ function loginButton() {
     body: JSON.stringify(loginData)
   })
   .then(response => {
-    console.log('Response received:', response);
     if (response.status === 200) {
       alert("User authorized");
       realUsername = username;
@@ -740,6 +739,34 @@ function loginButton() {
 function logoutButton() {
   realUsername = "anonymous";
   loginPage();
+}
+function registerSubmit() {
+
+  let username = document.getElementById("register-username").value;
+  let password = document.getElementById("register-password").value;
+
+  let registerData = {
+    "userName": username,
+    "password": password
+  }
+
+  fetch('/user/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(registerData)
+  })
+  .then(response => {
+    if (response.status === 200) {
+      alert("Successfully Registered");
+    } else if (response.status === 409) {
+      alert("Username Already Exist");
+    } else {
+      alert("Fail to Register");
+    }
+  })
+  .catch(error => console.error(error));
 }
 /**
  * Section 4 End: Login/Register Tab Functions----------------------------------------------------------------------------------

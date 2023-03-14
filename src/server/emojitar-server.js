@@ -32,15 +32,15 @@ app.get('/users', function (request, response) {
 });
 
 //API for user Registeration
-app.get('/user/register', function (request, response) {
+app.get('/user/register', function (request, response) {  //should be "post" but not "get" (220005874)
   const userKey = request.body.userName; // "user4" 
   const userName = request.body.userName;  //"Test"
-  const id = request.body.userID; //4
-  const password = request.body.username; //"test"
+  const id = request.body.userID; //4         //(220005874) should remove this since not needed as disscussion
+  const password = request.body.username; //"test"  //(220005874)should be "request.body.password" but not "request.body.username"
   const contentBody = {
     "name": userName,
     "password": password,
-    "id": id
+    "id": id  //this should be removed, too (220005874)
   }
 
   const userJsonData = fs.readFileSync(__dirname + "/" + "users.json", "utf8");
@@ -53,8 +53,8 @@ app.get('/user/register', function (request, response) {
     existingUserData[userKey] = contentBody
   }
   //console.log(existingUserData);
-
-  // Write to file
+  //this fs.writeFile should be moved into the bracket of else if (!existingUserData[userKey]) {...} 220005874
+  // Write to file    //should be stringify(existingUserData, null, 2) to prevent the structure of json file become just one line
   fs.writeFile(__dirname + "/" + "users.json", JSON.stringify(existingUserData), function (err) {
     console.log("Adding user");
     if (err) {
