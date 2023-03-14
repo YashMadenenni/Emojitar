@@ -46,11 +46,22 @@ app.get('/user/register',function (request,response) {
 
   if(exsistingUserData[userKey]){
     response.status(409);
+    console.log("error data exsist");
   }else if(!exsistingUserData[userKey]){
     exsistingUserData[userKey] = contentBody
   }
-console.log(exsistingUserData);
+//console.log(exsistingUserData);
   
+// Write to file
+fs.writeFile(__dirname+"/"+"users.json", JSON.stringify(exsistingUserData), function (err) {
+  console.log("Adding user");
+  if (err) {
+    console.log(err);
+    response.sendStatus(500);
+  } else {
+    response.sendStatus(200);
+  }
+});
 
 });
 
