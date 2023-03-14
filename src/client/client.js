@@ -610,7 +610,7 @@ function getCreators() {
 /**
  * Function: to load all emojis created by a specific creator
  * (1) get all specific emojis
- * (2) all those emojis  --> turn all emojis(global variable) into just emojis with specific criteria
+ * (2) all those emojis  --> turn all emojis into just emojis with specific criteria
  */
 function selectCreatorButton() {
   let creator = document.getElementById("creators").value;
@@ -652,6 +652,9 @@ function loadSpecificEmojis(specificEmojis) {
                       </div>`;
     html.innerHTML += htmlSegment;
   });
+}
+function deleteEmojitar() {
+  
 }
 /**
  * Section 2 End: Browser Tab Functions----------------------------------------------------------------------------------

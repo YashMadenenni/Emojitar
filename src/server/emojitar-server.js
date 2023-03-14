@@ -47,13 +47,12 @@ app.get('/user/register', function (request, response) {  //should be "post" but
   const existingUserData = JSON.parse(userJsonData);
 
   if (existingUserData[userKey]) {
-    response.sendStatus(409);
-    console.log("error data exist");
+    response.sendStatus(409);            //should be "return response.sendStatus(409);" or it will keep writeFile -> method (1)
+    console.log("error data exist");     //Else, to put fs.writeFile method into else if bracket                  -> method (2)
   } else if (!existingUserData[userKey]) {
     existingUserData[userKey] = contentBody
   }
   //console.log(existingUserData);
-  //this fs.writeFile should be moved into the bracket of else if (!existingUserData[userKey]) {...} 220005874
   // Write to file    //should be stringify(existingUserData, null, 2) to prevent the structure of json file become just one line
   fs.writeFile(__dirname + "/" + "users.json", JSON.stringify(existingUserData), function (err) {
     console.log("Adding user");
@@ -336,7 +335,6 @@ app.delete("/deleteEmoji/:userName/:emojiID", function (request, response) {
       response.sendStatus(200);
     }
   });
-
 });
 /*
 //Set up
