@@ -75,14 +75,20 @@ app.post('/userAuthentication', function (request, response) {
     var users = JSON.parse(data);
     var userName = request.body.userName;
     var password = request.body.password;
+    var userFound =0 ;
     for (const key in users) {
 
       if (((users[key].name == userName)) && ((users[key].password == password))) {
         console.log("Got it");
-        response.sendStatus(200); //Authorized
+        userFound =1; //Authorized
       } else {
-        response.sendStatus(401); //Unauthorized
+        userFound =0;//response.sendStatus(401); //Unauthorized
       }
+    }
+    if(userFound){
+      response.sendStatus(200);
+    }else{
+      response.sendStatus(401);
     }
 
   });
