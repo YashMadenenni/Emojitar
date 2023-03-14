@@ -740,33 +740,42 @@ function logoutButton() {
   realUsername = "anonymous";
   loginPage();
 }
+/**
+ * Function: to submit a register information: include username + password
+ * Then --> if the username has already existed, alert
+ * Then --> if the username is not existing, save it
+ */
 function registerSubmit() {
 
   let username = document.getElementById("register-username").value;
   let password = document.getElementById("register-password").value;
 
-  let registerData = {
-    "userName": username,
-    "password": password
-  }
-
-  fetch('/user/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(registerData)
-  })
-  .then(response => {
-    if (response.status === 200) {
-      alert("Successfully Registered");
-    } else if (response.status === 409) {
-      alert("Username Already Exist");
-    } else {
-      alert("Fail to Register");
+  if (!username || !password) {
+    alert("A valid register include: username & password");
+  } else {
+    let registerData = {
+      "userName": username,
+      "password": password
     }
-  })
-  .catch(error => console.error(error));
+  
+    fetch('/user/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(registerData)
+    })
+    .then(response => {
+      if (response.status === 200) {
+        alert("Successfully Registered");
+      } else if (response.status === 409) {
+        alert("Username Already Exist");
+      } else {
+        alert("Fail to Register");
+      }
+    })
+    .catch(error => console.error(error));
+  }
 }
 /**
  * Section 4 End: Login/Register Tab Functions----------------------------------------------------------------------------------
