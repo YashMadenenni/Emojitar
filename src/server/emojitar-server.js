@@ -219,6 +219,16 @@ app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
   }
 
   console.log(existingData);
+  // Writing updated data to file
+  fs.writeFile("emojitarComponents.json", JSON.stringify(existingData, null, 2), function (err) {
+    console.log("Deleting emoji");
+    if (err) {
+      console.log(err);
+      response.sendStatus(500);
+    } else {
+      response.sendStatus(200);
+    }
+  });
 
 });
 
