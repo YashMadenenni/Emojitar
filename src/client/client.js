@@ -26,7 +26,7 @@ let emojis = [];
 /**Browser Tab End*/
 
 /**Login-Register Tab*/
-let realUsername = "testuser";
+let realUsername = "anonymous";
 
 /**
  * Function Purpose: load the page while window onload
@@ -486,7 +486,7 @@ function submitComment(emojiObjID) {
       body: JSON.stringify(data)})
       .then(response => {
       if (response.ok) {alert('Commented!');} 
-      else {console.log('Failed to comment');}})
+      else {alert('Failed to comment');}})
       .catch(error => {console.error(error);});
   }
   reloadComment(emojiObjID);
@@ -657,11 +657,11 @@ function loginPage() {
                         <table>
                         <tr>
                           <td><label for="username">Username:</label></td>
-                          <td><input type="text" id="username" name="username"><p></p></td>
+                          <td><input type="text" id="log-username" name="log-username"><p></p></td>
                         </tr>
                         <tr>
                           <td><label for="password">Password:</label></td>
-                          <td><input type="text" id="password" name="password"><p></p></td>
+                          <td><input type="text" id="log-password" name="log-password"><p></p></td>
                         </tr>
                       </table>
                       <button id="login-button" onclick="loginButton()">Login</button>&nbsp
@@ -678,11 +678,11 @@ function registerPage() {
                         <table>
                         <tr>
                           <td><label for="username">Username:</label></td>
-                          <td><input type="text" id="username" name="username"><p></p></td>
+                          <td><input type="text" id="register-username" name="register-username"><p></p></td>
                         </tr>
                         <tr>
                           <td><label for="password">Password:</label></td>
-                          <td><input type="text" id="password" name="password"><p></p></td>
+                          <td><input type="text" id="register-password" name="register-password"><p></p></td>
                         </tr>
                       </table>
                       <button id="register-button" onclick="registerSubmit()">Register</button>&nbsp
@@ -698,6 +698,33 @@ function loggedPage() {
   let htmlSegment = ` <h1>Succesfully Login: ${realUsername}</h1>
                       <button id="log-out-button" onclick="logoutButton()">Log Out</button>`;
   html.innerHTML += htmlSegment;
+}
+function loginButton() {
+  let username = document.getElementById("log-username").value;
+  let password = document.getElementById("log-password").value;
+
+  let loginData = {
+    "userName": username,
+    "password": password,
+  };
+
+  fetch('/userAuthentication', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(loginData)
+  })
+  .then(response => {
+    console.log('Response received:', response);
+    if (response.status === 200) {
+      alert("User authorized");
+      realUsername = username;
+    } else {
+      alert("User unauthorized");
+    }
+  })
+  .catch(error => console.error(error));
 }
 /**
  * Section 4 End: Login/Register Tab Functions----------------------------------------------------------------------------------

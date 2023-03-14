@@ -3,12 +3,12 @@ const path = require('path');
 const API_PORT = 8000;
 const app = express();
 //const fileUpload = require('express-fileUpload');
-const multer = require('multer');
-const csvWriter = require("csv-writer").createObjectCsvWriter;
-const sizeOf =  require('image-size')
+//const multer = require('multer');
+//const csvWriter = require("csv-writer").createObjectCsvWriter;
+//const sizeOf =  require('image-size')
 const fs = require("fs");
-const { writer } = require("repl");
-const { createObjectCsvWriter } = require("csv-writer");
+//const { writer } = require("repl");
+//const { createObjectCsvWriter } = require("csv-writer");
 app.use(express.json());
 app.listen(API_PORT);
 console.log("server started");
@@ -337,7 +337,7 @@ app.delete("/deleteEmoji/:userName/:emojiID", function (request, response) {
   });
 
 });
-
+/*
 //Set up
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -404,6 +404,6 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
     console.log("done")
     response.sendStatus(200);
   });
-});
+});*/
 
 
