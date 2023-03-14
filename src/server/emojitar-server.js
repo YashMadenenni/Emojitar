@@ -27,14 +27,10 @@ app.get('/users',function (request,response) {
 
 //API for user Registeration
 app.get('/user/register',function (request,response) {
-  const userKey = "user4"
-  //request.body.userKey;
-  const userName = "Test"
-  // request.body.userName;
-  const id = 4
-  //request.body.userID;
-  const password = "test"
-  //request.body.username;
+  const userKey = request.body.userKey; // "user4" 
+  const userName =  request.body.userName;  //"Test"
+  const id = request.body.userID; //4
+  const password = request.body.username; //"test"
   const contentBody = {
     "name" : userName,
       "password" : password,
