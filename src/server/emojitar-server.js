@@ -195,14 +195,23 @@ app.get('/getEmoji/:emojiId',function (request,response) {
   const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
   const existingData = JSON.parse(json_Data);
 
+  var dataToSend ;
+
   for(const key in existingData){
     var userEmojiArray = existingData[key];
     
     userEmojiArray.forEach(element=>{
       if (element["emoji-id"]==emojiID) {
-        response.json(element);
+        dataToSend = element;
       }
-    })
+    });
+  }
+
+  if(dataToSend!=undefined){
+    console.log(Object.keys(dataToSend).length);
+    response.json(dataToSend);
+  }else{
+    response.sendStatus(404);
   }
 })
 
