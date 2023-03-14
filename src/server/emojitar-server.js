@@ -120,14 +120,44 @@ app.get('/exsistingEmojies',function (request,response) {
 });
 
 //Add new emojitars
-app.post('/addComment', function (request, response) {
-  const emojiId = request.body.emojiId;
-  const userName = request.body.userName;
-  const comment = {
-    "rating": request.body.rating,
-    "comments": request.body.comments,
-    "date": request.body.date
-  };
+app.post('/addEmoji',function (request,response) {
+
+    const userName = request.body.userName;
+    const postData = request.body;
+
+  //Read File
+  const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
+  const existingData = JSON.parse(json_Data);
+
+  // Check if user exists in existing data
+  if (!existingData[userName]) {
+    existingData[userName] = [];
+  }
+
+
+
+  // Add post data to user's data
+  existingData[userName].push(postData);
+
+  //Write to file
+  fs.writeFile("emojitarComponents.json",JSON.stringify(existingData, null, 2),function (err) {
+    console.log("Writing"); 
+    if (err) {
+      console.log(err);
+      response.sendStatus(500);
+    } else {
+      response.sendStatus(200);
+    }
+  });
+});
+
+//API for comments 
+app.get('/addComment',function (request,response) {
+  const emojitarId =  request.body.eomjiId;
+  const userName =  request.body.userName;
+  const comment =  request.body.comment;
+  //const rating = request.body.rating;
+  //const date = request.body.date;
 
   const jsonData = fs.readFileSync("emojitarComponents.json", "utf-8");
   const existingData = JSON.parse(jsonData);
@@ -161,6 +191,35 @@ app.post('/addComment', function (request, response) {
       response.sendStatus(200);
     }
   });
+});
+
+//Delete an emoji
+app.delete("/deleteEmoji/:userName/:emojiID",function (request,response) {
+  const userName = request.params.userName;
+  const emojiIdDelete = request.params.emojiID;
+
+  //Read File
+  const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
+  const existingData = JSON.parse(json_Data);
+
+  //get user object
+  for (const key in existingData) {
+    if (key == userName) {
+      const userEmojis = existingData[userName];
+      let indexToRemove;
+      userEmojis.forEach(element=>{
+        if(element["emoji-id"]==emojiIdDelete){
+          indexToRemove = userEmojis.indexOf(element);
+          console.log(indexToRemove);
+        }
+      });
+      userEmojis.splice(indexToRemove,1);
+      
+    }
+  }
+
+  console.log(existingData);
+
 });
 
 
