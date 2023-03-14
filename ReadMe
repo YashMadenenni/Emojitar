@@ -30,7 +30,7 @@ Node.js Tutorial: https://www.youtube.com/watch?v=TcvOgwQPsSo
 
 The API should provide services including, but not limited to:
 • Getting all facial components. (done, 10 March, 220005874)
-• Creating a new emojitar.
-• Getting all existing emojitars.
-• Getting a specific emojitar along with its comments & ratrings.
-• Commenting on & rating an existing emojitar.
+• Creating a new emojitar. -> done 
+• Getting all existing emojitars. -> done
+• Getting a specific emojitar along with its comments & ratrings. ->
+• Commenting on & rating an existing emojitar. -> done 

@@ -188,6 +188,24 @@ app.post('/addEmoji',function (request,response) {
   });
 });
 
+//API to send a particular emoji
+app.get('/getEmoji/:emojiId',function (request,response) {
+  const emojiID = request.params.emojiId;
+
+  const json_Data=fs.readFileSync("emojitarComponents.json","utf-8");
+  const existingData = JSON.parse(json_Data);
+
+  for(const key in existingData){
+    var userEmojiArray = existingData[key];
+    
+    userEmojiArray.forEach(element=>{
+      if (element["emoji-id"]==emojiID) {
+        response.json(element);
+      }
+    })
+  }
+})
+
 
 //API for comments emojiId:
 app.post('/addComment',function (request,response) {
