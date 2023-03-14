@@ -348,11 +348,11 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
   const { file } = request;
   //check file type
   if (request.file.mimetype != "image/png") {
-    return response.send(400).send("File type is not .PNG");
+    return response.send("File type is not .PNG");
   }
   //check file size
   if (request.file.size > 2000000) {
-    return response.send(400).send("File size too large");
+    return response.send("File size too large");
   }
 
   // //check file dimension
@@ -396,7 +396,7 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
 
   writerToCsv.writeRecords([newData]).then(() => {
     console.log("done")
-    response.send(200).send("Sucessfully uploaded")
+    response.sendStatus(200);
   });
 });
 
