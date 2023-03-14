@@ -38,18 +38,18 @@ app.get('/user/register',function (request,response) {
   }
 
   const userJsonData = fs.readFileSync(__dirname+"/"+"users.json","utf8");
-  const exsistingUserData = JSON.parse(userJsonData);
+  const existingUserData = JSON.parse(userJsonData);
 
-  if(exsistingUserData[userKey]){
+  if(existingUserData[userKey]){
     response.status(409);
-    console.log("error data exsist");
-  }else if(!exsistingUserData[userKey]){
-    exsistingUserData[userKey] = contentBody
+    console.log("error data exist");
+  }else if(!existingUserData[userKey]){
+    existingUserData[userKey] = contentBody
   }
-//console.log(exsistingUserData);
+//console.log(existingUserData);
   
 // Write to file
-fs.writeFile(__dirname+"/"+"users.json", JSON.stringify(exsistingUserData), function (err) {
+fs.writeFile(__dirname+"/"+"users.json", JSON.stringify(existingUserData), function (err) {
   console.log("Adding user");
   if (err) {
     console.log(err);
@@ -142,8 +142,8 @@ app.get('/emojis/:imageName',function (request,response) {
   response.sendFile(__dirname+"/components/"+request.params.imageName);
 });
 
-//API for send exsisting emojitars 
-app.get('/exsistingEmojies',function (request,response) {
+//API for send existing emojitars 
+app.get('/existingEmojies',function (request,response) {
   
   fs.readFile("emojitarComponents.json",(error,data)=>{
     if(error){
@@ -211,26 +211,26 @@ app.post('/addComment',function (request,response) {
   for (const key in existingData) {
     if (key!=userName) {
       if(existingData[key].length>0){
-        var exsistingEmojis = existingData[key];
-        //console.log(exsistingEmojis)
-        exsistingEmojis.forEach(element=>{
+        var existingEmojis = existingData[key];
+        //console.log(existingEmojis)
+        existingEmojis.forEach(element=>{
           //console.log(element["emoji-id"] + " " +emojitarId)
           if(element["emoji-id"]==emojitarId){
           // console.log(element["emoji-id"]);
           // console.log(element["comments"]);
-          var exsistingComments = element["comments"];
-            //console.log(exsistingComments);
-          if (exsistingComments.length>0) {
-            if(exsistingComments[userName]){
+          var existingComments = element["comments"];
+            //console.log(existingComments);
+          if (existingComments.length>0) {
+            if(existingComments[userName]){
               //console.log("in loop")
-              exsistingComments[userName] = comment;
+              existingComments[userName] = comment;
             }else{
               //console.log("in else")
-              exsistingComments[userName] = comment;
+              existingComments[userName] = comment;
             }
           } else {
             //console.log("in else 2")
-            exsistingComments[userName] = comment;
+            existingComments[userName] = comment;
           }
           
           }

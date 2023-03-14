@@ -297,7 +297,7 @@ function Emoji(id, images, username, description, comments) {
  */
 function getAllEmojitars() {
   emojis = [];
-  fetch('/exsistingEmojies')
+  fetch('/existingEmojies')
   .then(response => response.json())
   .then(data => {
     Object.keys(data).forEach(key => {
@@ -493,7 +493,7 @@ function submitComment(emojiObjID) {
 }
 function reloadComment(emojiObjID) {
   emojis = [];
-  fetch('/exsistingEmojies')
+  fetch('/existingEmojies')
   .then(response => response.json())
   .then(data => {
     Object.keys(data).forEach(key => {
