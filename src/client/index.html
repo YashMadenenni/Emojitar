@@ -88,7 +88,31 @@
         </div>
 
         <div id='Component' class="tabcontent">
-            <p>Component</p>
+            <div class="componentTab">
+                <div class="imageDisplay">
+                    <p class="preview">
+
+                    </p>
+                </div>
+                <div class="imageForm">
+                    <form id="uploadForm"  enctype="multipart/form-data">
+                        <label for="type"> Type
+                            <select name="type" id="imageType">
+                                <option value="face">face</option>
+                                <option value="hair">hair</option>
+                                <option value="eyes">eyes</option>
+                                <option value="mouth">mouth</option>
+                            </select>
+                        </label><br>
+                        <label for="id" class="col-sm-2"> ID:<input type="text" name="id" id="" required></label> <br>
+                        <label for="description" class="col-sm-2"> Description:<input type="text" name="description" id="" required></label><br>
+                        <label for="user" class="col-sm-2"> User Name:<input type="text" name="user" id="" required></label><br>
+                        <input type="file" name="file">  <br>
+                        <button type="submit" onclick="uplaodFile()">Upload</button><br>
+                      </form>
+                      
+                </div>
+            </div>
         </div>
 
         <div id='Login-SignUp' class="tabcontent">

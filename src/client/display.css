@@ -237,6 +237,29 @@ body, html{
     text-align: justify;
 }
 
+/*ContentTab*/
+.componentTab{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+.preview{
+    width: 300px;
+    height: 300px;
+    border: 2px solid black;
+}
+.imageForm{
+    margin-right: auto;
+    margin-block: auto;
+}
+.imageDisplay {
+    margin: auto;
+}
+
+#uploadForm{
+    display: flex;
+    flex-direction: column;
+}
 
 
 

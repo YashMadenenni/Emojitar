@@ -691,6 +691,26 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
 /**
  * Section 3 Begin: Component Tab Functions----------------------------------------------------------------------------------
  */
+function uplaodFile() {
+  document.getElementById('uploadForm').addEventListener('submit',(event)=>{
+    event.preventDefault();
+    
+    var currentDate = new Date();
+
+    const formData = new FormData(document.getElementById('uploadForm'));
+    formData.append("date",currentDate);
+    fetch('/uploadImage',{
+      method:'POST',
+      body:formData
+    }).then(response=>{
+      if (response.ok) {
+        window.alert("Successfully Uploaded");
+      }else{
+        window.alert("Failed!. Check details and try again");
+      }
+    })
+  });
+}
 
 
 /**
