@@ -23,6 +23,7 @@ let hairImage = new Image();
 
 /**Browser Tab Begin*/
 let emojis = [];
+let tmpEmojis = [];
 /**Browser Tab End*/
 
 /**Login-Register Tab*/
@@ -358,8 +359,7 @@ function loadImage(url) {
  * Function: to set the canvas for emoji (reusable code for multiple emojis)
  * @param {*} emojiImages all facial component's file name of a specific emoji (include: face/eyes/mouth/hair)
  * @param {*} emojiID     a specific emoji ID
- */
-async function specificCanvas(emojiImages, emojiID, emojiFilter) {
+ */async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   const canvasName = "emoji-canvas-" + emojiID;
   const canvas = document.getElementById(canvasName);
   const context = canvas.getContext("2d");
@@ -379,10 +379,8 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   faceContext.globalCompositeOperation = "source-in";
   if (emojiFilter[0] != "nocolor") {
     faceContext.fillStyle = emojiFilter[0];
-  } else {
-    faceContext.fillStyle = "transparent";
+    faceContext.fillRect(0, 0, faceCanvas.width, faceCanvas.height);
   }
-  faceContext.fillRect(0, 0, faceCanvas.width, faceCanvas.height);
   faceContext.globalCompositeOperation = "source-over";
 
   const eyesCanvas = document.createElement("canvas");
@@ -393,10 +391,8 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   eyesContext.globalCompositeOperation = "source-in";
   if (emojiFilter[1] != "nocolor") {
     eyesContext.fillStyle = emojiFilter[1];
-  } else {
-    eyesContext.fillStyle = "transparent";
+    eyesContext.fillRect(0, 0, eyesCanvas.width, eyesCanvas.height);
   }
-  eyesContext.fillRect(0, 0, eyesCanvas.width, eyesCanvas.height);
   eyesContext.globalCompositeOperation = "source-over";
 
   const mouthCanvas = document.createElement("canvas");
@@ -407,10 +403,8 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   mouthContext.globalCompositeOperation = "source-in";
   if (emojiFilter[2] != "nocolor") {
     mouthContext.fillStyle = emojiFilter[2];
-  } else {
-    mouthContext.fillStyle = "transparent";
+    mouthContext.fillRect(0, 0, mouthCanvas.width, mouthCanvas.height);
   }
-  mouthContext.fillRect(0, 0, mouthCanvas.width, mouthCanvas.height);
   mouthContext.globalCompositeOperation = "source-over";
 
   const hairCanvas = document.createElement("canvas");
@@ -421,10 +415,8 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   hairContext.globalCompositeOperation = "source-in";
   if (emojiFilter[3] != "nocolor") {
     hairContext.fillStyle = emojiFilter[3];
-  } else {
-    hairContext.fillStyle = "transparent";
+    hairContext.fillRect(0, 0, hairCanvas.width, hairCanvas.height);
   }
-  hairContext.fillRect(0, 0, hairCanvas.width, hairCanvas.height);
   hairContext.globalCompositeOperation = "source-over";
 
   context.drawImage(faceCanvas, 0, 0, canvas.width, canvas.width);
@@ -433,11 +425,17 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   context.drawImage(hairCanvas, 0, 0, canvas.width, canvas.width);
 }
 
+
 /**
  * Function: to set the canvas of all emojis (Browser Tab)
  */
 function allCanvas() {
   emojis.forEach(emoji => {
+    specificCanvas(emoji.images, emoji.id, emoji.filter);
+  })
+}
+function allSpeificCanvas() {
+  tmpEmojis.forEach(emoji => {
     specificCanvas(emoji.images, emoji.id, emoji.filter);
   })
 }
@@ -583,7 +581,6 @@ function reloadComment(emojiObjID) {
         emojis.push(emojiObj);
       });
       const emoji = getSpecificEmojitar(emojiObjID.toString());
-      console.log(emoji);
       let emojiComments = emoji.comments;
       setLayoutForAllComments(emojiComments);
     });
@@ -678,7 +675,7 @@ function selectCreatorButton() {
   let creator = document.getElementById("creators").value;
   let thseemojis = getSpecificEmoji(creator);
   loadSpecificEmojis(thseemojis);
-  allCanvas();
+  allSpeificCanvas();
   creatorSelectionLoading();
 }
 /**
@@ -687,13 +684,13 @@ function selectCreatorButton() {
  * @returns emojis that meet the criteria
  */
 function getSpecificEmoji(creator) {
-  let specificEmojis = [];
+  tmpEmojis = [];
   emojis.forEach(emoji => {
-    if (emoji.username === creator && !specificEmojis.includes(creator)) {
-      specificEmojis.push(emoji);
+    if (emoji.username === creator && !tmpEmojis.includes(creator)) {
+      tmpEmojis.push(emoji);
     }
   });
-  return specificEmojis;
+  return tmpEmojis;
 }
 /**
  * Function: to load all emojis with specific criteria
@@ -710,8 +707,9 @@ function loadSpecificEmojis(specificEmojis) {
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
-                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id},"${emoji.username}")">View Comments</button>
-                      </div>`;
+                          <button id="view-comments" onclick="viewSpecificEmojitar("${emoji.id}","${emoji.username}")">View Comments</button><p></p>
+                          <button id="delete-emoji" onclick="deleteEmojitar(${emoji.id},'${emoji.username}')">Delete Emojitar</button>
+                        </div>`;
     html.innerHTML += htmlSegment;
   });
 }
