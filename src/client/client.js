@@ -38,7 +38,9 @@ function loadPage() {
   getAllEmojitars();
   creatorSelectionLoading();
   loginPage();
-  document.getElementById("defaultActive").click();  
+  document.getElementById("defaultActive").click();
+  previewImage();  
+  uploadFile()
 }
 /**
  * Function: to open a page and disable other pages.
@@ -691,7 +693,7 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
 /**
  * Section 3 Begin: Component Tab Functions----------------------------------------------------------------------------------
  */
-function uplaodFile() {
+function uploadFile() {
   document.getElementById('uploadForm').addEventListener('submit',(event)=>{
     event.preventDefault();
     
@@ -705,12 +707,30 @@ function uplaodFile() {
     }).then(response=>{
       if (response.ok) {
         window.alert("Successfully Uploaded");
+      }else if (response.status == 415) {
+        window.alert("Failed!. File type is not .PNG");
+      }else if(response.status == 413){
+        window.alert("Failed!. File larger than 2MB");
       }else{
-        window.alert("Failed!. Check details and try again");
+        window.alert("Failed!.");
       }
     })
   });
 }
+
+function previewImage() {
+  document.getElementById("imageInput").addEventListener("change",()=>{
+    const fileInput = document.getElementById("imageInput").files[0];
+   
+    const fileReader = new FileReader();
+   
+    fileReader.onload=()=>{
+     document.getElementById("preview").innerHTML = '<img class="preview" src='+fileReader.result+'>'
+    }
+    fileReader.readAsDataURL(fileInput);
+   });
+}
+
 
 
 /**

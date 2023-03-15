@@ -243,10 +243,15 @@ body, html{
     height: 100%;
     display: flex;
 }
-.preview{
+#preview{
     width: 300px;
     height: 300px;
     border: 2px solid black;
+}
+.preview{
+    height: 240px;
+    width: 240px;
+    padding: 30px;
 }
 .imageForm{
     margin-right: auto;

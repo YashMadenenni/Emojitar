@@ -345,14 +345,53 @@ const upload = multer({ storage: storage });
 //API to upload image
 app.post('/uploadImage', upload.single("file"), function (request, response) { //file is the name to be used in post data for file
   console.log(request.file);
-  const { file } = request;
+  //const file  = request.file;
   //check file type
   if (request.file.mimetype != "image/png") {
-    return response.send("File type is not .PNG");
-  }
-  //check file size
-  if (request.file.size > 2000000) {
-    return response.send("File size too large");
+    fs.unlinkSync(request.file.path); //delete uploaded file
+     return response.sendStatus(415)
+
+  } else if (request.file.size > 2000000) { //check file size
+    fs.unlinkSync(request.file.path); //delete uploaded file
+    console.log("in size");
+   return response.sendStatus(413)
+    
+  }else {
+    const newData = {
+      type: request.body.type,
+      id: request.body.id,
+      description: request.body.description,
+      filename: request.file.originalname,
+      user: request.body.user,
+      date: request.body.date
+    }
+  
+    // const newData = {
+    //   type: "type",
+    //   id: "id",
+    //   description: "description",
+    //   filename: request.file.originalname,
+    //   user: "user",
+    //   date: "date"
+    // }
+    console.log(newData)
+  
+  
+    const writerToCsv = csvWriter({
+      path: "componentInfo.csv",
+      header: [{ id: "type", title: "type" },
+      { id: "id", title: "id" },
+      { id: "description", title: "description" },
+      { id: "filename", title: "filename" },
+      { id: "user", title: "user" },
+      { id: "date", title: "date" }],
+      append: true
+    });
+  
+    writerToCsv.writeRecords([newData]).then(() => {
+      console.log("done")
+      response.sendStatus(200);
+    });
   }
 
   // //check file dimension
@@ -363,41 +402,7 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
   // }
 
 
-  const newData = {
-    type: request.body.type,
-    id: request.body.id,
-    description: request.body.description,
-    filename: request.file.originalname,
-    user: request.body.user,
-    date: request.body.date
-  }
-
-  // const newData = {
-  //   type: "type",
-  //   id: "id",
-  //   description: "description",
-  //   filename: request.file.originalname,
-  //   user: "user",
-  //   date: "date"
-  // }
-  console.log(newData)
-
-
-  const writerToCsv = csvWriter({
-    path: "componentInfo.csv",
-    header: [{ id: "type", title: "type" },
-    { id: "id", title: "id" },
-    { id: "description", title: "description" },
-    { id: "filename", title: "filename" },
-    { id: "user", title: "user" },
-    { id: "date", title: "date" }],
-    append: true
-  });
-
-  writerToCsv.writeRecords([newData]).then(() => {
-    console.log("done")
-    response.sendStatus(200);
-  });
+  
 });
 
 
