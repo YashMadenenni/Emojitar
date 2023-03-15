@@ -11,10 +11,10 @@
         "hair-short-brown.png"
       ],
       "filter": [
-        "undefined",
-        "undefined",
-        "undefined",
-        "undefined"
+        "#f0ffff",
+        "#2596be",
+        "#2596be",
+        "#ee954f"
       ],
       "date": "2023-03-12 12:11:36 GMT+00:00",
       "comments": {}
@@ -32,7 +32,7 @@
       "filter": [
         "#ff0000",
         "#2596be",
-        "undefined",
+        "nocolor",
         "#ee954f"
       ],
       "date": "2023-03-10 12:12:07 GMT+00:00",
@@ -62,10 +62,10 @@
         "hair-bowl-brown.png"
       ],
       "filter": [
-        "undefined",
-        "undefined",
-        "undefined",
-        "undefined"
+        "nocolor",
+        "nocolor",
+        "nocolor",
+        "nocolor"
       ],
       "date": "2023-03-12 12:12:56 GMT+00:00",
       "comments": {}

@@ -280,17 +280,21 @@ function Comment() {
  * Section 2 Begin: Browser Tab Functions----------------------------------------------------------------------------------
  */
 /**
- * Emoji Constructor: images, username, description
- * @param {*} images       all facial component(face, eyes, mouth, hair)
- * @param {*} username     creator's name
- * @param {*} description  emoji description
+ * 
+ * @param {*} id 
+ * @param {*} images 
+ * @param {*} username 
+ * @param {*} description 
+ * @param {*} comments 
+ * @param {*} filter 
  */
-function Emoji(id, images, username, description, comments) {
+function Emoji(id, images, username, description, comments, filter) {
   this.id = id;
   this.images = images;
   this.username = username;
   this.description = description;
   this.comments = comments;
+  this.filter = filter;
 }
 /**
  * Function: to get all existing emojitar info from json while loading.
@@ -305,7 +309,7 @@ function getAllEmojitars() {
     Object.keys(data).forEach(key => {
       const userData = data[key];
       userData.forEach(emoji => {
-        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments);
+        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments, emoji.filter);
         emojis.push(emojiObj);
       });
       loadAllEmojitars();
@@ -355,31 +359,86 @@ function loadImage(url) {
  * @param {*} emojiImages all facial component's file name of a specific emoji (include: face/eyes/mouth/hair)
  * @param {*} emojiID     a specific emoji ID
  */
-async function specificCanvas(emojiImages, emojiID) {
+async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   const canvasName = "emoji-canvas-" + emojiID;
   const canvas = document.getElementById(canvasName);
   const context = canvas.getContext("2d");
 
   canvas.width = 200;
   canvas.height = 200;
-
   const facePic = await loadImage("../server/components/" + emojiImages[0]);
   const eyesPic = await loadImage("../server/components/" + emojiImages[1]);
   const mouthPic = await loadImage("../server/components/" + emojiImages[2]);
   const hairPic = await loadImage("../server/components/" + emojiImages[3]);
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(facePic, 0, 0, canvas.width, canvas.width);
-  context.drawImage(eyesPic, 0, 0, canvas.width, canvas.width);
-  context.drawImage(mouthPic, 0, 0, canvas.width, canvas.width);
-  context.drawImage(hairPic, 0, 0, canvas.width, canvas.width);
+  const faceCanvas = document.createElement("canvas");
+  faceCanvas.width = facePic.width;
+  faceCanvas.height = facePic.height;
+  const faceContext = faceCanvas.getContext("2d");
+  faceContext.drawImage(facePic, 0, 0);
+  faceContext.globalCompositeOperation = "source-in";
+  if (emojiFilter[0] != "nocolor") {
+    faceContext.fillStyle = emojiFilter[0];
+  } else {
+    faceContext.fillStyle = "transparent";
+  }
+  faceContext.fillRect(0, 0, faceCanvas.width, faceCanvas.height);
+  faceContext.globalCompositeOperation = "source-over";
+
+  const eyesCanvas = document.createElement("canvas");
+  eyesCanvas.width = eyesPic.width;
+  eyesCanvas.height = eyesPic.height;
+  const eyesContext = eyesCanvas.getContext("2d");
+  eyesContext.drawImage(eyesPic, 0, 0);
+  eyesContext.globalCompositeOperation = "source-in";
+  if (emojiFilter[1] != "nocolor") {
+    eyesContext.fillStyle = emojiFilter[1];
+  } else {
+    eyesContext.fillStyle = "transparent";
+  }
+  eyesContext.fillRect(0, 0, eyesCanvas.width, eyesCanvas.height);
+  eyesContext.globalCompositeOperation = "source-over";
+
+  const mouthCanvas = document.createElement("canvas");
+  mouthCanvas.width = mouthPic.width;
+  mouthCanvas.height = mouthPic.height;
+  const mouthContext = mouthCanvas.getContext("2d");
+  mouthContext.drawImage(mouthPic, 0, 0);
+  mouthContext.globalCompositeOperation = "source-in";
+  if (emojiFilter[2] != "nocolor") {
+    mouthContext.fillStyle = emojiFilter[2];
+  } else {
+    mouthContext.fillStyle = "transparent";
+  }
+  mouthContext.fillRect(0, 0, mouthCanvas.width, mouthCanvas.height);
+  mouthContext.globalCompositeOperation = "source-over";
+
+  const hairCanvas = document.createElement("canvas");
+  hairCanvas.width = hairPic.width;
+  hairCanvas.height = hairPic.height;
+  const hairContext = hairCanvas.getContext("2d");
+  hairContext.drawImage(hairPic, 0, 0);
+  hairContext.globalCompositeOperation = "source-in";
+  if (emojiFilter[3] != "nocolor") {
+    hairContext.fillStyle = emojiFilter[3];
+  } else {
+    hairContext.fillStyle = "transparent";
+  }
+  hairContext.fillRect(0, 0, hairCanvas.width, hairCanvas.height);
+  hairContext.globalCompositeOperation = "source-over";
+
+  context.drawImage(faceCanvas, 0, 0, canvas.width, canvas.width);
+  context.drawImage(eyesCanvas, 0, 0, canvas.width, canvas.width);
+  context.drawImage(mouthCanvas, 0, 0, canvas.width, canvas.width);
+  context.drawImage(hairCanvas, 0, 0, canvas.width, canvas.width);
 }
+
 /**
  * Function: to set the canvas of all emojis (Browser Tab)
  */
 function allCanvas() {
   emojis.forEach(emoji => {
-    specificCanvas(emoji.images, emoji.id);
+    specificCanvas(emoji.images, emoji.id, emoji.filter);
   })
 }
 /**
@@ -412,7 +471,7 @@ function viewSpecificEmojitar(emojiID) {
                         </div>
                       </div>`;
   html.innerHTML += htmlSegment;
-  setLayoutForEmojiImage(emojiImages, emoji.id);
+  setLayoutForEmojiImage(emojiImages, emoji.id, emoji.filter);
   setLayoutForCommentSetting(emoji);
   setLayoutForAllComments(emojiComment);
 }
@@ -420,14 +479,14 @@ function viewSpecificEmojitar(emojiID) {
  * Function: to set the layout for a specific emojitar
  * @param {*} emojiImageArray 
  */
-function setLayoutForEmojiImage(emojiImageArray, emojiID) {
+function setLayoutForEmojiImage(emojiImageArray, emojiID, emojiFilter) {
   const html = document.getElementById("a-emoji-display");
   html.innerHTML = '';
   let htmlSegment = `<div class="image-container">
                         <canvas id="emoji-canvas-${emojiID}"></canvas>
                       </div>`;
   html.innerHTML += htmlSegment;
-  specificCanvas(emojiImageArray, emojiID);
+  specificCanvas(emojiImageArray, emojiID, emojiFilter);
 }
 /**
  * Function: to set the layout for rating/comment/username user input
@@ -519,7 +578,8 @@ function reloadComment(emojiObjID) {
     Object.keys(data).forEach(key => {
       const userData = data[key];
       userData.forEach(emoji => {
-        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments);
+        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments, emoji.filter);
+        console.log(emojiObj.filter);
         emojis.push(emojiObj);
       });
       const emoji = getSpecificEmojitar(emojiObjID.toString());
@@ -650,7 +710,7 @@ function loadSpecificEmojis(specificEmojis) {
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
-                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id},${emoji.username})">View Comments</button>
+                          <button id="view-comments" onclick="viewSpecificEmojitar(${emoji.id},"${emoji.username}")">View Comments</button>
                       </div>`;
     html.innerHTML += htmlSegment;
   });
@@ -693,6 +753,9 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
 /**
  * Section 3 Begin: Component Tab Functions----------------------------------------------------------------------------------
  */
+/**
+ * Function: to upload the file to  the server
+ */
 function uploadFile() {
   document.getElementById('uploadForm').addEventListener('submit',(event)=>{
     event.preventDefault();
@@ -717,7 +780,9 @@ function uploadFile() {
     })
   });
 }
-
+/**
+ * Function: to preview the image on the screen before real updating
+ */
 function previewImage() {
   document.getElementById("imageInput").addEventListener("change",()=>{
     const fileInput = document.getElementById("imageInput").files[0];
@@ -730,9 +795,6 @@ function previewImage() {
     fileReader.readAsDataURL(fileInput);
    });
 }
-
-
-
 /**
  * Section 3 End: Component Tab Functions----------------------------------------------------------------------------------
  */
