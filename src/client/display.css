@@ -142,6 +142,20 @@ body, html{
     max-height: 300px;
     object-fit: contain;
 }
+#emoji {
+    width: 100%;
+    height: 50%;
+    position: relative;
+}
+.a-canvas {
+    position: absolute;
+    margin: 7%;
+    height:100%;
+    height:100%;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+}
 #emoji-info {
     display: flex;
     flex-wrap: wrap;

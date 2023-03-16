@@ -136,7 +136,6 @@ function tintColor(component) {
   } else if (component === "eyes") {
     if (tint.checked) {
       eyesColor = colorPicker.value;
-      alert(eyesColor);
     } else {
       eyesColor = "nocolor";
     }
@@ -424,7 +423,10 @@ function loadAllEmojitars() {
   emojis.forEach(emoji => {
     let htmlSegment = `<div class="emojis-wrapper">
                           <div id="emoji">
-                            <canvas id="emoji-canvas-${emoji.id}"></canvas>
+                            <canvas id="a-face-canvas-${emoji.id}" class="a-canvas"></canvas>
+                            <canvas id="a-eyes-canvas-${emoji.id}" class="a-canvas"></canvas>
+                            <canvas id="a-mouth-canvas-${emoji.id}" class="a-canvas"></canvas>
+                            <canvas id="a-hair-canvas-${emoji.id}" class="a-canvas"></canvas>
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
@@ -455,88 +457,66 @@ function loadImage(url) {
  * @param {*} emojiID     a specific emoji ID
  */
 async function specificCanvas(emojiImages, emojiID, emojiFilter) {
-  const canvasName = "emoji-canvas-" + emojiID;
-  const canvas = document.getElementById(canvasName);
-  const context = canvas.getContext("2d");
-
-  canvas.width = 200;
-  canvas.height = 200;
-  const facePic = await loadImage("../server/components/" + emojiImages[0]);
-  const eyesPic = await loadImage("../server/components/" + emojiImages[1]);
-  const mouthPic = await loadImage("../server/components/" + emojiImages[2]);
-  const hairPic = await loadImage("../server/components/" + emojiImages[3]);
-
-  const faceCanvas = document.createElement("canvas");
-  faceCanvas.width = facePic.width;
-  faceCanvas.height = facePic.height;
-  const faceContext = faceCanvas.getContext("2d");
-  faceContext.drawImage(facePic, 0, 0);
-  faceContext.globalCompositeOperation = "source-in";
-  if (emojiFilter[0] != "nocolor") {
-    tintAllImage(faceCanvas, faceCanvas.width, faceCanvas.height, emojiFilter[0]);
-  }
-
-  const eyesCanvas = document.createElement("canvas");
-  eyesCanvas.width = eyesPic.width;
-  eyesCanvas.height = eyesPic.height;
-  const eyesContext = eyesCanvas.getContext("2d");
-  eyesContext.drawImage(eyesPic, 0, 0);
-  eyesContext.globalCompositeOperation = "source-in";
-  if (emojiFilter[1] != "nocolor") {
-    tintAllImage(eyesCanvas, eyesCanvas.width, eyesCanvas.height, emojiFilter[1]);
-  }
-
-  const mouthCanvas = document.createElement("canvas");
-  mouthCanvas.width = mouthPic.width;
-  mouthCanvas.height = mouthPic.height;
-  const mouthContext = mouthCanvas.getContext("2d");
-  mouthContext.drawImage(mouthPic, 0, 0);
-  mouthContext.globalCompositeOperation = "source-in";
-  if (emojiFilter[2] != "nocolor") {
-    tintAllImage(mouthCanvas, mouthCanvas.width, mouthCanvas.height, emojiFilter[2]);
-  }
-
-  const hairCanvas = document.createElement("canvas");
-  hairCanvas.width = hairPic.width;
-  hairCanvas.height = hairPic.height;
-  const hairContext = hairCanvas.getContext("2d");
-  hairContext.drawImage(hairPic, 0, 0);
-  hairContext.globalCompositeOperation = "source-in";
-  if (emojiFilter[3] != "nocolor") {
-    tintAllImage(hairCanvas, hairCanvas.width, hairCanvas.height, emojiFilter[3]);
-  }
-
-  context.drawImage(faceCanvas, 0, 0, canvas.width, canvas.width);
-  context.drawImage(eyesCanvas, 0, 0, canvas.width, canvas.width);
-  context.drawImage(mouthCanvas, 0, 0, canvas.width, canvas.width);
-  context.drawImage(hairCanvas, 0, 0, canvas.width, canvas.width);
-}
-function tintAllImage(canvas, width, height, color) {
-  let context = canvas.getContext("2d");
-  let fillStyle = context.fillStyle;
-  context.fillStyle = color;
-  context.fillRect(0, 0, width, height);
-  context.fillStyle = fillStyle;
-
-  let imageData = context.getImageData(0, 0, width, height);
-  let tintR = parseInt(color.substr(1, 2), 16);
-  let tintG = parseInt(color.substr(3, 2), 16);
-  let tintB = parseInt(color.substr(5, 2), 16);
-  let data = imageData.data;
-
-  for (let i = 0; i < data.length; i += 4) {
-    let r = data[i];       //red
-    let g = data[i + 1];   //green
-    let b = data[i + 2];   //blue
-    let a = data[i + 3];   //opacity  --> transparent or not
-
-    if (a > 0) {           //if a !> 0, then it is not a opaque pixel, but a transparent pixel
-      data[i] = Math.round((r / 255) * tintR);
-      data[i + 1] = Math.round((g / 255) * tintG);
-      data[i + 2] = Math.round((b / 255) * tintB);
+  let faceID = "a-face-canvas-" + emojiID;
+  let eyesID = "a-eyes-canvas-" + emojiID;
+  let mouthID = "a-mouth-canvas-" + emojiID;
+  let hairID = "a-hair-canvas-" + emojiID;
+  
+  let faceCanvas = document.getElementById(faceID);
+  let faceContext = faceCanvas.getContext("2d");
+  let faceImage = new Image();
+  faceImage.src = "../server/components/" + emojiImages[0];
+  faceContext.clearRect(0, 0, faceCanvas.width, faceCanvas.height);
+  faceCanvas.width = 250;
+  faceCanvas.height = 250;
+  faceImage.onload = function() {
+    faceContext.drawImage(faceImage, 0, 0);
+    if (emojiFilter[0]!== "nocolor") {
+      tintImage(faceContext, faceImage, emojiFilter[0]);
     }
-  }
-  context.putImageData(imageData, 0, 0);
+  };
+  
+  let eyesCanvas = document.getElementById(eyesID);
+  let eyesContext = eyesCanvas.getContext("2d");
+  let eyesImage = new Image();
+  eyesImage.src = "../server/components/" + emojiImages[1];
+  eyesContext.clearRect(0, 0, eyesCanvas.width, eyesCanvas.height);
+  eyesCanvas.width = 250;
+  eyesCanvas.height = 250;
+  eyesImage.onload = function() {
+    eyesContext.drawImage(eyesImage, 0, 0);
+    if (emojiFilter[1]!== "nocolor") {
+      tintImage(eyesContext, eyesImage, emojiFilter[1]);
+    }
+  };
+
+  let mouthCanvas = document.getElementById(mouthID);
+  let mouthContext = mouthCanvas.getContext("2d");
+  let mouthImage = new Image();
+  mouthImage.src = "../server/components/" + emojiImages[2];
+  mouthContext.clearRect(0, 0, mouthCanvas.width, mouthCanvas.height);
+  mouthCanvas.width = 250;
+  mouthCanvas.height = 250;
+  mouthImage.onload = function() {
+    mouthContext.drawImage(mouthImage, 0, 0);
+    if (emojiFilter[2]!== "nocolor") {
+      tintImage(mouthContext, mouthImage, emojiFilter[2]);
+    }
+  };
+
+  let hairCanvas = document.getElementById(hairID);
+  let hairContext = hairCanvas.getContext("2d");
+  let hairImage = new Image();
+  hairImage.src = "../server/components/" + emojiImages[3];
+  hairContext.clearRect(0, 0, hairCanvas.width, hairCanvas.height);
+  hairCanvas.width = 250;
+  hairCanvas.height = 250;
+  hairImage.onload = function() {
+    hairContext.drawImage(hairImage, 0, 0);
+    if (emojiFilter[3]!== "nocolor") {
+      tintImage(hairContext, hairImage, emojiFilter[3]);
+    }
+  };
 }
 /**
  * Function: to set the canvas of all emojis (Browser Tab)
@@ -593,7 +573,10 @@ function setLayoutForEmojiImage(emojiImageArray, emojiID, emojiFilter) {
   const html = document.getElementById("a-emoji-display");
   html.innerHTML = '';
   let htmlSegment = `<div class="image-container">
-                        <canvas id="emoji-canvas-${emojiID}"></canvas>
+                        <canvas id="a-face-canvas-${emojiID}" class="a-canvas"></canvas>
+                        <canvas id="a-eyes-canvas-${emojiID}" class="a-canvas"></canvas>
+                        <canvas id="a-mouth-canvas-${emojiID}" class="a-canvas"></canvas>
+                        <canvas id="a-hair-canvas-${emojiID}" class="a-canvas"></canvas>
                       </div>`;
   html.innerHTML += htmlSegment;
   specificCanvas(emojiImageArray, emojiID, emojiFilter);
@@ -689,7 +672,6 @@ function reloadComment(emojiObjID) {
       const userData = data[key];
       userData.forEach(emoji => {
         const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments, emoji.filter);
-        console.log(emojiObj.filter);
         emojis.push(emojiObj);
       });
       const emoji = getSpecificEmojitar(emojiObjID.toString());
@@ -815,7 +797,10 @@ function loadSpecificEmojis(specificEmojis) {
   specificEmojitars.forEach(emoji => {
     let htmlSegment = `<div class="emojis-wrapper">
                           <div id="emoji">
-                            <canvas id="emoji-canvas-${emoji.id}"></canvas>
+                            <canvas id="a-face-canvas-${emoji.id}" class="a-canvas"></canvas>
+                            <canvas id="a-eyes-canvas-${emoji.id}" class="a-canvas"></canvas>
+                            <canvas id="a-mouth-canvas-${emoji.id}" class="a-canvas"></canvas>
+                            <canvas id="a-hair-canvas-${emoji.id}" class="a-canvas"></canvas>
                           </div>
                           <p>Created by ${emoji.username}</p>
                           <p>${emoji.description}</p>
@@ -867,28 +852,52 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
  * Function: to upload the file to  the server
  */
 function uploadFile() {
-  document.getElementById('uploadForm').addEventListener('submit',(event)=>{
-    event.preventDefault();
-    
-    var currentDate = new Date();
+  let id = document.getElementById("idInput").value;
+  let descrip = document.getElementById("descripInput").value;
 
-    const formData = new FormData(document.getElementById('uploadForm'));
-    formData.append("date",currentDate);
-    fetch('/uploadImage',{
-      method:'POST',
-      body:formData
-    }).then(response=>{
-      if (response.ok) {
-        window.alert("Successfully Uploaded");
-      }else if (response.status == 415) {
-        window.alert("Failed!. File type is not .PNG");
-      }else if(response.status == 413){
-        window.alert("Failed!. File larger than 2MB");
-      }else{
-        window.alert("Failed!.");
-      }
-    })
-  });
+  if (realUsername === "anonymous") {
+    alert("Anonymous are not allowed to upload an component");
+  } else if (!id && !descrip) {
+    alert("Component ID and description is empty");
+  } else if (!id && descrip) {
+    alert("Component ID is empty");
+  } else if (id && !descrip) {
+    alert("Component Description is empty");
+  } else {
+    document.getElementById('uploadForm').addEventListener('submit',(event)=>{
+      event.preventDefault();
+      
+      var currentDate = new Date();
+      let year = currentDate.getFullYear() + '-';
+      let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
+      let date = ('0' + currentDate.getDate()).slice(-2) + ' ';
+      let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
+      let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
+      let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
+      let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
+                              ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
+                              ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
+      const dateString = year + month + date + hour + min + second + timeZone;
+  
+      const formData = new FormData(document.getElementById('uploadForm'));
+      formData.append("date",dateString);
+      formData.append("user",realUsername);
+      fetch('/uploadImage',{
+        method:'POST',
+        body:formData
+      }).then(response=>{
+        if (response.ok) {
+          window.alert("Successfully Uploaded");
+        }else if (response.status == 415) {
+          window.alert("Failed!. File type is not .PNG");
+        }else if(response.status == 413){
+          window.alert("Failed!. File larger than 2MB");
+        }else{
+          window.alert("Failed!.");
+        }
+      })
+    });
+  }
 }
 /**
  * Function: to preview the image on the screen before real updating
