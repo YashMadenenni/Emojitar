@@ -10,10 +10,10 @@ let eyesComponent = null;
 let mouthComponent = null;
 let hairComponent = null;
 
-let faceColor = "undefined";
-let eyesColor = "undefined";
-let mouthColor = "undefined";
-let hairColor = "undefined";
+let faceColor = "nocolor";
+let eyesColor = "nocolor";
+let mouthColor = "nocolor";
+let hairColor = "nocolor";
 
 let faceImage = new Image();
 let eyesImage = new Image();
@@ -121,21 +121,94 @@ function createAllFacialComponentButton() {
   createFacialComponentButton("eyesScroll",eyesImages);
   createFacialComponentButton("hairScroll",hairImages);
 }
-/**
- * https://stackoverflow.com/questions/14742381/combining-multiple-images-to-one-on-html5-canvas
- */
-function drawEmojitar() {
-  let canvas = document.querySelector(".emoji-canvas");
-  let context = canvas.getContext("2d");
+function tintColor(component) {
+  let id = component + "Tint";
+  let picker = component + "-color-picker";
+  let tint = document.getElementById(id);
+  let colorPicker = document.getElementById(picker);
 
-  canvas.width = 15000;
-  canvas.height = 15000;
-  
+  if (component === "face") {
+    if (tint.checked) {
+      faceColor = colorPicker.value;
+      alert(faceColor);
+    } else {
+      faceColor = "nocolor";
+    }
+  } else if (component === "eye") {
+    if (tint.checked) {
+      eyesColor = colorPicker.value;
+    } else {
+      eyesColor = "nocolor";
+    }
+  } else if (component === "mouth") {
+    if (tint.checked) {
+      mouthColor = colorPicker.value;
+    } else {
+      mouthColor = "nocolor";
+    }
+  }
+}
+function draw(component, canvas, context) {
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(faceImage, 0, 0, canvas.width, canvas.height);
-  context.drawImage(eyesImage, 0, 0, canvas.width, canvas.height);
-  context.drawImage(mouthImage, 0, 0, canvas.width, canvas.height);
-  context.drawImage(hairImage, 0, 0, canvas.width, canvas.height);
+
+  canvas.width = 250;
+  canvas.height = 250;
+  
+  if (component === "face") {
+    context.drawImage(faceImage, 0, 0);
+
+    if (faceColor !== "nocolor") {
+      tintImage(context, faceImage, faceColor);
+    }
+  } else if (component === "eyes") {
+    context.drawImage(eyesImage, 0, 0);
+
+    if (eyesColor !== "nocolor") {
+      tintImage(context, eyesImage, eyesColor);
+    }
+  }
+  else if (component === "mouth") {
+    context.drawImage(mouthImage, 0, 0);
+
+    if (mouthColor !== "nocolor") {
+      tintImage(context, mouthImage, mouthColor);
+    }
+  }
+  else if (component === "hair") {
+    context.drawImage(hairImage, 0, 0);
+
+    if (hairColor !== "nocolor") {
+      tintImage(context, hairImage, hairColor);
+    }
+  }
+}
+/**
+ * Function: to tint the color of specific Canvas(face/eyes/mouth/hair)
+ * The reason to use this is to avoid touching the transparent pixel
+ * @param {*} context canvas context
+ * @param {*} image   facial component image (face/eyes/mouth/hair)
+ * @param {*} color   the color intended to draw
+ */
+function tintImage(context, image, color) {
+  let imageData = context.getImageData(0, 0, image.width, image.height);
+  let tintR = parseInt(color.substr(1, 2), 16);
+  let tintG = parseInt(color.substr(3, 2), 16);
+  let tintB = parseInt(color.substr(5, 2), 16);
+  let data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i];       //red
+    let g = data[i + 1];   //green
+    let b = data[i + 2];   //blue
+    let a = data[i + 3];   //opacity  --> transparent or not
+
+    if (a > 0) {           //if a !> 0, then it is not a opaque pixel, but a transparent pixel
+      data[i] = Math.round((r / 255) * tintR);
+      data[i + 1] = Math.round((g / 255) * tintG);
+      data[i + 2] = Math.round((b / 255) * tintB);
+    }
+  }
+  context.putImageData(imageData, 0, 0);
 }
 /**
  * Function: to set the emojitar canvas (in Maker)
@@ -144,29 +217,44 @@ function drawEmojitar() {
  */
 function canvas(componentType, imageURL, imageName) {
   let path = imageURL;
-
   switch (componentType) {
     case "face":
+      let faceCanvas = document.getElementById("face-canvas");
+      let facecontext = faceCanvas.getContext("2d");
       faceImage.src = path;
-      faceImage.onload = drawEmojitar();
+      faceImage.onload = function() {
+        draw("face", faceCanvas, facecontext);
+      };
       faceComponent = imageName;
       break;
     case "eyes":
+      let eyesCanvas = document.getElementById("eyes-canvas");
+      let eyescontext = eyesCanvas.getContext("2d");
       eyesImage.src = path;
-      eyesImage.onload = drawEmojitar();
+      eyesImage.onload = function() {
+        draw("eyes",eyesCanvas, eyescontext);
+      };
       eyesComponent = imageName;
       break;
     case "mouth":
+      let mouthCanvas = document.getElementById("mouth-canvas");
+      let mouthcontext = mouthCanvas.getContext("2d");
       mouthImage.src = path;
-      mouthImage.onload = drawEmojitar();
+      mouthImage.onload = function() {
+        draw("mouth",mouthCanvas,mouthcontext);
+      };
       mouthComponent = imageName;
       break;
     case "hair":
+      let hairCanvas = document.getElementById("hair-canvas");
+      let haircontext = hairCanvas.getContext("2d");
       hairImage.src = path;
-      hairImage.onload = drawEmojitar();
+      hairImage.onload = function() {
+        draw("hair",hairCanvas,haircontext);
+      };
       hairComponent = imageName;
       break;
-    }
+  }
 }
 /**
  * Constructor for Component Color
@@ -359,7 +447,8 @@ function loadImage(url) {
  * Function: to set the canvas for emoji (reusable code for multiple emojis)
  * @param {*} emojiImages all facial component's file name of a specific emoji (include: face/eyes/mouth/hair)
  * @param {*} emojiID     a specific emoji ID
- */async function specificCanvas(emojiImages, emojiID, emojiFilter) {
+ */
+async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   const canvasName = "emoji-canvas-" + emojiID;
   const canvas = document.getElementById(canvasName);
   const context = canvas.getContext("2d");
@@ -424,8 +513,6 @@ function loadImage(url) {
   context.drawImage(mouthCanvas, 0, 0, canvas.width, canvas.width);
   context.drawImage(hairCanvas, 0, 0, canvas.width, canvas.width);
 }
-
-
 /**
  * Function: to set the canvas of all emojis (Browser Tab)
  */
