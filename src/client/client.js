@@ -130,13 +130,13 @@ function tintColor(component) {
   if (component === "face") {
     if (tint.checked) {
       faceColor = colorPicker.value;
-      alert(faceColor);
     } else {
       faceColor = "nocolor";
     }
-  } else if (component === "eye") {
+  } else if (component === "eyes") {
     if (tint.checked) {
       eyesColor = colorPicker.value;
+      alert(eyesColor);
     } else {
       eyesColor = "nocolor";
     }
@@ -145,6 +145,12 @@ function tintColor(component) {
       mouthColor = colorPicker.value;
     } else {
       mouthColor = "nocolor";
+    }
+  } else if (component === "hair") {
+    if (tint.checked) {
+      hairColor = colorPicker.value;
+    } else {
+      hairColor = "nocolor";
     }
   }
 }
@@ -308,7 +314,7 @@ function postButton() {
   } else if (emojis.some(emoji => emoji.id === id)) {
     alert('Duplicate Emojitar ID');
   } else {
-    let color = new Color(faceColor,eyesColor,mouthColor,hairColor);
+    let color = [faceColor,eyesColor,mouthColor,hairColor];
     let comment = new Comment();
     let emoji = new emojiDetails
     (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], color, dateString, comment);
