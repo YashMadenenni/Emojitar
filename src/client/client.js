@@ -901,6 +901,8 @@ function uploadFile() {
       }
     })
   });
+
+  getAllFacialComponent();
 }
 /**
  * Function: to preview the image on the screen before real updating
