@@ -347,6 +347,9 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
   console.log(request.file);
   //const file  = request.file;
   //check file type
+  const imagePath = path.join(__dirname, '/components/'+request.file.path);
+  const dimensions = sizeOf(imagePath);
+
   if (request.file.mimetype != "image/png") {
     fs.unlinkSync(request.file.path); //delete uploaded file
      return response.sendStatus(415)
@@ -356,7 +359,17 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
     console.log("in size");
    return response.sendStatus(413)
     
-  }else {
+  }else if ((dimensions.width > 240)&&(dimensions.height>240)) { //check file size
+    fs.unlinkSync(request.file.path); //delete uploaded file
+    console.log("in dimensions");
+   return response.sendStatus(413)
+    
+  }else if (dimensions.alpha==undefined) { //check file size
+    fs.unlinkSync(request.file.path); //delete uploaded file
+    console.log("in transparancy");
+   return response.sendStatus(415)
+    
+  }  else {
     const newData = {
       type: request.body.type,
       id: request.body.id,
