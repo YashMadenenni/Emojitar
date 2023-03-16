@@ -40,8 +40,7 @@ function loadPage() {
   creatorSelectionLoading();
   loginPage();
   document.getElementById("defaultActive").click();
-  previewImage();  
-  uploadFile()
+  previewImage();
 }
 /**
  * Function: to open a page and disable other pages.
@@ -852,52 +851,56 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
  * Function: to upload the file to  the server
  */
 function uploadFile() {
-  let id = document.getElementById("idInput").value;
-  let descrip = document.getElementById("descripInput").value;
-
   if (realUsername === "anonymous") {
     alert("Anonymous are not allowed to upload an component");
-  } else if (!id && !descrip) {
-    alert("Component ID and description is empty");
-  } else if (!id && descrip) {
-    alert("Component ID is empty");
-  } else if (id && !descrip) {
-    alert("Component Description is empty");
-  } else {
-    document.getElementById('uploadForm').addEventListener('submit',(event)=>{
-      event.preventDefault();
-      
-      var currentDate = new Date();
-      let year = currentDate.getFullYear() + '-';
-      let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
-      let date = ('0' + currentDate.getDate()).slice(-2) + ' ';
-      let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
-      let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
-      let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
-      let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
-                              ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
-                              ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
-      const dateString = year + month + date + hour + min + second + timeZone;
-  
-      const formData = new FormData(document.getElementById('uploadForm'));
-      formData.append("date",dateString);
-      formData.append("user",realUsername);
-      fetch('/uploadImage',{
-        method:'POST',
-        body:formData
-      }).then(response=>{
-        if (response.ok) {
-          window.alert("Successfully Uploaded");
-        }else if (response.status == 415) {
-          window.alert("Failed!. File type is not .PNG");
-        }else if(response.status == 413){
-          window.alert("Failed!. File larger than 2MB");
-        }else{
-          window.alert("Failed!.");
-        }
-      })
-    });
+    return;
   }
+
+  let id = document.getElementById("idInput").value;
+  let descrip = document.getElementById("descripInput").value;
+  
+  if (!id) {
+    alert("ID is empty");
+    return;
+  } 
+  if (!descrip) {
+    alert("Description is empty");
+    return;
+  }
+
+  document.getElementById('uploadForm').addEventListener('submit',(event)=>{
+    event.preventDefault();
+    
+    var currentDate = new Date();
+    let year = currentDate.getFullYear() + '-';
+    let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
+    let date = ('0' + currentDate.getDate()).slice(-2) + ' ';
+    let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
+    let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
+    let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
+    let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
+                            ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
+                            ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
+    const dateString = year + month + date + hour + min + second + timeZone;
+
+    const formData = new FormData(document.getElementById('uploadForm'));
+    formData.append("date",dateString);
+    formData.append("user",realUsername);
+    fetch('/uploadImage',{
+      method:'POST',
+      body:formData
+    }).then(response=>{
+      if (response.ok) {
+        alert("Successfully Uploaded");
+      }else if (response.status == 415) {
+        alert("Failed!. File type is not .PNG");
+      }else if(response.status == 413){
+        alert("Failed!. File larger than 2MB");
+      }else{
+        alert("Failed!.");
+      }
+    })
+  });
 }
 /**
  * Function: to preview the image on the screen before real updating
