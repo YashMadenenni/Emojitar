@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require('path');
-const API_PORT = 5000;
+const API_PORT = 8000;
 const app = express();
 //const fileUpload = require('express-fileUpload');
 const multer = require('multer');
