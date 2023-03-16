@@ -18,9 +18,9 @@
     2.3 to delete their own emijotars (must: relevent files and comments...) --> done
 # ADVANCE
 1. function for all users
-    1.1 to customise a facial component(e.g. tint the colour of face/eye/hair) --> frontend
+    1.1 to customise a facial component(e.g. tint the colour of face/eye/hair) --> ok (loadAllImageShouldbefix)
 2. function for logged users
-    2.1 to upload a new facial component
+    2.1 to upload a new facial component --> done
          @ must: type, image, id, description, creator, save-date/time
          @ preview before upload
          @ verify: file type, maximum file size, image dimensions(240x240 pixel, PNG, transparency)

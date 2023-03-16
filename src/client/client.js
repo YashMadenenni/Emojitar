@@ -467,10 +467,8 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   faceContext.drawImage(facePic, 0, 0);
   faceContext.globalCompositeOperation = "source-in";
   if (emojiFilter[0] != "nocolor") {
-    faceContext.fillStyle = emojiFilter[0];
-    faceContext.fillRect(0, 0, faceCanvas.width, faceCanvas.height);
+    tintAllImage(faceCanvas, faceCanvas.width, faceCanvas.height, emojiFilter[0]);
   }
-  faceContext.globalCompositeOperation = "source-over";
 
   const eyesCanvas = document.createElement("canvas");
   eyesCanvas.width = eyesPic.width;
@@ -479,10 +477,8 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   eyesContext.drawImage(eyesPic, 0, 0);
   eyesContext.globalCompositeOperation = "source-in";
   if (emojiFilter[1] != "nocolor") {
-    eyesContext.fillStyle = emojiFilter[1];
-    eyesContext.fillRect(0, 0, eyesCanvas.width, eyesCanvas.height);
+    tintAllImage(eyesCanvas, eyesCanvas.width, eyesCanvas.height, emojiFilter[1]);
   }
-  eyesContext.globalCompositeOperation = "source-over";
 
   const mouthCanvas = document.createElement("canvas");
   mouthCanvas.width = mouthPic.width;
@@ -491,10 +487,8 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   mouthContext.drawImage(mouthPic, 0, 0);
   mouthContext.globalCompositeOperation = "source-in";
   if (emojiFilter[2] != "nocolor") {
-    mouthContext.fillStyle = emojiFilter[2];
-    mouthContext.fillRect(0, 0, mouthCanvas.width, mouthCanvas.height);
+    tintAllImage(mouthCanvas, mouthCanvas.width, mouthCanvas.height, emojiFilter[2]);
   }
-  mouthContext.globalCompositeOperation = "source-over";
 
   const hairCanvas = document.createElement("canvas");
   hairCanvas.width = hairPic.width;
@@ -503,15 +497,40 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   hairContext.drawImage(hairPic, 0, 0);
   hairContext.globalCompositeOperation = "source-in";
   if (emojiFilter[3] != "nocolor") {
-    hairContext.fillStyle = emojiFilter[3];
-    hairContext.fillRect(0, 0, hairCanvas.width, hairCanvas.height);
+    tintAllImage(hairCanvas, hairCanvas.width, hairCanvas.height, emojiFilter[3]);
   }
-  hairContext.globalCompositeOperation = "source-over";
 
   context.drawImage(faceCanvas, 0, 0, canvas.width, canvas.width);
   context.drawImage(eyesCanvas, 0, 0, canvas.width, canvas.width);
   context.drawImage(mouthCanvas, 0, 0, canvas.width, canvas.width);
   context.drawImage(hairCanvas, 0, 0, canvas.width, canvas.width);
+}
+function tintAllImage(canvas, width, height, color) {
+  let context = canvas.getContext("2d");
+  let fillStyle = context.fillStyle;
+  context.fillStyle = color;
+  context.fillRect(0, 0, width, height);
+  context.fillStyle = fillStyle;
+
+  let imageData = context.getImageData(0, 0, width, height);
+  let tintR = parseInt(color.substr(1, 2), 16);
+  let tintG = parseInt(color.substr(3, 2), 16);
+  let tintB = parseInt(color.substr(5, 2), 16);
+  let data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i];       //red
+    let g = data[i + 1];   //green
+    let b = data[i + 2];   //blue
+    let a = data[i + 3];   //opacity  --> transparent or not
+
+    if (a > 0) {           //if a !> 0, then it is not a opaque pixel, but a transparent pixel
+      data[i] = Math.round((r / 255) * tintR);
+      data[i + 1] = Math.round((g / 255) * tintG);
+      data[i + 2] = Math.round((b / 255) * tintB);
+    }
+  }
+  context.putImageData(imageData, 0, 0);
 }
 /**
  * Function: to set the canvas of all emojis (Browser Tab)
