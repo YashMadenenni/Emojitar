@@ -1,9 +1,9 @@
 /**Maker Tab Begin*/
-const images = [];
-const faceImages = [];
-const eyesImages = [];
-const mouthImages = [];
-const hairImages = [];
+var images = [];
+var faceImages = [];
+var eyesImages = [];
+var mouthImages = [];
+var hairImages = [];
 
 let faceComponent = null;
 let eyesComponent = null;
@@ -48,7 +48,7 @@ function loadPage() {
  * @param {*} pageName :the ready-open page
  * @param {*} event    :active the ready-open page
  */
-function openPage(pageName,event) {
+function openPage(pageName, event) {
   var tabcontent = document.getElementsByClassName("tabcontent");
   for (let i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
@@ -67,11 +67,20 @@ function openPage(pageName,event) {
  * Function: to get all facial component from API
  */
 function getAllFacialComponent() {
+
+  images = [];
+  faceImages = [];
+  eyesImages = [];
+  mouthImages = [];
+  hairImages = [];
+
   fetch('/components')
-  .then(response => response.json())
-  .then(data => {images.push(...data);
-                  seperateFacialComponent()
-                  createAllFacialComponentButton()});
+    .then(response => response.json())
+    .then(data => {
+      images.push(...data);
+      seperateFacialComponent()
+      createAllFacialComponentButton()
+    });
 }
 /**
  * Function: to seperate facial component based on its type
@@ -96,7 +105,7 @@ function seperateFacialComponent() {
  */
 function createFacialComponentButton(elementID, images) {
   const html = document.getElementById(elementID);
-  html.innerHTML= '';
+  html.innerHTML = '';
 
   images.forEach(image => {
     let htmlSegment = `<div class="button-wrapper" onclick=canvas("${image.type}","${image.url}","${image.filename}")>
@@ -116,10 +125,10 @@ function createFacialComponentButton(elementID, images) {
  * 4.hair
  */
 function createAllFacialComponentButton() {
-  createFacialComponentButton("faceScroll",faceImages);
-  createFacialComponentButton("mouthScroll",mouthImages);
-  createFacialComponentButton("eyesScroll",eyesImages);
-  createFacialComponentButton("hairScroll",hairImages);
+  createFacialComponentButton("faceScroll", faceImages);
+  createFacialComponentButton("mouthScroll", mouthImages);
+  createFacialComponentButton("eyesScroll", eyesImages);
+  createFacialComponentButton("hairScroll", hairImages);
 }
 function tintColor(component) {
   let id = component + "Tint";
@@ -158,7 +167,7 @@ function draw(component, canvas, context) {
 
   canvas.width = 250;
   canvas.height = 250;
-  
+
   if (component === "face") {
     context.drawImage(faceImage, 0, 0);
 
@@ -227,7 +236,7 @@ function canvas(componentType, imageURL, imageName) {
       let faceCanvas = document.getElementById("face-canvas");
       let facecontext = faceCanvas.getContext("2d");
       faceImage.src = path;
-      faceImage.onload = function() {
+      faceImage.onload = function () {
         draw("face", faceCanvas, facecontext);
       };
       faceComponent = imageName;
@@ -236,8 +245,8 @@ function canvas(componentType, imageURL, imageName) {
       let eyesCanvas = document.getElementById("eyes-canvas");
       let eyescontext = eyesCanvas.getContext("2d");
       eyesImage.src = path;
-      eyesImage.onload = function() {
-        draw("eyes",eyesCanvas, eyescontext);
+      eyesImage.onload = function () {
+        draw("eyes", eyesCanvas, eyescontext);
       };
       eyesComponent = imageName;
       break;
@@ -245,8 +254,8 @@ function canvas(componentType, imageURL, imageName) {
       let mouthCanvas = document.getElementById("mouth-canvas");
       let mouthcontext = mouthCanvas.getContext("2d");
       mouthImage.src = path;
-      mouthImage.onload = function() {
-        draw("mouth",mouthCanvas,mouthcontext);
+      mouthImage.onload = function () {
+        draw("mouth", mouthCanvas, mouthcontext);
       };
       mouthComponent = imageName;
       break;
@@ -254,8 +263,8 @@ function canvas(componentType, imageURL, imageName) {
       let hairCanvas = document.getElementById("hair-canvas");
       let haircontext = hairCanvas.getContext("2d");
       hairImage.src = path;
-      hairImage.onload = function() {
-        draw("hair",hairCanvas,haircontext);
+      hairImage.onload = function () {
+        draw("hair", hairCanvas, haircontext);
       };
       hairComponent = imageName;
       break;
@@ -285,7 +294,7 @@ function postButton() {
   let id = document.getElementById("inputID").value;
   let description = document.getElementById("inputDescription").value;
   let username = realUsername;
-  
+
   let currentDate = new Date();
   let year = currentDate.getFullYear() + '-';
   let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
@@ -293,17 +302,17 @@ function postButton() {
   let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
   let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
   let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
-  let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
-                          ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
-                          ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
+  let timeZone = 'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
+    ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' +
+    ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
   const dateString = year + month + date + hour + min + second + timeZone;
 
   if (realUsername === "anonymous") {
     alert(`
     Anonymous user are not allowed to post an emojitar.
     Please log in first`);
-  } else if (!id || !description || !username || 
-      !faceComponent || !eyesComponent || !mouthComponent || !hairComponent) {
+  } else if (!id || !description || !username ||
+    !faceComponent || !eyesComponent || !mouthComponent || !hairComponent) {
     alert(`
     Valid post should include:
     - id
@@ -313,11 +322,11 @@ function postButton() {
   } else if (emojis.some(emoji => emoji.id === id)) {
     alert('Duplicate Emojitar ID');
   } else {
-    let color = [faceColor,eyesColor,mouthColor,hairColor];
+    let color = [faceColor, eyesColor, mouthColor, hairColor];
     let comment = new Comment();
     let emoji = new emojiDetails
-    (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], color, dateString, comment);
-    
+      (id, description, username, [faceComponent, eyesComponent, mouthComponent, hairComponent], color, dateString, comment);
+
     fetch('/addEmoji', {
       method: 'POST',
       headers: {
@@ -325,17 +334,17 @@ function postButton() {
       },
       body: JSON.stringify(emoji)
     })
-    .then(response => {
-      if (response.ok) {
-        alert('Successfully upload your emojitar');
-      } else {
+      .then(response => {
+        if (response.ok) {
+          alert('Successfully upload your emojitar');
+        } else {
+          alert('fail to upload your emojitar');
+        }
+      })
+      .catch(error => {
         alert('fail to upload your emojitar');
-      }
-    })
-    .catch(error => {
-      alert('fail to upload your emojitar');
-      console.error('Error:', error);
-    });
+        console.error('Error:', error);
+      });
   }
   getAllEmojitars();
 }
@@ -398,20 +407,20 @@ function Emoji(id, images, username, description, comments, filter) {
 function getAllEmojitars() {
   emojis = [];
   fetch('/existingEmojies')
-  .then(response => response.json())
-  .then(data => {
-    Object.keys(data).forEach(key => {
-      const userData = data[key];
-      userData.forEach(emoji => {
-        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments, emoji.filter);
-        emojis.push(emojiObj);
+    .then(response => response.json())
+    .then(data => {
+      Object.keys(data).forEach(key => {
+        const userData = data[key];
+        userData.forEach(emoji => {
+          const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments, emoji.filter);
+          emojis.push(emojiObj);
+        });
+        loadAllEmojitars();
+        allCanvas();
+        creatorSelectionLoading();
       });
-      loadAllEmojitars();
-      allCanvas();
-      creatorSelectionLoading();
-    });
-  })
-  .catch(error => console.error(error));
+    })
+    .catch(error => console.error(error));
 }
 /**
  * Function: to load all emojitars all at onces
@@ -419,7 +428,7 @@ function getAllEmojitars() {
  */
 function loadAllEmojitars() {
   const html = document.getElementById("Browser-Grid");
-  html.innerHTML= '';
+  html.innerHTML = '';
   emojis.forEach(emoji => {
     let htmlSegment = `<div class="emojis-wrapper">
                           <div id="emoji">
@@ -461,7 +470,7 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   let eyesID = "a-eyes-canvas-" + emojiID;
   let mouthID = "a-mouth-canvas-" + emojiID;
   let hairID = "a-hair-canvas-" + emojiID;
-  
+
   let faceCanvas = document.getElementById(faceID);
   let faceContext = faceCanvas.getContext("2d");
   let faceImage = new Image();
@@ -469,13 +478,13 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   faceContext.clearRect(0, 0, faceCanvas.width, faceCanvas.height);
   faceCanvas.width = 250;
   faceCanvas.height = 250;
-  faceImage.onload = function() {
+  faceImage.onload = function () {
     faceContext.drawImage(faceImage, 0, 0);
-    if (emojiFilter[0]!== "nocolor") {
+    if (emojiFilter[0] !== "nocolor") {
       tintImage(faceContext, faceImage, emojiFilter[0]);
     }
   };
-  
+
   let eyesCanvas = document.getElementById(eyesID);
   let eyesContext = eyesCanvas.getContext("2d");
   let eyesImage = new Image();
@@ -483,9 +492,9 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   eyesContext.clearRect(0, 0, eyesCanvas.width, eyesCanvas.height);
   eyesCanvas.width = 250;
   eyesCanvas.height = 250;
-  eyesImage.onload = function() {
+  eyesImage.onload = function () {
     eyesContext.drawImage(eyesImage, 0, 0);
-    if (emojiFilter[1]!== "nocolor") {
+    if (emojiFilter[1] !== "nocolor") {
       tintImage(eyesContext, eyesImage, emojiFilter[1]);
     }
   };
@@ -497,9 +506,9 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   mouthContext.clearRect(0, 0, mouthCanvas.width, mouthCanvas.height);
   mouthCanvas.width = 250;
   mouthCanvas.height = 250;
-  mouthImage.onload = function() {
+  mouthImage.onload = function () {
     mouthContext.drawImage(mouthImage, 0, 0);
-    if (emojiFilter[2]!== "nocolor") {
+    if (emojiFilter[2] !== "nocolor") {
       tintImage(mouthContext, mouthImage, emojiFilter[2]);
     }
   };
@@ -511,9 +520,9 @@ async function specificCanvas(emojiImages, emojiID, emojiFilter) {
   hairContext.clearRect(0, 0, hairCanvas.width, hairCanvas.height);
   hairCanvas.width = 250;
   hairCanvas.height = 250;
-  hairImage.onload = function() {
+  hairImage.onload = function () {
     hairContext.drawImage(hairImage, 0, 0);
-    if (emojiFilter[3]!== "nocolor") {
+    if (emojiFilter[3] !== "nocolor") {
       tintImage(hairContext, hairImage, emojiFilter[3]);
     }
   };
@@ -543,7 +552,7 @@ function viewSpecificEmojitar(emojiID) {
   const emojiComment = emoji.comments;
   const emojiImages = emoji.images;
   const html = document.getElementById("Browser-Grid");
-  html.innerHTML= '';
+  html.innerHTML = '';
   let htmlSegment = `<div id="specific-emoji-info">
                         <div id="a-emoji-display">
                         </div>
@@ -590,7 +599,7 @@ function setLayoutForEmojiImage(emojiImageArray, emojiID, emojiFilter) {
 function setLayoutForCommentSetting(emojiObj) {
   const emoji = emojiObj;
   const html = document.getElementById("comment-rate-setting-area");
-  html.innerHTML= '';
+  html.innerHTML = '';
   let htmlSegment = `<div class="rating-container">
                         <label for="rating">Rating:</label>
                         <select name="rating" id="rating">
@@ -625,9 +634,9 @@ function submitComment(emojiObjID) {
   let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
   let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
   let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
-  let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
-                          ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
-                          ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
+  let timeZone = 'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
+    ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' +
+    ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
   const dateString = year + month + date + hour + min + second + timeZone;
 
   let emoji = getSpecificEmojitar(emojiObjID.toString());
@@ -646,19 +655,21 @@ function submitComment(emojiObjID) {
       "userName": commentor,
       "comment": {
         "rating": rating,
-        "comments":comment,
+        "comments": comment,
         "date": dateString
       }
     }
-  
+
     fetch('/addComment', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)})
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
       .then(response => {
-      if (response.ok) {alert('Commented!');} 
-      else {alert('Failed to comment');}})
-      .catch(error => {console.error(error);});
+        if (response.ok) { alert('Commented!'); }
+        else { alert('Failed to comment'); }
+      })
+      .catch(error => { console.error(error); });
   }
   reloadComment(emojiObjID);
 }
@@ -669,20 +680,20 @@ function submitComment(emojiObjID) {
 function reloadComment(emojiObjID) {
   emojis = [];
   fetch('/existingEmojies')
-  .then(response => response.json())
-  .then(data => {
-    Object.keys(data).forEach(key => {
-      const userData = data[key];
-      userData.forEach(emoji => {
-        const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments, emoji.filter);
-        emojis.push(emojiObj);
+    .then(response => response.json())
+    .then(data => {
+      Object.keys(data).forEach(key => {
+        const userData = data[key];
+        userData.forEach(emoji => {
+          const emojiObj = new Emoji(emoji['emoji-id'], emoji.images, emoji.userName, emoji.description, emoji.comments, emoji.filter);
+          emojis.push(emojiObj);
+        });
+        const emoji = getSpecificEmojitar(emojiObjID.toString());
+        let emojiComments = emoji.comments;
+        setLayoutForAllComments(emojiComments);
       });
-      const emoji = getSpecificEmojitar(emojiObjID.toString());
-      let emojiComments = emoji.comments;
-      setLayoutForAllComments(emojiComments);
-    });
-  })
-  .catch(error => console.error(error));
+    })
+    .catch(error => console.error(error));
 }
 /**
  * Function: to get all comment's info of a specific emoji
@@ -705,7 +716,7 @@ function getAllComments(comments) {
 function setLayoutForAllComments(specificEmojiComments) {
   let allComments = getAllComments(specificEmojiComments);
   const html = document.getElementById("all-comment-area");
-  html.innerHTML= '';
+  html.innerHTML = '';
 
   if (allComments.length < 1) {
     let htmlSegment = `<div class="all-comment-wrapper">
@@ -744,11 +755,12 @@ function getSpecificEmojitar(emojiID) {
 function creatorSelectionLoading() {
   let creators = getCreators();
   let html = document.getElementById("creators");
-  html.innerHTML= '';
+  html.innerHTML = '';
 
   creators.forEach(creator => {
     let htmlSegment = `<option value=${creator}>${creator}</option>`;
-    html.innerHTML += htmlSegment;});
+    html.innerHTML += htmlSegment;
+  });
 }
 /**
  * Function: to get all creators' name (no duplicate), this function is to create selection option.
@@ -796,7 +808,7 @@ function getSpecificEmoji(creator) {
 function loadSpecificEmojis(specificEmojis) {
   let specificEmojitars = specificEmojis;
   const html = document.getElementById("Browser-Grid");
-  html.innerHTML= '';
+  html.innerHTML = '';
   specificEmojitars.forEach(emoji => {
     let htmlSegment = `<div class="emojis-wrapper">
                           <div id="emoji">
@@ -854,67 +866,70 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
 /**
  * Function: to upload the file to  the server
  */
-function uploadFile() {
-  
+function uploadFile(event) {
 
-    if (realUsername === "anonymous") {
-      alert("Anonymous are not allowed to upload an component");
-      return;
+
+  if (realUsername === "anonymous") {
+    alert("Anonymous are not allowed to upload an component");
+    return;
+  }
+  event.preventDefault();
+
+  var typeValue = document.getElementById("imageType").value;
+  console.log(typeValue);
+  var currentDate = new Date();
+  let year = currentDate.getFullYear() + '-';
+  let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
+  let date = ('0' + currentDate.getDate()).slice(-2) + ' ';
+  let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
+  let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
+  let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
+  let timeZone = 'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
+    ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' +
+    ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
+  const dateString = year + month + date + hour + min + second + timeZone;
+
+  const formData = new FormData(document.getElementById('uploadForm'));
+  formData.append("date", dateString);
+  formData.append("user", realUsername);
+  fetch('/uploadImage', {
+    method: 'POST',
+    body: formData
+  }).then(response => {
+    if (response.ok) {
+      alert("Successfully Uploaded");
+      getAllFacialComponent();
+    } else if (response.status == 415) {
+      alert("Failed!. File type is not .PNG");
+    } else if (response.status == 413) {
+      alert("Failed!. File larger than 2MB");
+    } else if (response.status == 416) {   //custom server error code 
+      alert("Failed!. File larger than 240*240 pixel");
+    } else if (response.status == 417) {   // custom server error code 
+      alert("Failed!. File is not transparent");
+    } else {
+      alert("Failed!.");
     }
-    event.preventDefault();
-    
-    var currentDate = new Date();
-    let year = currentDate.getFullYear() + '-';
-    let month = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-';
-    let date = ('0' + currentDate.getDate()).slice(-2) + ' ';
-    let hour = ('0' + currentDate.getHours()).slice(-2) + ':';
-    let min = ('0' + currentDate.getMinutes()).slice(-2) + ':';
-    let second = ('0' + currentDate.getSeconds()).slice(-2) + ' ';
-    let timeZone =  'GMT' + (currentDate.getTimezoneOffset() > 0 ? '-' : '+') +
-                            ('0' + Math.abs(currentDate.getTimezoneOffset() / 60)).slice(-2) + ':' + 
-                            ('0' + Math.abs(currentDate.getTimezoneOffset() % 60)).slice(-2);
-    const dateString = year + month + date + hour + min + second + timeZone;
+  })
 
-    const formData = new FormData(document.getElementById('uploadForm'));
-    formData.append("date",dateString);
-    formData.append("user",realUsername);
-    fetch('/uploadImage',{
-      method:'POST',
-      body:formData
-    }).then(response=>{
-      if (response.ok) {
-        alert("Successfully Uploaded");
-      }else if (response.status == 415) {
-        alert("Failed!. File type is not .PNG");
-      }else if(response.status == 413){
-        alert("Failed!. File larger than 2MB");
-      }else if(response.status == 416){   //custom server error code 
-        alert("Failed!. File larger than 240*240 pixel");
-      }else if(response.status == 417){   // custom server error code 
-        alert("Failed!. File is not transparent");
-      }else{
-        alert("Failed!.");
-      }
-    })
-  
-  
 
-  getAllFacialComponent();
+
+  
 }
 /**
  * Function: to preview the image on the screen before real updating
  */
 function previewImage() {
-  document.getElementById("imageInput").addEventListener("change",()=>{
+  document.getElementById("imageInput").addEventListener("change", () => {
     const fileInput = document.getElementById("imageInput").files[0];
-   
+
     const fileReader = new FileReader();
-   
-    fileReader.onload=()=>{
-     document.getElementById("preview").innerHTML = '<img class="preview" src='+fileReader.result+'>'
+
+    fileReader.onload = () => {
+      document.getElementById("preview").innerHTML = '<img class="preview" src=' + fileReader.result + '>'
     }
     fileReader.readAsDataURL(fileInput);
-   });
+  });
 }
 /**
  * Section 3 End: Component Tab Functions----------------------------------------------------------------------------------
@@ -1001,16 +1016,16 @@ function loginButton() {
     },
     body: JSON.stringify(loginData)
   })
-  .then(response => {
-    if (response.status === 200) {
-      alert("User authorized");
-      realUsername = username;
-      loggedPage();
-    } else {
-      alert("User unauthorized");
-    }
-  })
-  .catch(error => console.error(error));
+    .then(response => {
+      if (response.status === 200) {
+        alert("User authorized");
+        realUsername = username;
+        loggedPage();
+      } else {
+        alert("User unauthorized");
+      }
+    })
+    .catch(error => console.error(error));
 }
 /**
  * Function: to log out
@@ -1038,7 +1053,7 @@ function registerSubmit() {
       "userName": username,
       "password": password
     }
-  
+
     fetch('/user/register', {
       method: 'POST',
       headers: {
@@ -1046,16 +1061,16 @@ function registerSubmit() {
       },
       body: JSON.stringify(registerData)
     })
-    .then(response => {
-      if (response.status === 200) {
-        alert("Successfully Registered");
-      } else if (response.status === 409) {
-        alert("Username Already Exist");
-      } else {
-        alert("Fail to Register");
-      }
-    })
-    .catch(error => console.error(error));
+      .then(response => {
+        if (response.status === 200) {
+          alert("Successfully Registered");
+        } else if (response.status === 409) {
+          alert("Username Already Exist");
+        } else {
+          alert("Fail to Register");
+        }
+      })
+      .catch(error => console.error(error));
   }
 }
 /**
@@ -1067,6 +1082,6 @@ function registerSubmit() {
 /**
  * Call the functions while loading/refreshing
  */
-window.onload = function() {
+window.onload = function () {
   loadPage();
 }

@@ -101,8 +101,8 @@
                 <div class="imageForm">
                     <form id="uploadForm"  enctype="multipart/form-data">
                         <label for="type"> Type
-                            <select name="type" id="imageType">
-                                <option value="face">face</option>
+                            <select name="type" id="imageType" >
+                                <option value="face" >face</option>
                                 <option value="hair">hair</option>
                                 <option value="eyes">eyes</option>
                                 <option value="mouth">mouth</option>
@@ -111,7 +111,7 @@
                         <label for="id" class="col-sm-2" > ID:<input type="text" name="id" id="idInput" required></label> <br>
                         <label for="description" class="col-sm-2" > Description:<input type="text" name="description" id="descripInput" required></label><br>
                         <input type="file" name="file" id="imageInput" required>  <br>
-                        <button type="submit" onclick="uploadFile()">Upload</button><br>
+                        <button type="submit" onclick="uploadFile(event)">Upload</button><br>
                     </form> 
                 </div>
             </div>
