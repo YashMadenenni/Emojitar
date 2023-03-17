@@ -346,6 +346,8 @@ const upload = multer({ storage: storage });
 app.post('/uploadImage', upload.single("file"), function (request, response) { //file is the name to be used in post data for file
   console.log(request.file);
   //const file  = request.file;
+  const imagePath = path.join(request.file.path);
+  const dimensions = sizeOf(imagePath);
   //check file type
   if (request.file.mimetype != "image/png") {
     fs.unlinkSync(request.file.path); //delete uploaded file
@@ -355,6 +357,16 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
     fs.unlinkSync(request.file.path); //delete uploaded file
     console.log("in size");
    return response.sendStatus(413)
+    
+  }else if ((dimensions.width > 240)&&(dimensions.height>240)) { //check file size
+    fs.unlinkSync(request.file.path); //delete uploaded file
+    console.log("in dimensions");
+   return response.sendStatus(413)
+    
+  }else if (dimensions.alpha==undefined) { //check file size
+    fs.unlinkSync(request.file.path); //delete uploaded file
+    console.log("in transparancy");
+   return response.sendStatus(415)
     
   }else {
     const newData = {
