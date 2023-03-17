@@ -582,8 +582,10 @@ function setLayoutForEmojiImage(emojiImageArray, emojiID, emojiFilter) {
 }
 /**
  * Function: to set the layout for rating/comment/username user input
- * Cited: https://www.w3schools.com/tags/tag_select.asp
+ * The code is cited from a post by W3WSchool
+ * at https://www.w3schools.com/tags/tag_select.asp
  */
+/* BEGIN Copied Code */
 function setLayoutForCommentSetting(emojiObj) {
   const emoji = emojiObj;
   const html = document.getElementById("comment-rate-setting-area");
@@ -603,6 +605,7 @@ function setLayoutForCommentSetting(emojiObj) {
                       </div>`;
   html.innerHTML += htmlSegment;
 }
+/* END Copied Code */
 /**
  * Function: to submit a comment of a specific emojitar
  * Debug: should be kept finished after the server part built the endpoint.
