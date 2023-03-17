@@ -945,7 +945,7 @@ function loginPage() {
                         </tr>
                         <tr>
                           <td><label for="password">Password:</label></td>
-                          <td><input type="text" id="log-password" name="log-password"><p></p></td>
+                          <td><input type="password" id="log-password" name="log-password"><p></p></td>
                         </tr>
                       </table>
                       <button id="login-button" onclick="loginButton()">Login</button>&nbsp
