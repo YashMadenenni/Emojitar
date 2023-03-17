@@ -41,6 +41,7 @@ function loadPage() {
   loginPage();
   document.getElementById("defaultActive").click();
   previewImage();
+  //uploadFile();
 }
 /**
  * Function: to open a page and disable other pages.
@@ -854,24 +855,12 @@ function deleteEmojitar(emojiObjID, emojiCreator) {
  * Function: to upload the file to  the server
  */
 function uploadFile() {
-  if (realUsername === "anonymous") {
-    alert("Anonymous are not allowed to upload an component");
-    return;
-  }
-
-  let id = document.getElementById("idInput").value;
-  let descrip = document.getElementById("descripInput").value;
   
-  if (!id) {
-    alert("ID is empty");
-    return;
-  } 
-  if (!descrip) {
-    alert("Description is empty");
-    return;
-  }
 
-  document.getElementById('uploadForm').addEventListener('submit',(event)=>{
+    if (realUsername === "anonymous") {
+      alert("Anonymous are not allowed to upload an component");
+      return;
+    }
     event.preventDefault();
     
     var currentDate = new Date();
@@ -899,13 +888,18 @@ function uploadFile() {
         alert("Failed!. File type is not .PNG");
       }else if(response.status == 413){
         alert("Failed!. File larger than 2MB");
+      }else if(response.status == 416){   //custom server error code 
+        alert("Failed!. File larger than 240*240 pixel");
+      }else if(response.status == 417){   // custom server error code 
+        alert("Failed!. File is not transparent");
       }else{
         alert("Failed!.");
       }
     })
-  });
+  
+  
 
-  getAllFacialComponent();
+  //getAllFacialComponent();
 }
 /**
  * Function: to preview the image on the screen before real updating

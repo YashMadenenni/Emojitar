@@ -361,12 +361,12 @@ app.post('/uploadImage', upload.single("file"), function (request, response) { /
   }else if ((dimensions.width > 240)&&(dimensions.height>240)) { //check file size
     fs.unlinkSync(request.file.path); //delete uploaded file
     console.log("in dimensions");
-   return response.sendStatus(413)
+   return response.sendStatus(416)
     
-  }else if (dimensions.alpha==undefined) { //check file size
+  }else if (dimensions.alpha!=undefined) { //check file size
     fs.unlinkSync(request.file.path); //delete uploaded file
-    console.log("in transparancy");
-   return response.sendStatus(415)
+    console.log("in transparancy"); 
+   return response.sendStatus(417)
     
   }else {
     const newData = {
